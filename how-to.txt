@@ -1,0 +1,34 @@
+#-------------------------------------------------------------------------------
+# how to install dlib on Ubuntu
+#-------------------------------------------------------------------------------
+# 1. clone the dlib repo
+#   create a new directory on your machine
+#   > mkdir /home/myprojects/github.com/davisking
+#   cd to the directory, clone the dlib, and cd to that directory
+#   > cd /home/myprojects/github.com/davisking/dlib
+#   > git clone https://github.com/davisking/dlib.git
+#   > cd dlib
+# 2. Create a build directory and cd to that directory
+#   > mkdir build ; cd build
+# 3. Generate the makefiles and compile
+# (you might have install some additional libs)
+#   > cmake .. -DUSE_AVX_INSTRUCTIONS=ON
+# 4. Once you get compiled the library install it system wide
+#   > sudo make install
+#   > sudo ldconfig
+
+#-------------------------------------------------------------------------------
+# how to get rid of dlib libraries
+#-------------------------------------------------------------------------------
+# Unfortunately there is no uninstall script, so simple use "rm" command
+# > cd ${build_directory}
+# sudo rm < ./install_manifest.txt
+
+#-------------------------------------------------------------------------------
+# how to compile the project using cmake
+#-------------------------------------------------------------------------------
+# 1. In the root directory of the project, create a build directory
+#   > mkdir build; cd build
+# 2. Generate the makefiles and compile
+#   > cmake ../src ; cmake --build .
+# 3. The executable is ./build/bin/frameprocessor
