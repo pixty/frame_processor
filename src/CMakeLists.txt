@@ -4,6 +4,9 @@
 #
 cmake_minimum_required(VERSION 3.1.2)
 
+# Verbose make
+# set( CMAKE_VERBOSE_MAKEFILE on )
+
 PROJECT(FrameProcessor)
 
 # set default build type to Release
@@ -40,10 +43,16 @@ else()
     message(FATAL_ERROR "OpenCV not found, please install it.")
 endif()
 
+FIND_PACKAGE(Boost REQUIRED program_options)
+if (Boost_FOUND)
+    INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
+else()
+    message(FATAL_ERROR "Boost not found, please install it.")
+endif()
+
 # add all files
 aux_source_directory(. SRC_LIST)
+add_executable(frame_processor ${SRC_LIST})
 
-# add main
-add_executable(frame_processor frame_processor.cpp)
-target_link_libraries(frame_processor ${dlib_LIBS} ${OpenCV_LIBS} )
+target_link_libraries(frame_processor ${dlib_LIBS} ${OpenCV_LIBS} ${Boost_LIBRARIES})
 

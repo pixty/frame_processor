@@ -24,13 +24,6 @@ using namespace std::chrono;
 
 static int camera_should_move();
 
-static int camera_should_move2();
-
-int main(int argc, char** argv) {
-    return camera_should_move2();
-
-}
-
 void render_face (cv::Mat &img, const dlib::full_object_detection& d);
 
 int camera_should_move2() {
@@ -43,7 +36,7 @@ int camera_should_move2() {
 
     frontal_face_detector detector = get_frontal_face_detector();
     shape_predictor pose_model;
-    deserialize("shape_predictor_68_face_landmarks.dat") >> pose_model;
+    deserialize("/Users/dmitry/XCode/dlib_example/shape_predictor_68_face_landmarks.dat") >> pose_model;
 
     int count = 0;
     std::vector<rectangle> faces;
