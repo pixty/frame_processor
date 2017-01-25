@@ -62,6 +62,7 @@ inline void debug_enabled(bool debugEnabled) {
 }
 
 #define LOG_INFO(x) (log("INFO ", LogData<None>() << x))
+#define LOG_ERROR(x) (log("ERROR", LogData<None>() << x))
 #define LOG_DEBUG(x) (if (debugEnabled) log("DEBUG", LogData<None>() << x))
 
 #endif /* SRC_LOGGER_HPP_ */
