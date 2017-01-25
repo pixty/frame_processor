@@ -8,8 +8,13 @@
 #ifndef SRC_MODEL_HPP_
 #define SRC_MODEL_HPP_
 
-#include <dlib/geometry/rectangle.h>
+#include <list>
+
 #include <boost/thread/lockable_concepts.hpp>
+#include <boost/thread/mutex.hpp>
+
+#include <dlib/geometry/rectangle.h>
+
 
 // TODO: rename the namespace later
 namespace fp_test {
@@ -145,7 +150,7 @@ namespace fp_test {
 		/* Other methods and members are not defined yet */
 	};
 
-	typedef std::unique_ptr<Face> PFace;
+    typedef std::shared_ptr<Face> PFace;
 
 	/*
 	 * Scene is a cognitive description (or semantic) what is going on in the VideoStream at a moment.
@@ -198,20 +203,20 @@ namespace fp_test {
 	struct SceneDetector {
 		SceneDetector(VideoStream& vstream, SceneDetectorListener& listener);
 		// Returns the scene state
-		Scene& getScene() const { return _scene; }
+        const Scene& getScene() const { return _scene; }
 		void process();
 		void stop();
 
 		virtual ~SceneDetector() {}
 
 	protected:
-		virtual void doProcess(PFrame frame);
+        virtual void doProcess(PFrame &frame)=0;
 
 		VideoStream& _vstream;
 		SceneDetectorListener& _listener;
 		Scene _scene;
 		bool _started;
-		boost::BasicLockable _lock;
+        boost::mutex _lock;
 	};
 
 	/*
@@ -224,7 +229,7 @@ namespace fp_test {
 		DefaultSceneDetector(VideoStream& vstream, SceneDetectorListener& listener);
 
 	protected:
-		void doProcess(PFrame frame);
+        void doProcess(PFrame &frame);
 	};
 
 };

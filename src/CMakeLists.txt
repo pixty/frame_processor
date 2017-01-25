@@ -43,7 +43,7 @@ else()
     message(FATAL_ERROR "OpenCV not found, please install it.")
 endif()
 
-FIND_PACKAGE(Boost REQUIRED program_options)
+FIND_PACKAGE(Boost REQUIRED program_options signals thread system)
 if (Boost_FOUND)
     INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 else()
@@ -55,9 +55,11 @@ endif()
 set(SRC_LIST
     config.hpp
     config.cpp
+    default_scene_detector.cpp
     logger.hpp
     logger.cpp
     frame_processor.cpp
+    model.hpp
     pipeline.hpp
     pipeline.cpp
     processor.hpp
