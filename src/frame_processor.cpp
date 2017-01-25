@@ -20,6 +20,13 @@ using namespace dlib;
 using namespace std;
 using namespace std::chrono;
 
+
+void run(string filename){
+
+    // pipeline pl = new pipeline();
+}
+
+
 // ----------------------------------------------------------------------------------------
 
 static int camera_should_move();

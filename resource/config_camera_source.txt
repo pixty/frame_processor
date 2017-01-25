@@ -1,0 +1,16 @@
+VideoSource{
+    uri =
+# uri = 320x240.mkv
+    width = 640
+    height = 480
+    from = 0
+    total = -1
+}
+
+Mog2{
+    history=250
+    threshold=8
+    shadow=false
+    learning_rate = 0.001
+}
+

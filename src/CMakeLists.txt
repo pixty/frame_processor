@@ -51,8 +51,40 @@ else()
 endif()
 
 # add all files
-aux_source_directory(. SRC_LIST)
-add_executable(frame_processor ${SRC_LIST})
+# aux_source_directory(. SRC_LIST)
+set(SRC_LIST
+    config.hpp
+    config.cpp
+    logger.hpp
+    logger.cpp
+    frame_processor.cpp
+    pipeline.hpp
+    pipeline.cpp
+    processor.hpp
+    processor.cpp
+    scene.hpp
+    scene.cpp
+    simple_profiler.hpp
+    simple_profiler.cpp
+    stream.hpp
+    main.cpp
+   )
 
+add_executable(frame_processor ${SRC_LIST})
+# set_target_properties(frame_processor PROPERTIES OUTPUT_NAME "fp
 target_link_libraries(frame_processor ${dlib_LIBS} ${OpenCV_LIBS} ${Boost_LIBRARIES})
 
+# copy resources function
+
+function(copy_resource)
+  cmake_parse_arguments(MY_ARGS "" "SRC;DST" "" ${ARGN})
+  add_custom_command(
+        TARGET frame_processor POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                ${CMAKE_PROJECT_DIRECTORY}/resources/${MY_ARGS_SRC}
+                ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${MY_ARGS_DST})
+endfunction(copy_resource)
+
+# copy default config file
+# fix me
+# copy_resource( SRC config_camera_source.txt DST default.cfg )

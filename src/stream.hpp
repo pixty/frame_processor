@@ -9,6 +9,7 @@
 #define SRC_STREAM_HPP_
 
 #include <opencv2/opencv.hpp>
+#include <opencv2/videoio.hpp>
 
 namespace fp {
 
@@ -17,9 +18,13 @@ namespace fp {
 	public:
 		VideoFrame() {}
 		~VideoFrame() {}
+        cv::Mat& frame(){
+            return _cv_mat;
+        }
 	private:
-
-		cv::Mat _cv_mat;
+        long id;
+        long msec;
+        std::unique_ptr <cv::Mat> _cv_mat;
 		friend WebcamVideoStream;
 	};
 
@@ -30,16 +35,21 @@ namespace fp {
 
 	class WebcamVideoStream: public VideoStream {
 	public:
-		WebcamVideoStream() { _cap = new cv::VideoCapture(0);}
+        WebcamVideoStream():_cap(new cv::VideoCapture()) {
+            _cap->open(0);
+        }
+                WebcamVideoStream(string filename) { _cap = new cv::VideoCapture(filename);}
 		virtual ~WebcamVideoStream() {}
 
 		virtual VideoFrame* captureFrame() {
 			VideoFrame* fm = new VideoFrame();
 			_cap >> fm->_cv_mat;
+            fm->msec = _cap.get(cv::CAP_PROP_POS_MSEC);
+            fm->id = _cap.get(cv::CAP_PROP_POS_FRAMES);
 			return fm;
 		}
 	private:
-		std::shared_ptr<cv::VideoCapture> _cap;
+        std::unique_ptr<cv::VideoCapture> _cap;
 	};
 }
 
