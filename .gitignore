@@ -30,3 +30,6 @@
 /Debug/
 /src/build
 /eclipse
+
+#IDE files
+*.user
