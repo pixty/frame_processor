@@ -53,23 +53,15 @@ endif()
 # add all files
 # aux_source_directory(. SRC_LIST)
 set(SRC_LIST
-    config.hpp
-    config.cpp
-    default_scene_detector.cpp
-    logger.hpp
+    frame_processing/default_scene_detector.cpp
+    frame_processing/scene_detector.cpp
+    frame_processing/show_stream_detector.cpp
+    video_streaming/image_window.cpp
+    video_streaming/webcam_video_stream.cpp
     logger.cpp
-    frame_processor.cpp
-    model.hpp
-    pipeline.hpp
-    pipeline.cpp
-    processor.hpp
-    processor.cpp
-    scene.hpp
-    scene.cpp
-    simple_profiler.hpp
     simple_profiler.cpp
-    stream.hpp
     main.cpp
+    model.cpp
    )
 
 add_executable(frame_processor ${SRC_LIST})

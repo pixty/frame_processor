@@ -11,10 +11,11 @@
 #include "logger.hpp"
 #include <list>
 
-namespace po = boost::program_options;
+#include "frame_processing/show_stream_detector.hpp"
+#include "video_streaming/webcam_video_stream.hpp"
 
-// This is just for the example so far...
-extern int camera_should_move2();
+
+namespace po = boost::program_options;
 
 int main(int argc, char** argv) {
 	po::options_description desc("Allowed options");
@@ -36,5 +37,10 @@ int main(int argc, char** argv) {
 		LOG_INFO("Enabling debug option");
 		debug_enabled(true);
 	}
-    return camera_should_move2();
+
+	fproc::WebcamVideoStream wcvs;
+	fproc::ShowStreamDetector ssd(wcvs);
+	ssd.process();
+
+    return 0;
 }

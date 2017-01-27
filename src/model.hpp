@@ -14,10 +14,12 @@
 #include <boost/thread/mutex.hpp>
 
 #include <dlib/geometry/rectangle.h>
+#include <dlib/opencv.h>
 
+#include <opencv2/opencv.hpp>
+#include <opencv2/videoio.hpp>
 
-// TODO: rename the namespace later
-namespace fp_test {
+namespace fproc {
 
 	/*
 	 * Just a Rectangle. Let's use dlib one for beginning.
@@ -34,7 +36,7 @@ namespace fp_test {
 	/*
 	 * Returns current timestamp
 	 */
-	Timestamp Now();
+	Timestamp ts_now();
 
 	/*
 	 * A Frame identifier. All Frames provided by a VideoStream are unique and the number is gradually
@@ -57,23 +59,31 @@ namespace fp_test {
 	 * indicates the time when the Frame was taken.
 	 */
 	class Frame {
+		typedef std::unique_ptr<dlib::cv_image<dlib::bgr_pixel>> pcv_image;
 	public:
+		Frame(FrameId id, Timestamp ts): _id(id), _ts(ts) {}
 		/*
 		 * Unique frame identifier. Gradually increased, so can be used for comparison.
 		 * QUESTION - I am not sure we need it, cause Timestamp can be used instead. The only
 		 * reason why we can have it is uniqueness, cause in theory 2 and more frames can have the same
 		 * timestamp, but we need to distinguish them somehow..
 		 */
-		const FrameId getId() const;
+		const FrameId getId() const { return _id; }
 
 		/*
 		 * The frame timestamp, contains timestamp when the frame was taken.
 		 */
-		const Timestamp getTimestamp() const;
+		const Timestamp getTimestamp() const { return _ts; }
 
-		/* Other methods and members are not defined yet */
+		dlib::cv_image<dlib::bgr_pixel>& get_cv_image();
+		cv::Mat& get_mat() { return _mat; }
+	private:
+		FrameId _id;
+		Timestamp _ts;
+		cv::Mat _mat;
+		pcv_image _cv_img;
 	};
-	typedef std::unique_ptr<Frame> PFrame;
+	typedef std::shared_ptr<Frame> PFrame;
 
 	/*
 	 * FrameRegion - describes a region in a frame. Used for describing objects
@@ -96,41 +106,10 @@ namespace fp_test {
 		 */
 		virtual PFrame captureFrame() = 0;
 		virtual ~VideoStream() { };
-	};
+	protected:
+		VideoStream(std::unique_ptr<cv::VideoCapture> cap): _cap(std::move(cap)) {}
 
-	/*
-	 * WebcamVideoStream - a video stream captured from a build-in camera
-	 */
-	class WebcamVideoStream: public VideoStream {
-	public:
-		virtual PFrame captureFrame();
-
-		/* Other methods and members are not defined yet */
-	};
-
-	/*
-	 * FileVideoStream - a video stream captured from a file.
-	 */
-	class FileVideoStream: public VideoStream {
-	public:
-		/*
-		 * Constructs new video stream. The cycling param allows to play the video in a loop non-stop
-		 */
-		FileVideoStream(std::string fileName, bool cycling);
-		virtual ~FileVideoStream();
-
-		/*
-		 * Captures a frame from the video file. The following conventions is used:
-		 * - Frames timestamp is a timestamp when the video starts to play plus duration of
-		 * the video to the moment of the mehtod call.
-		 *
-		 * Throws exception if file not found or cannot be properly decoded.
-		 *
-		 * Returns NULL if the stream is over and cycling == false
-		 */
-		virtual PFrame captureFrame();
-
-		/* Other methods and members are not defined yet */
+		std::unique_ptr<cv::VideoCapture> _cap;
 	};
 
 	/*
@@ -178,18 +157,11 @@ namespace fp_test {
 	 * during video stream processing.
 	 */
 	struct SceneDetectorListener {
-		virtual void onSceneChanged(Scene& scene) = 0;
-		virtual void onStopped() = 0;
+		virtual void onSceneChanged(Scene& scene) {};
+		virtual void onStopped() {};
 		virtual ~SceneDetectorListener() {}
 	};
-
-	/*
-	 * a nil implementation of SceneDetectorListener
-	 */
-	struct NilSceneDetectorListener: SceneDetectorListener {
-		void onSceneChanged(Scene& scene) {}
-		void onStopped() {}
-	};
+	extern SceneDetectorListener nil_sc_detecor_listener;
 
 	/*
 	 * SceneDetector is an interface which defines a scene detector life-cycle. The SceneDetector
@@ -219,20 +191,6 @@ namespace fp_test {
         boost::mutex _lock;
 	};
 
-	/*
-	 * DefaultSceneDetector is a default implementation of the SceneDetector. It accepts the detector
-	 * listener, what allows to have a scene-change notification mechanism.
-	 */
-	class DefaultSceneDetector: public SceneDetector {
-	public:
-		DefaultSceneDetector(VideoStream& vstream);
-		DefaultSceneDetector(VideoStream& vstream, SceneDetectorListener& listener);
-
-	protected:
-        void doProcess(PFrame &frame);
-	};
-
-};
-// namespace
+};// namespace
 
 #endif /* SRC_MODEL_HPP_ */
