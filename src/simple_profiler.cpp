@@ -5,7 +5,7 @@
 #include <dlib/timing.h>
 #include "simple_profiler.hpp"
 
-namespace fp {
+namespace fproc {
     int SimpleProfiler::LatestId = 0;
 }
 #endif // SRC_SIMPLEPROFILER_HPP_

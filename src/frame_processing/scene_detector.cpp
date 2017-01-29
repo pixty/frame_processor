@@ -1,20 +1,10 @@
-/*
- * default_scene_detector.cpp
- *
- *  Created on: Jan 24, 2017
- *      Author: dmitry
- */
-
-#include <exception>
-
+#import "../model.hpp"
+#import "../logger.hpp"
 #include <boost/thread/locks.hpp>
 
-#include "model.hpp"
-#include "logger.hpp"
+namespace fproc {
 
-namespace fp_test {
-
-static NilSceneDetectorListener nil_sc_detecor_listener;
+SceneDetectorListener nil_sc_detecor_listener;
 
 SceneDetector::SceneDetector(VideoStream& vstream, SceneDetectorListener& listener):
     _scene(-1),// TODO Fix me
@@ -43,7 +33,7 @@ void SceneDetector::process() {
 			doProcess(frame);
 		}
 	} catch (std::exception &e) {
-        // LOG_ERROR("SceneDetector: Oops an exception happens: " << e);
+        LOG_ERROR("SceneDetector: Oops an exception happens: " << e.what());
 		stop(); // just in case
 	}
 	LOG_INFO("SceneDetector: Exit processing.");
@@ -58,18 +48,4 @@ void SceneDetector::stop() {
 	_started = false;
 	_listener.onStopped();
 }
-
-DefaultSceneDetector::DefaultSceneDetector(VideoStream& vstream): SceneDetector(vstream, nil_sc_detecor_listener) {
 }
-
-
-DefaultSceneDetector::DefaultSceneDetector(VideoStream& vstream, SceneDetectorListener& listener): SceneDetector(vstream, listener) {
-
-}
-
-void DefaultSceneDetector::doProcess(PFrame &frame){
-
-}
-
-}
-

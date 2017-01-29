@@ -4,7 +4,7 @@
 #include <string>
 #include <dlib/timing.h>
 
-namespace fp {
+namespace fproc {
     class SimpleProfiler{
     public:
         SimpleProfiler(const char *name):
