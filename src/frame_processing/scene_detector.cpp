@@ -1,5 +1,5 @@
-#import "../model.hpp"
-#import "../logger.hpp"
+#include "../model.hpp"
+#include "../logger.hpp"
 #include <boost/thread/locks.hpp>
 
 namespace fproc {
