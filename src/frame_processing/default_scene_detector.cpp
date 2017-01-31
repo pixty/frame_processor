@@ -22,7 +22,7 @@ DefaultSceneDetector::DefaultSceneDetector(VideoStream& vstream, SceneDetectorLi
 
 }
 
-void DefaultSceneDetector::doProcess(PFrame &frame){
+void DefaultSceneDetector::doProcess(PFrame frame){
 
 }
 

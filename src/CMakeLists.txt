@@ -56,8 +56,10 @@ set(SRC_LIST
     frame_processing/default_scene_detector.cpp
     frame_processing/scene_detector.cpp
     frame_processing/show_stream_detector.cpp
+    frame_processing/vfile_scene_detector.cpp
     video_streaming/image_window.cpp
     video_streaming/webcam_video_stream.cpp
+    video_streaming/file_vstream_writer.cpp
     logger.cpp
     simple_profiler.cpp
     main.cpp

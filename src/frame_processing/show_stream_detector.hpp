@@ -19,7 +19,7 @@ namespace fproc {
 		virtual ~ShowStreamDetector();
 
 	protected:
-		void doProcess(PFrame &frame);
+		void doProcess(PFrame frame);
 
 		ImageWindow imgWindow;
 	};

@@ -8,7 +8,7 @@
 #ifndef SRC_VIDEO_STREAMING_FILE_VIDEO_STREAM_HPP_
 #define SRC_VIDEO_STREAMING_FILE_VIDEO_STREAM_HPP_
 
-#include "model.hpp"
+#include "../model.hpp"
 
 namespace fproc {
 
@@ -23,8 +23,9 @@ namespace fproc {
 		FileVideoStream(std::string fileName, bool cycling):
 			VideoStream(std::unique_ptr<cv::VideoCapture>(new cv::VideoCapture(fileName))) {
 			_cycling = cycling;
+			_file_name = fileName;
 		}
-		virtual ~FileVideoStream();
+		virtual ~FileVideoStream() {}
 
 		/*
 		 * Captures a frame from the video file. The following conventions is used:
@@ -37,10 +38,23 @@ namespace fproc {
 		 */
 		virtual PFrame captureFrame();
 
+		inline std::string& getFileName() { return _file_name; }
+
 	private:
 		bool _cycling;
+		std::string _file_name;
 	};
 
+	class FileVStreamWriter {
+	public:
+		FileVStreamWriter(std::string& fileName, int fourcc, double fps,
+                Size frameSize);
+		virtual ~FileVStreamWriter() {}
+
+		void write(PFrame);
+	private:
+		std::unique_ptr<cv::VideoWriter> _writer;
+	};
 }
 
 

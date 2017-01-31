@@ -22,7 +22,7 @@ namespace fproc {
 		DefaultSceneDetector(VideoStream& vstream, SceneDetectorListener& listener);
 
 	protected:
-		void doProcess(PFrame &frame);
+		void doProcess(PFrame frame);
 	};
 
 }

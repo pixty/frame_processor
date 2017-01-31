@@ -18,7 +18,7 @@ ShowStreamDetector::ShowStreamDetector(VideoStream& vstream): SceneDetector(vstr
 ShowStreamDetector::~ShowStreamDetector() {
 }
 
-void ShowStreamDetector::doProcess(PFrame &frame) {
+void ShowStreamDetector::doProcess(PFrame frame) {
 	if (imgWindow.isClosed()) {
 		LOG_INFO("Window is closed. Game over.");
 		stop();

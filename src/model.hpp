@@ -26,6 +26,8 @@ namespace fproc {
 	 */
 	typedef dlib::rectangle Rectangle;
 
+	typedef cv::Size Size;
+
 	/*
 	 * Timestamp is a type which describes a timestamp in millis. We can define
 	 * some methods of transformation and comparison later, lets use long as a standard holder
@@ -106,6 +108,10 @@ namespace fproc {
 		 */
 		virtual PFrame captureFrame() = 0;
 		virtual ~VideoStream() { };
+
+		Size getSize();
+		double getFps() { return _cap->get(CV_CAP_PROP_FPS); };
+		int getFourcc() { return (int)_cap->get(CV_CAP_PROP_FOURCC);};
 	protected:
 		VideoStream(std::unique_ptr<cv::VideoCapture> cap): _cap(std::move(cap)) {}
 
@@ -182,7 +188,7 @@ namespace fproc {
 		virtual ~SceneDetector() {}
 
 	protected:
-        virtual void doProcess(PFrame &frame)=0;
+        virtual void doProcess(PFrame frame)=0;
 
 		VideoStream& _vstream;
 		SceneDetectorListener& _listener;

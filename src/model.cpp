@@ -29,5 +29,11 @@ Timestamp ts_now() {
 	return duration_cast<milliseconds>(dtn).count();
 }
 
+Size VideoStream::getSize() {
+	int width = (int)_cap->get(cv::CAP_PROP_FRAME_WIDTH);
+	int height = (int)_cap->get(cv::CAP_PROP_FRAME_HEIGHT);
+	return Size(width, height);
+}
+
 }
 
