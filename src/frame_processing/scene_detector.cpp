@@ -24,8 +24,8 @@ void SceneDetector::process() {
 	try {
 		while (_started) {
 			PFrame frame = _vstream.captureFrame();
-			if (frame.get() == nullptr) {
-				LOG_INFO("SceneDetector: got null frame. Stop processing");
+            if (frame.get()->get_mat().size().width < 1) {
+                LOG_INFO("SceneDetector: got an empty frame. Stop processing");
 				stop();
 				break;
 			}
