@@ -12,7 +12,9 @@
 #include <list>
 
 #include "frame_processing/show_stream_detector.hpp"
+#include "frame_processing/vfile_scene_detector.hpp"
 #include "video_streaming/webcam_video_stream.hpp"
+#include "video_streaming/file_video_stream.hpp"
 
 
 namespace po = boost::program_options;
@@ -38,8 +40,10 @@ int main(int argc, char** argv) {
 		debug_enabled(true);
 	}
 
-	fproc::WebcamVideoStream wcvs;
-	fproc::ShowStreamDetector ssd(wcvs);
+	//fproc::WebcamVideoStream wcvs;
+	fproc::FileVideoStream fvs("/Users/dmitry/Downloads/pixty.mp4", false);
+	fproc::VFileSceneDetector ssd(fvs, "/Users/dmitry/Downloads/pixty2.mp4");
+	//fproc::ShowStreamDetector ssd(fvs);
 	ssd.process();
 
     return 0;

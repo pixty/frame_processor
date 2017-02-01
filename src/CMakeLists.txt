@@ -59,7 +59,7 @@ set(SRC_LIST
     frame_processing/vfile_scene_detector.cpp
     video_streaming/image_window.cpp
     video_streaming/webcam_video_stream.cpp
-    video_streaming/file_vstream_writer.cpp
+    video_streaming/file_video_stream.cpp
     logger.cpp
     simple_profiler.cpp
     main.cpp

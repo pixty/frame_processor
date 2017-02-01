@@ -47,5 +47,6 @@ void SceneDetector::stop() {
 	LOG_INFO("SceneDetector: stop()");
 	_started = false;
 	_listener.onStopped();
+	onStop();
 }
 }

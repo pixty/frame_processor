@@ -18,13 +18,9 @@ namespace fproc {
 	class FileVideoStream: public VideoStream {
 	public:
 		/*
-		 * Constructs new video stream. The cycling param allows to play the video in a loop non-stop
+		 * Constructs new video stream. The "cycling" param allows to play the video in a loop non-stop
 		 */
-		FileVideoStream(std::string fileName, bool cycling):
-			VideoStream(std::unique_ptr<cv::VideoCapture>(new cv::VideoCapture(fileName))) {
-			_cycling = cycling;
-			_file_name = fileName;
-		}
+		FileVideoStream(std::string fileName, bool cycling);
 		virtual ~FileVideoStream() {}
 
 		/*
@@ -43,6 +39,7 @@ namespace fproc {
 	private:
 		bool _cycling;
 		std::string _file_name;
+		Timestamp _started_at;
 	};
 
 	class FileVStreamWriter {
@@ -52,6 +49,7 @@ namespace fproc {
 		virtual ~FileVStreamWriter() {}
 
 		void write(PFrame);
+		void close() { _writer->release(); }
 	private:
 		std::unique_ptr<cv::VideoWriter> _writer;
 	};

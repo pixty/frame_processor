@@ -19,11 +19,12 @@ namespace fproc {
 	 */
 	class VFileSceneDetector: public SceneDetector {
 	public:
-		VFileSceneDetector(FileVideoStream& fvs, std::string& out);
+		VFileSceneDetector(FileVideoStream& fvs, std::string out);
 		virtual ~VFileSceneDetector() {}
 
 	protected:
 		void doProcess(PFrame frame);
+		void onStop();
 
 	private:
 		std::shared_ptr<FileVStreamWriter> _out_stream;

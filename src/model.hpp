@@ -93,8 +93,22 @@ namespace fproc {
 	 */
 	class FrameRegion {
 	public:
-		PFrame getFrame();
-		Rectangle getRectangle();
+		FrameRegion(PFrame pFrame, Rectangle rec): _frame(pFrame), _rec(rec) {}
+
+		PFrame getFrame() const { return _frame; }
+		Rectangle& getRectangle() { return _rec; }
+	private:
+		PFrame _frame;
+		Rectangle _rec;
+	};
+	typedef std::list<FrameRegion> FRList;
+
+	/*
+	 * The ObjectDetector detects objects in a frame and returns their regions in the frame
+	 */
+	struct ObjectDetector {
+		virtual ~ObjectDetector() {}
+		virtual FRList& detectRegions(PFrame pFrame) = 0;
 	};
 
 	/*
@@ -111,7 +125,7 @@ namespace fproc {
 
 		Size getSize();
 		double getFps() { return _cap->get(CV_CAP_PROP_FPS); };
-		int getFourcc() { return (int)_cap->get(CV_CAP_PROP_FOURCC);};
+		int getFourcc() { return static_cast<int>(_cap->get(CV_CAP_PROP_FOURCC));};
 	protected:
 		VideoStream(std::unique_ptr<cv::VideoCapture> cap): _cap(std::move(cap)) {}
 
@@ -189,6 +203,7 @@ namespace fproc {
 
 	protected:
         virtual void doProcess(PFrame frame)=0;
+        virtual void onStop() {}
 
 		VideoStream& _vstream;
 		SceneDetectorListener& _listener;
