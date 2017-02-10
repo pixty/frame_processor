@@ -10,6 +10,7 @@
 
 #include "../model.hpp"
 #include "../video_streaming/file_video_stream.hpp"
+#include "face_detector.hpp"
 
 namespace fproc {
 
@@ -19,12 +20,14 @@ namespace fproc {
 	 */
 	class VFileSceneDetector: public SceneDetector {
 	public:
-		VFileSceneDetector(FileVideoStream& fvs, std::string out);
+		VFileSceneDetector(FileVideoStream& fvs, std::string outFile);
 		virtual ~VFileSceneDetector() {}
 
 	protected:
 		void doProcess(PFrame frame);
 		void onStop();
+
+		FaceDetector faceDetector;
 
 	private:
 		std::shared_ptr<FileVStreamWriter> _out_stream;

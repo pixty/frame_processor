@@ -24,6 +24,7 @@ void ShowStreamDetector::doProcess(PFrame frame) {
 		stop();
 		return;
 	}
+	faceDetector.detectRegions(frame);
 	imgWindow.show(frame);
 }
 

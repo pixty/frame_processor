@@ -11,11 +11,8 @@
 namespace fproc {
 
 VFileSceneDetector::VFileSceneDetector(FileVideoStream& fvs, std::string out): SceneDetector(fvs , nil_sc_detecor_listener) {
-	//int fourcc = fvs.getFourcc();
-	//int fourcc = cv::VideoWriter::fourcc('M','P','G','4');//fvs.getFourcc();
 	int fourcc = CV_FOURCC('M','J','P','G');
 	double fps = fvs.getFps();
-	fps = 15.0;
 	Size size = fvs.getSize();
 	LOG_INFO("VFileSceneDetector construct new: inFile=" << fvs.getFileName() << ", outFile=" << out << ""
 			<< " fourcc=" << fourcc << ", fps=" << fps << ", size=" << size);
@@ -23,6 +20,7 @@ VFileSceneDetector::VFileSceneDetector(FileVideoStream& fvs, std::string out): S
 }
 
 void VFileSceneDetector::doProcess(PFrame frame) {
+	faceDetector.detectRegions(frame); //TODO: don't write into the frame!
 	_out_stream->write(frame);
 }
 

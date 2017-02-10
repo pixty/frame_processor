@@ -10,6 +10,7 @@
 
 #include "../model.hpp"
 #include "../video_streaming/image_window.hpp"
+#include "face_detector.hpp"
 
 namespace fproc {
 
@@ -22,6 +23,7 @@ namespace fproc {
 		void doProcess(PFrame frame);
 
 		ImageWindow imgWindow;
+		FaceDetector faceDetector;
 	};
 
 } /* namespace fproc */

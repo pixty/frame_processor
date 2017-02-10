@@ -9,15 +9,23 @@
 #define SRC_FRAME_PROCESSING_FACE_DETECTOR_HPP_
 
 #include "../model.hpp"
+#include <dlib/image_processing/frontal_face_detector.h>
+#include <dlib/gui_widgets.h>
+#include <dlib/image_io.h>
+#include <dlib/image_processing/render_face_detections.h>
+#include <dlib/image_processing.h>
 
 namespace fproc {
 
 class FaceDetector: public ObjectDetector {
 public:
+	FaceDetector();
 	virtual FRList& detectRegions(PFrame pFrame);
 
 private:
 	FRList _frame_regions;
+	dlib::frontal_face_detector _detector;
+	dlib::shape_predictor _pose_model;
 };
 
 }

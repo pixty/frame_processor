@@ -41,9 +41,9 @@ int main(int argc, char** argv) {
 	}
 
 	//fproc::WebcamVideoStream wcvs;    
-    fproc::FileVideoStream fvs("/home/slava/gh/ds/frame_processor/resource/pixty.mp4", false);
-    fproc::VFileSceneDetector ssd(fvs, "/home/slava/gh/ds/frame_processor/resource/pixty2.avi"); // It should be an avi file with mjpeg codec
-	//fproc::ShowStreamDetector ssd(fvs);
+    fproc::FileVideoStream fvs("/Users/dmitry/Downloads/pixty.mp4", false);
+    //fproc::VFileSceneDetector ssd(fvs, "/Users/dmitry/Downloads/pixty2.avi"); // It should be an avi file with mjpeg codec
+	fproc::ShowStreamDetector ssd(fvs);
 	ssd.process();
 
     return 0;
