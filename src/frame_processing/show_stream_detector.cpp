@@ -11,8 +11,8 @@
 
 namespace fproc {
 
-ShowStreamDetector::ShowStreamDetector(VideoStream& vstream): SceneDetector(vstream, nil_sc_detecor_listener)  {
-
+ShowStreamDetector::ShowStreamDetector(std::string outFile, VideoStream& vstream): SceneDetector(vstream, nil_sc_detecor_listener)  {
+	this->outFile = outFile;
 }
 
 ShowStreamDetector::~ShowStreamDetector() {
@@ -24,7 +24,10 @@ void ShowStreamDetector::doProcess(PFrame frame) {
 		stop();
 		return;
 	}
-	faceDetector.detectRegions(frame);
+	FRList &list = faceDetector.detectRegions(frame);
+	std::ofstream faces_file(this->outFile);
+	faces_file << list.size();
+	faces_file.close();
 	imgWindow.show(frame);
 }
 

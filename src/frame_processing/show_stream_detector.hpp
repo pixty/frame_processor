@@ -16,12 +16,13 @@ namespace fproc {
 
 	class ShowStreamDetector: public SceneDetector {
 	public:
-		ShowStreamDetector(VideoStream& vstream);
+		ShowStreamDetector(std::string outFile, VideoStream& vstream);
 		virtual ~ShowStreamDetector();
 
 	protected:
 		void doProcess(PFrame frame);
 
+		std::string outFile;
 		ImageWindow imgWindow;
 		FaceDetector faceDetector;
 	};

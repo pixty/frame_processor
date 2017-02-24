@@ -24,6 +24,7 @@ int main(int argc, char** argv) {
 	desc.add_options()
 	    ("help,h", "print usage message")
 	    ("debug", po::value<bool>()->default_value(false), "enable debug log level")
+		("output-file", po::value<std::string>()->default_value("./faces"), "where to write counters")
 	;
 
 	po::variables_map vm;
@@ -40,10 +41,15 @@ int main(int argc, char** argv) {
 		debug_enabled(true);
 	}
 
-	//fproc::WebcamVideoStream wcvs;    
-    fproc::FileVideoStream fvs("/Users/dmitry/Downloads/pixty.mp4", false);
+	std::string faces_file(vm["output-file"].as<std::string>());
+	if (faces_file.length() > 0) {
+		LOG_INFO("Will write results to " << faces_file );
+	}
+
+	fproc::WebcamVideoStream wcvs;
+    //fproc::FileVideoStream fvs("/Users/dmitry/Downloads/pixty.mp4", false);
     //fproc::VFileSceneDetector ssd(fvs, "/Users/dmitry/Downloads/pixty2.avi"); // It should be an avi file with mjpeg codec
-	fproc::ShowStreamDetector ssd(fvs);
+	fproc::ShowStreamDetector ssd(faces_file, wcvs);
 	ssd.process();
 
     return 0;

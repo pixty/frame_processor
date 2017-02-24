@@ -38,6 +38,7 @@ FRList& FaceDetector::detectRegions(PFrame pFrame) {
 	std::vector<dlib::rectangle> faces = _detector(cimg);
 
 	std::vector<full_object_detection> shapes;
+	_frame_regions.clear();
 	for (unsigned long i = 0; i < faces.size(); ++i)
 	{
 		// Resize obtained rectangle for full resolution image.
@@ -58,6 +59,8 @@ FRList& FaceDetector::detectRegions(PFrame pFrame) {
 		render_face(im, shape);
 		//cv::rectangle(im, cv_r, cv::Scalar(255, 255, 0), 1, 16);
 		rounded_rectangle(im, cv_r, cv::Scalar(58, 242, 252), 1, 16, 5);
+		FrameRegion fr(pFrame, r);
+		_frame_regions.push_back(fr);
 	}
 
 	return _frame_regions;
