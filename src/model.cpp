@@ -12,9 +12,9 @@ using namespace dlib;
 
 namespace fproc {
 
-cv_image<bgr_pixel>& Frame::get_cv_image() {
+Frame::DlibBgrImg& Frame::get_cv_image() {
 	if (_cv_img.get() == NULL) {
-		pcv_image pcvi(new cv_image<bgr_pixel>(_mat));
+		pcv_image pcvi(new Frame::DlibBgrImg(_mat));
 		_cv_img = std::move(pcvi);
 	}
 	return *_cv_img;

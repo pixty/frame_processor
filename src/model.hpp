@@ -59,10 +59,18 @@ namespace fproc {
 	 *
 	 * Every frame has its own FrameId which uniquely identifies the frame in the video stream. Timestamp
 	 * indicates the time when the Frame was taken.
-	 */
+	 */	
 	class Frame {
-		typedef std::unique_ptr<dlib::cv_image<dlib::bgr_pixel>> pcv_image;
 	public:
+  		/*
+		 * Different represenations of a frame
+		 */
+		typedef cv::Mat CvBgrMat;
+		typedef dlib::cv_image<dlib::bgr_pixel> DlibBgrImg;
+	private:	  
+		typedef std::unique_ptr<DlibBgrImg> pcv_image;		
+	public:
+
 		Frame(FrameId id, Timestamp ts): _id(id), _ts(ts) {}
 		/*
 		 * Unique frame identifier. Gradually increased, so can be used for comparison.
@@ -77,14 +85,15 @@ namespace fproc {
 		 */
 		const Timestamp getTimestamp() const { return _ts; }
 
-		dlib::cv_image<dlib::bgr_pixel>& get_cv_image();
-		cv::Mat& get_mat() { return _mat; }
+		DlibBgrImg& get_cv_image();
+		CvBgrMat& get_mat() { return _mat; }
 	private:
 		FrameId _id;
 		Timestamp _ts;
-		cv::Mat _mat;
+		CvBgrMat _mat;
 		pcv_image _cv_img;
 	};
+	
 	typedef std::shared_ptr<Frame> PFrame;
 
 	/*
@@ -110,7 +119,7 @@ namespace fproc {
 		virtual ~ObjectDetector() {}
 		virtual FRList& detectRegions(PFrame pFrame) = 0;
 	};
-
+		
 	/*
 	 * VideoStream is an interface which defines basic methods for a video stream
 	 * providers.
@@ -142,14 +151,25 @@ namespace fproc {
 	 * the images are for the same face.
 	 */
 	struct Face {
-		std::list<FrameRegion> getImages();
-		FaceId getId();
-		Timestamp firstTimeCatched();
-
+		Face(const FaceId id, const Timestamp firstTimeCatched):
+		      _id(id),
+		      _firstTimeCatched(firstTimeCatched),
+		      _lostTime(-1) {}
+		
+		std::list<FrameRegion>& getImages(){return _regions;};
+		const FaceId getId() const {return _id;};
+		const Timestamp firstTimeCatched() const {return _firstTimeCatched;};
+		const Timestamp lostTime() const {return _lostTime;};
+		void setLostTime(const Timestamp lostTime){_lostTime = lostTime;}
 		/* Other methods and members are not defined yet */
+	private:
+		const FaceId _id;
+		const Timestamp _firstTimeCatched;
+		Timestamp _lostTime;
+		std::list<FrameRegion> _regions;
 	};
 
-    typedef std::shared_ptr<Face> PFace;
+	 typedef std::shared_ptr<Face> PFace;
 
 	/*
 	 * Scene is a cognitive description (or semantic) what is going on in the VideoStream at a moment.
@@ -193,23 +213,25 @@ namespace fproc {
 	 * another thread.
 	 */
 	struct SceneDetector {
+		typedef std::shared_ptr<Scene> PScene;	
+		
 		SceneDetector(VideoStream& vstream, SceneDetectorListener& listener);
 		// Returns the scene state
-        const Scene& getScene() const { return _scene; }
+		const PScene& getScene() const { return _scene; }
 		void process();
 		void stop();
 
 		virtual ~SceneDetector() {}
 
 	protected:
-        virtual void doProcess(PFrame frame)=0;
-        virtual void onStop() {}
+		virtual void doProcess(PFrame frame)=0;
+		virtual void onStop() {}
 
 		VideoStream& _vstream;
 		SceneDetectorListener& _listener;
-		Scene _scene;
+		PScene _scene;
 		bool _started;
-        boost::mutex _lock;
+		boost::mutex _lock;
 	};
 
 };// namespace

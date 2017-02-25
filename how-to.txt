@@ -1,4 +1,8 @@
 #-------------------------------------------------------------------------------
+# opencv 3.2 + opencv_contrib 3.2 are required
+#-------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
 # how to install dlib on Ubuntu
 #-------------------------------------------------------------------------------
 # 1. clone the dlib repo
@@ -12,7 +16,7 @@
 #   > mkdir build ; cd build
 # 3. Generate the makefiles and compile
 # (you might have install some additional libs)
-#   > cmake .. -DUSE_AVX_INSTRUCTIONS=ON
+#   > cmake .. -DUSE_AVX_INSTRUCTIONS=ON ; cmake --build .
 # 4. Once you get compiled the library install it system wide
 #   > sudo make install
 #   > sudo ldconfig

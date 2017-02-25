@@ -29,7 +29,7 @@ static void rounded_rectangle(cv::Mat& src, cv::Rect rect, const cv::Scalar line
 
 FaceDetector::FaceDetector() {
 	_detector = get_frontal_face_detector();
-	deserialize("/Users/dmitry/XCode/dlib_example/shape_predictor_68_face_landmarks.dat") >> _pose_model;
+	deserialize("shape_predictor_68_face_landmarks.dat") >> _pose_model;
 }
 
 FRList& FaceDetector::detectRegions(PFrame pFrame) {

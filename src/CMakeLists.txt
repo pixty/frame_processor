@@ -53,22 +53,50 @@ endif()
 # add all files
 # aux_source_directory(. SRC_LIST)
 set(SRC_LIST
+    frame_processing/algorithms.hpp
+    frame_processing/box_overlap.cpp
+    frame_processing/box_overlap.hpp
     frame_processing/default_scene_detector.cpp
+    frame_processing/default_scene_detector.hpp
+    frame_processing/face_detector.cpp
+    frame_processing/face_detector.hpp
+    frame_processing/frame_processor.cpp
+    frame_processing/grayscaler.hpp
+    frame_processing/haarcascade_frontalface_default_xml.cpp
+    frame_processing/haarcascade_frontalface_default_xml.hpp
+    frame_processing/haar_face_detector.cpp
+    frame_processing/haar_face_detector.hpp
+    frame_processing/hog_face_detector.cpp
+    frame_processing/hog_face_detector.hpp
+    frame_processing/multi_tracker.cpp
+    frame_processing/multi_tracker.hpp
+    frame_processing/naive_scene_detector.cpp
+    frame_processing/naive_scene_detector.hpp
+    frame_processing/naive_scene_detector_debugger.cpp
+    frame_processing/naive_scene_detector_debugger.hpp
     frame_processing/scene_detector.cpp
     frame_processing/show_stream_detector.cpp
-    frame_processing/face_detector.cpp
+    frame_processing/show_stream_detector.hpp
+    frame_processing/uuid.cpp
+    frame_processing/uuid.hpp
     frame_processing/vfile_scene_detector.cpp
-    video_streaming/image_window.cpp
-    video_streaming/webcam_video_stream.cpp
+    frame_processing/vfile_scene_detector.hpp
     video_streaming/file_video_stream.cpp
+    video_streaming/file_video_stream.hpp
+    video_streaming/image_window.cpp
+    video_streaming/image_window.hpp
+    video_streaming/webcam_video_stream.cpp
+    video_streaming/webcam_video_stream.hpp
     logger.cpp
-    simple_profiler.cpp
+    logger.hpp
+    simple_profiler.hpp
     main.cpp
     model.cpp
+    model.hpp
    )
 
 add_executable(frame_processor ${SRC_LIST})
-# set_target_properties(frame_processor PROPERTIES OUTPUT_NAME "fp
+# set_target_properties(frame_processor PROPERTIES OUTPUT_NAME "fp")
 target_link_libraries(frame_processor ${dlib_LIBS} ${OpenCV_LIBS} ${Boost_LIBRARIES})
 
 # copy resources function

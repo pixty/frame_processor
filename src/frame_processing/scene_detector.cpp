@@ -7,7 +7,6 @@ namespace fproc {
 SceneDetectorListener nil_sc_detecor_listener;
 
 SceneDetector::SceneDetector(VideoStream& vstream, SceneDetectorListener& listener):
-    _scene(-1),// TODO Fix me
     _vstream(vstream),
     _listener(listener),
     _started(false)

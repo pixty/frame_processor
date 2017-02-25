@@ -5,11 +5,17 @@
 #include <dlib/timing.h>
 
 namespace fproc {
+  
+    inline int nextId(){
+      static int latestId = 0;
+      return latestId++;
+    }
+
     class SimpleProfiler{
     public:
         SimpleProfiler(const char *name):
             _name(name),
-            _id(++LatestId)
+            _id(nextId())
         {
         }
 
@@ -21,7 +27,11 @@ namespace fproc {
             dlib::timing::stop(_id);
         }
 
-        inline void print(){
+        inline uint64 time(){
+	  return dlib::timing::time_buf()[_id];
+	}
+
+        static void print(){
             dlib::timing::print();
         }
     private:
