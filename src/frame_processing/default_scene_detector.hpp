@@ -18,8 +18,8 @@ namespace fproc {
 	 */
 	class DefaultSceneDetector: public SceneDetector {
 	public:
-		DefaultSceneDetector(VideoStream& vstream);
-		DefaultSceneDetector(VideoStream& vstream, SceneDetectorListener& listener);
+		DefaultSceneDetector(PVideoStream vstream);
+		DefaultSceneDetector(PVideoStream vstream, PSceneDetectorListener listener);
 
 	protected:
 		void doProcess(PFrame frame);

@@ -27,9 +27,9 @@ namespace fproc {
 static void render_face (cv::Mat &img, const dlib::full_object_detection& d);
 static void rounded_rectangle(cv::Mat& src, cv::Rect rect, const cv::Scalar lineColor, const int thickness, const int lineType , const int cornerRadius);
 
-FaceDetector::FaceDetector() {
+FaceDetector::FaceDetector(const std::string &faceLandmarksModelFilename) {
 	_detector = get_frontal_face_detector();
-	deserialize("shape_predictor_68_face_landmarks.dat") >> _pose_model;
+	deserialize(faceLandmarksModelFilename) >> _pose_model;
 }
 
 FRList& FaceDetector::detectRegions(PFrame pFrame) {

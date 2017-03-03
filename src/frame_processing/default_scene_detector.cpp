@@ -14,12 +14,15 @@
 
 namespace fproc {
 
-DefaultSceneDetector::DefaultSceneDetector(VideoStream& vstream): SceneDetector(vstream, nil_sc_detecor_listener) {
-}
+DefaultSceneDetector::DefaultSceneDetector(PVideoStream vstream): 
+		      SceneDetector(std::move(vstream),
+				    PSceneDetectorListener(new SceneDetectorListener())
+				   ){}
 
 
-DefaultSceneDetector::DefaultSceneDetector(VideoStream& vstream, SceneDetectorListener& listener): SceneDetector(vstream, listener) {
-
+DefaultSceneDetector::DefaultSceneDetector(PVideoStream vstream, 
+					   PSceneDetectorListener listener): 
+					   SceneDetector(std::move(vstream), std::move(listener)) {
 }
 
 void DefaultSceneDetector::doProcess(PFrame frame){
@@ -27,4 +30,3 @@ void DefaultSceneDetector::doProcess(PFrame frame){
 }
 
 }
-

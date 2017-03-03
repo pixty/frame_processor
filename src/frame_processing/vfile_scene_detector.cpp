@@ -10,17 +10,20 @@
 
 namespace fproc {
 
-VFileSceneDetector::VFileSceneDetector(FileVideoStream& fvs, std::string out): SceneDetector(fvs , nil_sc_detecor_listener) {
+VFileSceneDetector::VFileSceneDetector( FileVideoStream *fvs, const VFileSceneDetectorCfg &cfg)
+    : SceneDetector(PVideoStream(fvs), PSceneDetectorListener(new SceneDetectorListener())),
+      _faceDetector(cfg.faceLandmarksModelFilename())
+{
 	int fourcc = CV_FOURCC('M','J','P','G');
-	double fps = fvs.getFps();
-	Size size = fvs.getSize();
-	LOG_INFO("VFileSceneDetector construct new: inFile=" << fvs.getFileName() << ", outFile=" << out << ""
+	double fps = fvs->getFps();
+	Size size = fvs->getSize();
+	LOG_INFO("VFileSceneDetector construct new: inFile=" << fvs->getFileName() << ", outFile=" << cfg.outFile() << ""
 			<< " fourcc=" << fourcc << ", fps=" << fps << ", size=" << size);
-	_out_stream = std::shared_ptr<FileVStreamWriter>(new FileVStreamWriter(out, fourcc, fps, size));
+	_out_stream = std::shared_ptr<FileVStreamWriter>(new FileVStreamWriter(cfg.outFile(), fourcc, fps, size));
 }
 
 void VFileSceneDetector::doProcess(PFrame frame) {
-	faceDetector.detectRegions(frame); //TODO: don't write into the frame!
+	_faceDetector.detectRegions(frame); //TODO: don't write into the frame!
 	_out_stream->write(frame);
 }
 

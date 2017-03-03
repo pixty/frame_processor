@@ -48,11 +48,6 @@ MultiTracker::MultiTracker(const int maxFramesToLoose):
 
 MultiTracker::~MultiTracker()
 {
-  std::list<PTracker>::iterator itr = _trackers.begin();
-  // TODO fix me
-  while(itr != _trackers.end()){
-    itr = _trackers.erase(itr);
-  }
 }
 
 void MultiTracker::start(const CvYMat &frame, 

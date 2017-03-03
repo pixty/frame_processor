@@ -17,12 +17,19 @@
 #include "frame_processing/naive_scene_detector.hpp"
 #include "frame_processing/naive_scene_detector_debugger.hpp"
 
+
+#include "model.hpp"
+#include "frame_processing/scene_jsonify.hpp"
+#include "config/app_config.hpp"
+
 namespace po = boost::program_options;
 
 int main(int argc, char** argv) {
 	po::options_description desc("Allowed options");
 	desc.add_options()
 	    ("help,h", "print usage message")
+	    ("gencfg,g", po::value<std::string>(), "generate config samples, see \"arg*.json\" files")
+	    ("cfg,c", po::value<std::string>(), "use \"arg\" config file")
 	    ("debug", po::value<bool>()->default_value(false), "enable debug log level")
 	;
 
@@ -30,7 +37,7 @@ int main(int argc, char** argv) {
 	po::store(po::parse_command_line(argc, argv, desc), vm);
 	po::notify(vm);
 
-	if (vm.count("help") || vm.count("h")) {
+	if (vm.count("help") || vm.count("-h")) {
 	    std::cout << desc << "\n";
 	    return 1;
 	}
@@ -39,13 +46,26 @@ int main(int argc, char** argv) {
 		LOG_INFO("Enabling debug option");
 		debug_enabled(true);
 	}
-	//fproc::WebcamVideoStream wcvs;    
-	fproc::FileVideoStream fvs("video-test.mkv", false);
-	//fproc::VFileSceneDetector ssd(fvs, "/Users/dmitry/Downloads/pixty2.avi"); // It should be an avi file with mjpeg codec
-	//fproc::ShowStreamDetector ssd(fvs);
-	//ssd.process();
-	fproc::NaiveSceneDetector::PDebugger dbg(new fproc::NaiveSceneDetectorDebugger());
-	fproc::NaiveSceneDetector nsd(fvs, fproc::nil_sc_detecor_listener, dbg, fproc::NaiveSceneDetectorParameters(60,160));
-	nsd.process();
+	
+	if(vm.count("gencfg") || vm.count("-g")){
+	  const char *oname = vm.count("gencfg") ? "gencfg" : "-g";
+	  std::string prefix =  vm[oname].as<std::string>();
+	  fproc::DefaultCfgs::create(prefix);
+	  return 0;
+	}
+
+	
+	fproc::AppConfig appConfig;
+	if(vm.count("cfg") || vm.count("-c")){
+	  const char *oname = vm.count("cfg") ? "cfg" : "-c";
+	  std::string cfgFilename = vm[oname].as<std::string>();
+	  LOG_INFO("Use " << cfgFilename << " configuration file");
+	  appConfig.fromJson(cfgFilename);
+	}else{
+	  LOG_INFO("There is no config file specified. The default configuration is used.");
+	}
+	
+	LOG_INFO("Actual configuration:\n" << appConfig);
+	appConfig.createSceneDetector()->process();
 	return 0;
 }

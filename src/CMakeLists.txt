@@ -53,6 +53,8 @@ endif()
 # add all files
 # aux_source_directory(. SRC_LIST)
 set(SRC_LIST
+    config/app_config.cpp
+    config/app_config.hpp
     frame_processing/algorithms.hpp
     frame_processing/box_overlap.cpp
     frame_processing/box_overlap.hpp
@@ -60,6 +62,8 @@ set(SRC_LIST
     frame_processing/default_scene_detector.hpp
     frame_processing/face_detector.cpp
     frame_processing/face_detector.hpp
+    frame_processing/file_scene_detector_listener.cpp
+    frame_processing/file_scene_detector_listener.hpp
     frame_processing/frame_processor.cpp
     frame_processing/grayscaler.hpp
     frame_processing/haarcascade_frontalface_default_xml.cpp
@@ -75,6 +79,8 @@ set(SRC_LIST
     frame_processing/naive_scene_detector_debugger.cpp
     frame_processing/naive_scene_detector_debugger.hpp
     frame_processing/scene_detector.cpp
+    frame_processing/scene_jsonify.cpp
+    frame_processing/scene_jsonify.hpp
     frame_processing/show_stream_detector.cpp
     frame_processing/show_stream_detector.hpp
     frame_processing/uuid.cpp

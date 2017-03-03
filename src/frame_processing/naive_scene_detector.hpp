@@ -24,15 +24,30 @@ struct NaiveSceneDetectorParameters{
 	  _percent_covered_thresh(percent_covered_thresh),
 	  _maxFaces(maxFaces)
 	{};
-  
-  const int _minFaceSize;
-  const int _maxFaceSize;
-  const int _maxFramesToLooseTrack;
+	
+  const int minFaceSize() const {return _minFaceSize;}
+  const int maxFaceSize() const {return _maxFaceSize;}
+  const int maxFramesToLooseTrack() const {return _maxFramesToLooseTrack;}
   // boxes intersections thresholds
-  const double _iou_thresh; 
-  const double _percent_covered_thresh;
+  const double iou_thresh() const {return _iou_thresh;}
+  const double percent_covered_thresh() const {return _percent_covered_thresh;}
   // TODO ignore the smallest faces if total faces is more than maxFaces  
-  const int _maxFaces;
+  const int maxFaces() const {return _maxFaces;}
+  
+  void minFaceSize(int minFaceSize) {_minFaceSize = minFaceSize;}
+  void maxFaceSize(int maxFaceSize) {_maxFaceSize = maxFaceSize;}
+  void maxFramesToLooseTrack(int maxFramesToLooseTrack) {_maxFramesToLooseTrack = maxFramesToLooseTrack;}
+  void iou_thresh(double iou_thresh) {_iou_thresh = iou_thresh;}
+  void percent_covered_thresh(double percent_covered_thresh) {_percent_covered_thresh = percent_covered_thresh;}
+  void maxFaces(int maxFaces) {_maxFaces = maxFaces;}
+
+private:
+  int _minFaceSize;
+  int _maxFaceSize;
+  int _maxFramesToLooseTrack;
+  double _iou_thresh; 
+  double _percent_covered_thresh;
+  int _maxFaces;
 };
 
 
@@ -55,9 +70,9 @@ public:
 
   typedef std::unique_ptr<Debugger> PDebugger;
   
-  NaiveSceneDetector(VideoStream& vstream, 
-		     SceneDetectorListener& listener,
-		     PDebugger &debugger,
+  NaiveSceneDetector(PVideoStream vstream, 
+		     PSceneDetectorListener listener,
+		     PDebugger debugger,
 		     const NaiveSceneDetectorParameters &parameters = NaiveSceneDetectorParameters());
   ~NaiveSceneDetector();
 	
@@ -77,7 +92,11 @@ private:
 		   const FaceRegionsList &detectedAndNotStarted,
 		   const FaceRegionsList &detectedAndTracked,
 		   const FaceIdsList &lostFaces);
-  
+  void addFacesList(const PFrame &frame, const FaceRegionsList &faceRegions, PFList *faces);
+  void removeFacesList(const FaceIdsList &lostFaces, PFList *faces);
+  void updateFacesList(const PFrame &frame, const FaceIdsList &lostFaces, PFList *faces);
+  void updateFacesList(const PFrame &frame, const FaceRegionsList &faceRegions, PFList *faces);
+  PFace getFace(const FaceId &id, const PFList &faces);
   CvYMat _grayedFrame;
   const int _maxFaces;
   std::unique_ptr<ForegroundObjectsDetector> _foreground_det;

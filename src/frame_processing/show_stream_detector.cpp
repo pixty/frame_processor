@@ -11,21 +11,24 @@
 
 namespace fproc {
 
-ShowStreamDetector::ShowStreamDetector(VideoStream& vstream): SceneDetector(vstream, nil_sc_detecor_listener)  {
-
+ShowStreamDetector::ShowStreamDetector(PVideoStream vstream, const ShowStreamDetectorCfg &cfg): 
+	SceneDetector(std::move(vstream), 
+		      PSceneDetectorListener(new SceneDetectorListener())),
+	_faceDetector(cfg.faceLandmarksModelFilename())
+{
 }
 
 ShowStreamDetector::~ShowStreamDetector() {
 }
 
 void ShowStreamDetector::doProcess(PFrame frame) {
-	if (imgWindow.isClosed()) {
+	if (_imgWindow.isClosed()) {
 		LOG_INFO("Window is closed. Game over.");
 		stop();
 		return;
 	}
-	faceDetector.detectRegions(frame);
-	imgWindow.show(frame);
+	_faceDetector.detectRegions(frame);
+	_imgWindow.show(frame);
 }
 
 } /* namespace fproc */

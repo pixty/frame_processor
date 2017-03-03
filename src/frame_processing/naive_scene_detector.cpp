@@ -8,19 +8,19 @@
 namespace fproc {
   
 NaiveSceneDetector::NaiveSceneDetector(
-	VideoStream& vstream, 
-	SceneDetectorListener& listener,
-	PDebugger &debugger,
+	PVideoStream vstream, 
+	PSceneDetectorListener listener,
+	PDebugger debugger,
 	const NaiveSceneDetectorParameters &parameters):
-		SceneDetector(vstream, listener),
+		SceneDetector(std::move(vstream), std::move(listener)),
 		_debugger(std::move(debugger)),
-		_box_overlap(parameters._iou_thresh, 
-			     parameters._percent_covered_thresh),
-		_maxFaces(parameters._maxFaces),
-		_multiTracker(parameters._maxFramesToLooseTrack),
+		_box_overlap(parameters.iou_thresh(), 
+			     parameters.percent_covered_thresh()),
+		_maxFaces(parameters.maxFaces()),
+		_multiTracker(parameters.maxFramesToLooseTrack()),
 		_foreground_det(new HaarFaceDetector(
-					parameters._minFaceSize, 
-					parameters._maxFaceSize)),
+					parameters.minFaceSize(), 
+					parameters.maxFaceSize())),
 		_face_det(new HogFaceDetector()){
 }
 
@@ -101,25 +101,99 @@ void NaiveSceneDetector::updateScene(
   const FaceRegionsList &detectedAndNotStarted,
   const FaceRegionsList &detectedAndTracked,
   const FaceIdsList &lostFaces){
-  // TODO implement me
+  
+  if(detectedAndNotStarted.size() > 0){
+    /* I have no idea how to use that information at the moment but it should never happened.
+     * So just log the first one region for further investigation.
+     */
+    /*
+    LOG_INFO( 
+      "FrameId=" << frame->getId() <<
+      "Can't start a tracker for region={ " << ""
+      detectedAndNotStarted.pop_front()->roi() << " }";
+    );
+    */
+  }
   if(detectedAndStarted.size() > 0 || lostFaces.size() > 0){
-    // creane a new scene
-    // Scene *scene = new Scene(frame->getTimestamp());
-  }else{
+    // start a new scene
+    _scene.since(frame->getTimestamp());
+    PFList &faces = _scene.getFaces();
+    addFacesList(frame, detectedAndStarted, &faces);
+    updateFacesList(frame, detectedAndTracked, &faces);
+    updateFacesList(frame, lostFaces, &faces);
+    _listener->onSceneChanged(_scene);
+    removeFacesList(lostFaces, &faces);
+  }else if(detectedAndTracked.size() > 0){
     // update current scene
+    PFList &faces = _scene.getFaces();
+    updateFacesList(frame, detectedAndTracked, &faces);
+  }else{
+    // nothing to do at this point
   }
-  // update scene
-  if(_scene.get() != nullptr){
-    // move
-  }
-  /*
-	  struct Face {
-	  std::list<FrameRegion> getImages();
-	  FaceId getId();
-	  Timestamp firstTimeCatched();
+}
 
-	  /* Other methods and members are not defined yet 
-  };*/  
+void NaiveSceneDetector::addFacesList(const PFrame &frame, const FaceRegionsList &faceRegions, PFList *faces){
+    for(FaceRegion fr : faceRegions){
+      PFace pFace = getFace(fr.id(), *faces);
+      if(pFace != nullptr){
+	LOG_ERROR("FrameId=" << frame->getId() << " . " << fr.id() << " has been already added" );
+      }else{
+	pFace = PFace(new Face(fr.id(), frame->getTimestamp()));
+	faces->push_back(pFace);
+      }
+      pFace->getImages().push_back(FrameRegion(frame, cvRoi_to_rectangle(fr.roi())));
+    }  
+}
+
+void NaiveSceneDetector::removeFacesList(const FaceIdsList &lostFaces, PFList *faces){
+    for(FaceId id: lostFaces){
+      PFList::iterator itr = faces->begin();
+      bool removed = false;
+      while(!removed && itr != faces->end()){
+	if((*itr)->getId() == id){
+	  faces->erase(itr);
+	  removed = true;
+	}
+      }
+      if(!removed){
+	LOG_ERROR("Can't find " << id);
+      }
+    }  
+}
+
+void NaiveSceneDetector::updateFacesList(const PFrame &frame, const FaceIdsList &lostFaces, PFList *faces){
+    const Timestamp ts = frame->getTimestamp();
+    for(FaceId id: lostFaces){
+      PFace pFace = getFace(id, *faces);
+      if(pFace.get() == nullptr){
+	LOG_ERROR("FrameId=" << frame->getId() << " . Can't find face " << id);
+      }else{
+	pFace->setLostTime(ts);
+      }
+    }
+}
+
+void NaiveSceneDetector::updateFacesList(const PFrame &frame, const FaceRegionsList &faceRegions, PFList *faces){
+    for(FaceRegion fr : faceRegions){
+      PFace pFace = getFace(fr.id(), *faces);
+      if(pFace == nullptr){
+	LOG_ERROR("FrameId=" << frame->getId() << " . Can't find face " << fr.id());
+      }else{
+	pFace->getImages().push_back(FrameRegion(frame, cvRoi_to_rectangle(fr.roi())));	
+      }
+    }  
+}
+
+PFace NaiveSceneDetector::getFace(const FaceId &id, const PFList &faces){
+      PFace pFace = nullptr;
+      // Usualy there are only few faces
+      for(PFace candidate : faces){
+	if(candidate->getId() == id){
+	  pFace = candidate;
+	  break;
+	}
+      }
+      return pFace;
 }
 
 void NaiveSceneDetector::onStop(){

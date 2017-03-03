@@ -17,7 +17,7 @@ namespace fproc {
 
 class FaceDetector: public ObjectDetector {
 public:
-	FaceDetector();
+	FaceDetector(const std::string &faceLandmarksModelFilename);
 	virtual FRList& detectRegions(PFrame pFrame);
 
 private:
