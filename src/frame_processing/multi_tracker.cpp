@@ -1,14 +1,21 @@
 #include "multi_tracker.hpp"
+#include "../logger.hpp"
 
 namespace fproc {
 
-Tracker::Tracker(const FaceId faceId):
+Tracker::Tracker(const FaceId faceId, const BoxOverlap &tester):
   _faceId(faceId),
-  _cvTracker(cv::Tracker::create("MEDIANFLOW")),
+  _tester(tester),
+  _thresh2Overlap(-1),
+  _trackerName("MEDIANFLOW"),
   _tmissesCnt(0),
   _fmissesCnt(0)
 {
-  
+  _cvTracker = createTracker();
+}
+
+cv::Ptr<cv::Tracker> Tracker::createTracker() const{
+  return cv::Tracker::create(_trackerName);
 }
 
 bool Tracker::init(const CvYMat &frame, const CvRoi &roi){
@@ -30,18 +37,39 @@ const int Tracker::update(const CvYMat &frame){
   return _tmissesCnt;
 }
 
-const int Tracker::update(const bool faceDetected, const CvRoi &roi){
-  if(faceDetected){
-    _fmissesCnt = 0;
-    _roi = roi;
-  }else{
-    _fmissesCnt++;
+const bool Tracker::correct(const CvYMat &frame, const CvRoi &roi){
+  _fmissesCnt = 0;
+  double overlap = _tester.overlap(roi, _roi);
+  double threshold = _tester.areaThresh();
+  double thresh2Overlap = threshold/overlap;
+  bool initialized = true;
+  _roi = roi;
+  if( _thresh2Overlap > 0 
+      && (thresh2Overlap > _thresh2Overlap /* going worsen */
+      && thresh2Overlap + (thresh2Overlap - _thresh2Overlap) > 0.99))
+  {
+    LOG_INFO("Going to reinitialize " << thresh2Overlap << "=curr, prev=" << _thresh2Overlap);
+    cv::Ptr<cv::Tracker> oldTracker = _cvTracker;
+    _cvTracker = createTracker();
+    initialized =  init(frame, roi);
+    if(!initialized){
+      LOG_INFO("Reinitialization is failed");
+      _cvTracker = oldTracker;
+    }else{
+      LOG_INFO("a new one tracker");
+    }
   }
-  return _fmissesCnt;
+  _thresh2Overlap = thresh2Overlap;
+  return initialized;
 }
 
-MultiTracker::MultiTracker(const int maxFramesToLoose):
-  _maxFramesToLoose(maxFramesToLoose)
+const int Tracker::noFaceDetected(){
+  return ++_fmissesCnt;
+}
+
+MultiTracker::MultiTracker(const int maxFramesToLoose, const BoxOverlap &tester):
+  _maxFramesToLoose(maxFramesToLoose),
+  _tester(tester)
 {
 
 }
@@ -56,7 +84,7 @@ void MultiTracker::start(const CvYMat &frame,
 			 FaceRegionsList *detectedAndNotStarted) {
   detectedAndStarted->clear();
   for(FaceRegion face : faces){    
-    const PTracker t (new Tracker(face.id()));
+    const PTracker t (new Tracker(face.id(), _tester));
     if(t->init(frame, face.roi())){
       _trackers.push_back(t);
       detectedAndStarted->push_back(face);
@@ -75,15 +103,20 @@ void MultiTracker::track(const CvYMat &frame){
   }
 }
 
-void MultiTracker::update(const FaceRegionsList &faceRegions, FaceIdsList *lostFaces){  
-  for(PTracker t : _trackers){    
+void MultiTracker::update(const CvYMat &frame, const FaceRegionsList &faceRegions, FaceIdsList *lostFaces){  
+  for(PTracker t : _trackers){
+    FaceRegion *fr = nullptr;
     for(FaceRegion candidate : faceRegions){
       bool faceDetected = false;
       if(candidate.id() == t->getFaceId()){	
-	faceDetected = true;
+	fr = &candidate;
 	break;
-      }
-      t->update(faceDetected, CvRoi());
+      } 
+    }
+    if(fr != nullptr){
+      t->correct(frame, fr->roi());
+    }else{
+      t->noFaceDetected();
     }
   }
   sweep(lostFaces);
@@ -106,7 +139,6 @@ void MultiTracker::sweep(FaceIdsList *lostFaces){
 void MultiTracker::faceRegions(FaceRegionsList *out) const{
   out->clear();
   for(PTracker t : _trackers){
-    // TODO fix missed trackers    
     out->push_back(FaceRegion(t->getFaceId(), t->getRoi()));
   }
 }

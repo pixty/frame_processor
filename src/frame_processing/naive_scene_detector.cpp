@@ -14,10 +14,11 @@ NaiveSceneDetector::NaiveSceneDetector(
 	const NaiveSceneDetectorParameters &parameters):
 		SceneDetector(std::move(vstream), std::move(listener)),
 		_debugger(std::move(debugger)),
-		_box_overlap(parameters.iou_thresh(), 
-			     parameters.percent_covered_thresh()),
+		_box_overlap(parameters.centroidThresh(), 
+			     parameters.areaThresh()),
 		_maxFaces(parameters.maxFaces()),
-		_multiTracker(parameters.maxFramesToLooseTrack()),
+		_multiTracker(parameters.maxFramesToLooseTrack(),
+			      _box_overlap),
 		_foreground_det(new HaarFaceDetector(
 					parameters.minFaceSize(), 
 					parameters.maxFaceSize())),
@@ -56,7 +57,7 @@ void NaiveSceneDetector::doProcess(PFrame frame){
 	// 6. correct trackers with the best knowledge about the faces
 	// Disclaimer: Unfortunately the opencv trackers can not be corrected so just update the stored regions
 	FaceIdsList lostFaces;
-	_multiTracker.update(detectedAndTracked, &lostFaces);
+	_multiTracker.update(_grayedFrame, detectedAndTracked, &lostFaces);
 	
 	// 7. push the results to the scene
 	FaceRegionsList allTracked;

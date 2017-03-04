@@ -73,26 +73,30 @@ void NaiveSceneDetectorDebugger::operator()(
   ostr << "FPS: " << avgFps() << "\nLost: " << coma_separated(lostFaces) << "\n";
   _win.add_overlay(Rectangle(0,0,0,0), black, ostr.str());
   // print the stuff
-  if(detectedAndNotStarted.size() > 0 || tracked.size() > 1){
+  if(detectedAndNotStarted.size() > 0 || tracked.size() > 1 || detectedAndStarted.size() > 0){
     if(tracked.size() > 1){	
-      LOG_INFO(tracked.begin()->roi());
-      LOG_INFO((tracked.begin()++)->roi());
+      LOG_INFO("tracked.size" << tracked.size() << " {");
+      FaceRegionsList::const_iterator itr = tracked.begin();
+      LOG_INFO((itr->id()) << "-:-" << (itr->roi()));
+      itr++;
+      LOG_INFO((itr->id()) << "-:-" << (itr->roi()));
+      LOG_INFO("} tracked.size");
     }
     if(detectedAndStarted.size() > 0){
-      LOG_INFO("!detectedAndStarted");
-      LOG_INFO(detectedAndStarted.begin()->roi());
+      LOG_INFO("!detectedAndStarted {");
+      FaceRegionsList::const_iterator itr = detectedAndStarted.begin();
+      LOG_INFO(itr->id() << itr->roi());
+      LOG_INFO("} !detectedAndStarted");
     }
     if(detectedAndNotStarted.size() > 0){
-      LOG_INFO("!detectedAndNotStarted");
-      LOG_INFO(detectedAndNotStarted.begin()->roi());
+      LOG_INFO("!detectedAndNotStarted" << detectedAndNotStarted.begin()->roi());
     }
     if(detectedAndTracked.size() > 0){
-      LOG_INFO("!detectedAndTracked");
-      LOG_INFO(detectedAndTracked.begin()->roi());
+      LOG_INFO("!detectedAndTracked" << detectedAndTracked.begin()->roi());
     }
   }	
   if(lostFaces.size() > 0){
-    LOG_INFO("!lostFaces");
+    LOG_INFO("!lostFaces:   " << *lostFaces.begin());
   }
 }
 
@@ -113,7 +117,7 @@ void NaiveSceneDetectorDebugger::getRects(const FaceRegionsList &src, std::vecto
 }
 
 const int NaiveSceneDetectorDebugger::avgFps() const{
-  return (_framesCnt*1000*1000)/_totalProcessingTime;
+  return (_framesCnt*1000.0*1000.0)/_totalProcessingTime;
 }
 
 const std::string NaiveSceneDetectorDebugger::coma_separated(const FaceIdsList &faceIds) const{

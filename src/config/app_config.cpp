@@ -79,8 +79,8 @@ pt::ptree SceneDetectorCfgToJson::operator()(const NaiveSceneDetectorCfg & cfg) 
   pt::ptree params_node;
   params_node.put("minFaceSize", cfg.params().minFaceSize());
   params_node.put("maxFaceSize", cfg.params().maxFaceSize());
-  params_node.put("iou_thresh", cfg.params().iou_thresh());
-  params_node.put("percent_covered_thresh", cfg.params().percent_covered_thresh());
+  params_node.put("centroidThresh", cfg.params().centroidThresh());
+  params_node.put("areaThresh", cfg.params().areaThresh());
   params_node.put("maxFramesToLooseTrack", cfg.params().maxFramesToLooseTrack());
   params_node.put("maxFaces", cfg.params().maxFaces());
   pt::ptree val;
@@ -119,10 +119,10 @@ const Cfgs::SceneDetectorCfg SceneDetectorCfgJsonify::fromJson(const pt::ptree &
 					   cfg.params().minFaceSize()));
       cfg.params().maxFaceSize(node.get<int>("maxFaceSize", 
 					   cfg.params().maxFaceSize()));
-      cfg.params().iou_thresh(node.get<double>("iou_thresh", 
-					     cfg.params().iou_thresh()));
-      cfg.params().percent_covered_thresh(node.get<double>("percent_covered_thresh", 
-							 cfg.params().percent_covered_thresh()));
+      cfg.params().centroidThresh(node.get<double>("centroidThresh", 
+					     cfg.params().centroidThresh()));
+      cfg.params().areaThresh(node.get<double>("areaThresh", 
+							 cfg.params().areaThresh()));
       cfg.params().maxFramesToLooseTrack(node.get<int>("maxFramesToLooseTrack", 
 						     cfg.params().maxFramesToLooseTrack()));
       cfg.params().maxFaces(node.get<int>("maxFaces", 

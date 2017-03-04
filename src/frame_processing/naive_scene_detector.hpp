@@ -14,14 +14,14 @@ struct NaiveSceneDetectorParameters{
 	const int minFaceSize = 20,
 	const int maxFaceSize = 300,
 	const int maxFramesToLooseTrack = 10,
-	const double iou_thresh = 0.8, 
-	const double percent_covered_thresh = 0.8,
+	const double centroidThresh = 0.8, 
+	const double areaThresh = 0.8,
 	const int maxFaces = 5):
 	  _minFaceSize(minFaceSize), 
 	  _maxFaceSize(maxFaceSize),
 	  _maxFramesToLooseTrack(maxFramesToLooseTrack), 
-	  _iou_thresh(iou_thresh),
-	  _percent_covered_thresh(percent_covered_thresh),
+	  _centroidThresh(centroidThresh),
+	  _areaThresh(areaThresh),
 	  _maxFaces(maxFaces)
 	{};
 	
@@ -29,24 +29,24 @@ struct NaiveSceneDetectorParameters{
   const int maxFaceSize() const {return _maxFaceSize;}
   const int maxFramesToLooseTrack() const {return _maxFramesToLooseTrack;}
   // boxes intersections thresholds
-  const double iou_thresh() const {return _iou_thresh;}
-  const double percent_covered_thresh() const {return _percent_covered_thresh;}
+  const double centroidThresh() const {return _centroidThresh;}
+  const double areaThresh() const {return _areaThresh;}
   // TODO ignore the smallest faces if total faces is more than maxFaces  
   const int maxFaces() const {return _maxFaces;}
   
   void minFaceSize(int minFaceSize) {_minFaceSize = minFaceSize;}
   void maxFaceSize(int maxFaceSize) {_maxFaceSize = maxFaceSize;}
   void maxFramesToLooseTrack(int maxFramesToLooseTrack) {_maxFramesToLooseTrack = maxFramesToLooseTrack;}
-  void iou_thresh(double iou_thresh) {_iou_thresh = iou_thresh;}
-  void percent_covered_thresh(double percent_covered_thresh) {_percent_covered_thresh = percent_covered_thresh;}
+  void centroidThresh(double centroidThresh) {_centroidThresh = centroidThresh;}
+  void areaThresh(double areaThresh) {_areaThresh = areaThresh;}
   void maxFaces(int maxFaces) {_maxFaces = maxFaces;}
 
 private:
   int _minFaceSize;
   int _maxFaceSize;
   int _maxFramesToLooseTrack;
-  double _iou_thresh; 
-  double _percent_covered_thresh;
+  double _centroidThresh; 
+  double _areaThresh;
   int _maxFaces;
 };
 
