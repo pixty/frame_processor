@@ -1,4 +1,8 @@
 # frame_processor
+After cloning the repo run:
+```
+git submodule update --init --recursive
+```
 
 ## Libs Installation
 ### OpenCV 3.2+
@@ -22,7 +26,7 @@ sudo ldconfig
 last command when building on Linux
 
 ## Compiling the Frame Processor
-use cmake:
+Use cmake to build it. You must create (due to cpr dependency) build directory in the root of frame_processor:
 ```
 cd frame_processor
 mkdir build; cd build
