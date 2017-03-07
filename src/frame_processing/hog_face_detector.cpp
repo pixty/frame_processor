@@ -27,13 +27,12 @@ void HogFaceDetector::detect(const DlibYImg &frame, CvRois *final_dets){
 void HogFaceDetector::detect(const DlibYImg &frame, const CvRois &candidates, CvRois *final_dets){
   final_dets->clear();
   for(CvRoi bb : candidates){
-    // TODO: Rectangle orig = grow_rect(cvRoi_to_rectangle(bb), 5);
     Rectangle orig = cvRoi_to_rectangle(bb);
     std::vector<Rectangle> faces = _detector(dlib::sub_image(frame, orig));
     if(faces.size() > 0){
       // naive approach: just pick the first one up
-      CvRoi bb = rectangle_to_cvRoi(dlib::translate_rect(faces[0], orig.left(), orig.top()));
-      final_dets->push_back(bb);
+      CvRoi dbb = rectangle_to_cvRoi(dlib::translate_rect(faces[0], orig.left(), orig.top()));
+      final_dets->push_back(dbb);
     }
   }  
 }
