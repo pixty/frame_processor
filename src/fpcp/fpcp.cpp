@@ -14,7 +14,7 @@ namespace fpcp {
 
 void to_json(const fproc::Scene& scene, pt::ptree &root);
 void to_json(const fproc::PFList &faces, pt::ptree &root);
-void to_json(const fproc::PFace face, pt::ptree &root);
+void to_json(const fproc::Face& face, pt::ptree &root);
 void to_json(const fproc::FRList &frame_regions, pt::ptree &root);
 void to_json(const fproc::FrameRegion &fregion, pt::ptree &root);
 void to_json(const fproc::Rectangle &r, pt::ptree &root);
@@ -27,6 +27,18 @@ string to_json(const FPCPResp& resp) {
 		pt::ptree scene_json;
 		to_json(*resp.scene, scene_json);
 		root.add_child("scene", scene_json);
+	}
+
+	if (resp.image) {
+		pt::ptree image_json;
+		to_json(*resp.image, image_json);
+		root.add_child("image", image_json);
+	}
+
+	if (resp.person) {
+		pt::ptree person_json;
+		to_json(*resp.person, person_json);
+		root.add_child("person", person_json);
 	}
 
 	std::ostringstream out;
@@ -79,12 +91,12 @@ void to_json(const fproc::PFList &faces, pt::ptree &root) {
 	 */
 	for (auto &face : faces) {
 		pt::ptree person_node;
-		to_json(face, person_node);
+		to_json(*face, person_node);
 		root.push_back(std::make_pair("", person_node));
 	}
 }
 
-void to_json(const fproc::PFace face, pt::ptree &root) {
+void to_json(const fproc::Face& face, pt::ptree &root) {
 	/*
 	 {
 		 "id": "p1234",
@@ -93,11 +105,11 @@ void to_json(const fproc::PFace face, pt::ptree &root) {
 		 "faces": [ {FrameRegion1 JSON}, ... ]
 	 }
 	 */
-	root.put("id", face->getId());
-	root.put("firstSeenAt", face->firstTimeCatched());
-	root.put("lostAt", face->lostTime());
+	root.put("id", face.getId());
+	root.put("firstSeenAt", face.firstTimeCatched());
+	root.put("lostAt", face.lostTime());
 	pt::ptree pictures_node;
-	to_json(face->getImages(), pictures_node);
+	to_json(face.getImages(), pictures_node);
 	root.add_child("faces", pictures_node);
 }
 

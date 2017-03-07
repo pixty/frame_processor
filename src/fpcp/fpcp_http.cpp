@@ -72,12 +72,9 @@ void FprocEndHttp::getF() {
 
 void FprocEndHttp::postResponse(FPCPResp& resp) {
 
-
-	const char *content = "test";
-	int length = 4;
-	auto r = cpr::Post(cpr::Url{"http://www.httpbin.org/post"},
-	                   cpr::Multipart{{"key", "large value"},
-	                                  {"name", cpr::Buffer{content, content + length, "filename.txt"}}});
+//	auto r = cpr::Post(cpr::Url{"http://www.httpbin.org/post"},
+//	                   cpr::Multipart{{"key", "large value"},
+//	                                  {"name", cpr::Buffer{content, content + length, "filename.txt"}}});
 
 }
 
