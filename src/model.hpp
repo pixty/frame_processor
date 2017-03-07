@@ -34,7 +34,7 @@ namespace fproc {
 	 * for millis since 01.01.1970
 	 */
 	typedef long Timestamp;
-	
+
 	constexpr static Timestamp NoneTimestamp = -1;
 
 	/*
@@ -61,16 +61,16 @@ namespace fproc {
 	 *
 	 * Every frame has its own FrameId which uniquely identifies the frame in the video stream. Timestamp
 	 * indicates the time when the Frame was taken.
-	 */	
+	 */
 	class Frame {
 	public:
-  		/*
+		/*
 		 * Different represenations of a frame
 		 */
 		typedef cv::Mat CvBgrMat;
 		typedef dlib::cv_image<dlib::bgr_pixel> DlibBgrImg;
-	private:	  
-		typedef std::unique_ptr<DlibBgrImg> pcv_image;		
+	private:
+		typedef std::unique_ptr<DlibBgrImg> pcv_image;
 	public:
 
 		Frame(FrameId id, Timestamp ts): _id(id), _ts(ts) {}
@@ -80,7 +80,7 @@ namespace fproc {
 		 * reason why we can have it is uniqueness, cause in theory 2 and more frames can have the same
 		 * timestamp, but we need to distinguish them somehow..
 		 */
-		const FrameId getId() const { return _id; }
+		const FrameId getId() const { return _id;}
 
 		/*
 		 * The frame timestamp, contains timestamp when the frame was taken.
@@ -95,7 +95,6 @@ namespace fproc {
 		CvBgrMat _mat;
 		pcv_image _cv_img;
 	};
-	
 	typedef std::shared_ptr<Frame> PFrame;
 
 	/*
@@ -103,15 +102,14 @@ namespace fproc {
 	 * in a frame. Always has a non-NULL frame because it connects to it.
 	 */
 	struct FrameRegion {
-
-		FrameRegion(PFrame pFrame, Rectangle rec): _frame(pFrame), _rec(rec) {}
-
+		FrameRegion(PFrame pFrame, Rectangle rec) : _frame(pFrame), _rec(rec) {}
 		const PFrame getFrame() const { return _frame; }
 		const Rectangle& getRectangle() const { return _rec; }
 	private:
 		const PFrame _frame;
 		const Rectangle _rec;
 	};
+	typedef std::shared_ptr<FrameRegion> PFrameRegion;
 	typedef std::list<FrameRegion> FRList;
 
 	/*
@@ -121,7 +119,7 @@ namespace fproc {
 		virtual ~ObjectDetector() {}
 		virtual FRList& detectRegions(PFrame pFrame) = 0;
 	};
-		
+
 	/*
 	 * VideoStream is an interface which defines basic methods for a video stream
 	 * providers.
@@ -132,17 +130,16 @@ namespace fproc {
 		 * over (depends on source and implementation)
 		 */
 		virtual PFrame captureFrame() = 0;
-		virtual ~VideoStream() { };
+		virtual ~VideoStream() {};
 
 		Size getSize();
 		double getFps() { return _cap->get(CV_CAP_PROP_FPS); };
-		int getFourcc() { return static_cast<int>(_cap->get(CV_CAP_PROP_FOURCC));};
+		int getFourcc() { return static_cast<int>(_cap->get(CV_CAP_PROP_FOURCC)); };
 	protected:
-		VideoStream(std::unique_ptr<cv::VideoCapture> cap): _cap(std::move(cap)) {}
-
+		VideoStream(std::unique_ptr<cv::VideoCapture> cap): _cap(std::move(cap)) { }
 		std::unique_ptr<cv::VideoCapture> _cap;
 	};
-	typedef std::unique_ptr<VideoStream> PVideoStream; 
+	typedef std::unique_ptr<VideoStream> PVideoStream;
 
 	/*
 	 * A Face description. An immutable object which is built for describing a scene. It keeps a list
@@ -154,16 +151,14 @@ namespace fproc {
 	 * the images are for the same face.
 	 */
 	struct Face {
-		Face(const FaceId id, const Timestamp firstTimeCatched):
-		      _id(id),
-		      _firstTimeCatched(firstTimeCatched),
-		      _lostTime(NoneTimestamp) {}
-		
-		FRList& getImages(){return _regions;}
-		const FaceId getId() const {return _id;}
-		const Timestamp firstTimeCatched() const {return _firstTimeCatched;}
-		const Timestamp lostTime() const {return _lostTime;}
-		void setLostTime(const Timestamp lostTime){_lostTime = lostTime;}
+		Face(const FaceId id, const Timestamp firstTimeCatched):_id(id), _firstTimeCatched(firstTimeCatched), _lostTime(NoneTimestamp) {}
+
+		void addImage(FrameRegion frameRegion) { _regions.push_back(frameRegion); }
+		const FRList& getImages() const { return _regions; }
+		const FaceId getId() const { return _id; }
+		const Timestamp firstTimeCatched() const { return _firstTimeCatched;}
+		const Timestamp lostTime() const { return _lostTime; }
+		void setLostTime(const Timestamp lostTime) { _lostTime = lostTime; }
 		/* Other methods and members are not defined yet */
 	private:
 		const FaceId _id;
@@ -171,22 +166,22 @@ namespace fproc {
 		Timestamp _lostTime;
 		FRList _regions;
 	};
+	typedef std::shared_ptr<Face> PFace;
+	typedef std::list<PFace> PFList;
 
-	 typedef std::shared_ptr<Face> PFace;
-	 typedef std::list<PFace> PFList;
 	/*
 	 * Scene is a cognitive description (or semantic) what is going on in the VideoStream at a moment.
 	 * The scene object is built by SceneDetector and it is a result of some frame processing and
 	 * conclusions made by the SceneDetector implementation logic.
 	 */
 	struct Scene {
-		Scene():_since(NoneTimestamp) {}
+		Scene(): _since(NoneTimestamp) {}
 		Scene(Timestamp since): _since(since) {}
-		Scene(Timestamp since, PFList& faces) :_since(since), _faces(faces) {}
-		
+		Scene(Timestamp since, PFList& faces):_since(since), _faces(faces) {}
+
 		// Returns list of faces, who are on the scene right now
-		const PFList& getFaces() const {return _faces; }
-		PFList& getFaces() {return _faces; }
+		const PFList& getFaces() const { return _faces; }
+		PFList& getFaces() { return _faces; }
 
 		// Returns timestamp when the scene forms. Actually it is a moment when the
 		// SceneDetector "built" the faces list first time.
@@ -197,7 +192,8 @@ namespace fproc {
 		Timestamp _since;
 		PFList _faces;
 	};
-	
+	typedef std::shared_ptr<Scene> PScene;
+
 	/*
 	 * An interface which defines notifications that SceneDetector implementation can call
 	 * during video stream processing.
@@ -219,19 +215,18 @@ namespace fproc {
 	 * another thread.
 	 */
 	struct SceneDetector {
-		SceneDetector(PVideoStream vstream, 
-			      PSceneDetectorListener listener);
+		SceneDetector(PVideoStream vstream, PSceneDetectorListener listener);
 		// Returns the scene state
 		const Scene& getScene() const { return _scene; }
 		void process();
 		void stop();
 
 		virtual ~SceneDetector() {}
-
 	protected:
 
 		virtual void doProcess(PFrame frame)=0;
-		virtual void onStop() {}
+		virtual void onStop() {
+		}
 
 		std::unique_ptr<VideoStream> _vstream;
 		std::unique_ptr<SceneDetectorListener> _listener;
@@ -240,6 +235,8 @@ namespace fproc {
 		boost::mutex _lock;
 	};
 	typedef std::unique_ptr<SceneDetector> PSceneDetector;
-};// namespace
+}
+;
+// namespace
 
 #endif /* SRC_MODEL_HPP_ */

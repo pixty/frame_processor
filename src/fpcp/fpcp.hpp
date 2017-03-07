@@ -13,7 +13,8 @@
 
 namespace fpcp {
 
-typedef std::string id;
+typedef std::string string;
+typedef string id;
 typedef int error;
 
 struct FPCPReq {
@@ -27,6 +28,8 @@ struct FPCPResp {
 	id reqId;
 	error error;
 	fproc::Scene* scene;
+	fproc::FrameRegion* image;
+	fproc::Face* person;
 };
 
 struct SPRequestListener {
@@ -35,18 +38,10 @@ struct SPRequestListener {
 };
 typedef std::shared_ptr<SPRequestListener> PSPRequestListener;
 
-class FprocEndHttp {
-public:
-	FprocEndHttp(SPRequestListener &listener):_listener(listener) {}
-	virtual ~FprocEndHttp() {}
-
-	void sendScene(const fproc::Scene &scene);
-
-private:
-	SPRequestListener &_listener;
-};
+string to_json(const fproc::Scene& scene);
+string to_json(const FPCPResp& resp);
+void from_json(string json, FPCPReq& req);
 
 }
-
 
 #endif /* SRC_FPCP_HPP_ */
