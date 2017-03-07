@@ -17,6 +17,8 @@ typedef std::string string;
 typedef string id;
 typedef int error;
 
+constexpr static char const* nullId = "";
+
 struct FPCPReq {
 	id reqId;
 	bool scene;
@@ -34,7 +36,10 @@ struct FPCPResp {
 
 struct SPRequestListener {
 	virtual ~SPRequestListener() {}
-	virtual void onFPCPReq(FPCPReq &req) = 0;
+
+	virtual void onSceneRequest() = 0;
+	virtual void onImageRequest(id reqId) = 0;
+	virtual void onPersonRequest(id personId) = 0;
 };
 typedef std::shared_ptr<SPRequestListener> PSPRequestListener;
 

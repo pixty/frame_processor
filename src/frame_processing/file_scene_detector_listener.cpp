@@ -15,7 +15,6 @@ FileSceneDetectorListener::~FileSceneDetectorListener() {
 }
 
 void FileSceneDetectorListener::onSceneChanged(const Scene& scene) {
-	LOG_INFO("scene json = " << fpcp::to_json(scene));
 	_out << _toJson(scene, false) << "\n";
 	_out.flush();
 }

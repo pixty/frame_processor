@@ -57,6 +57,8 @@ include_directories(${CPR_INCLUDE_DIRS})
 set(SRC_LIST
     config/app_config.cpp
     config/app_config.hpp
+    fpcp/fpcp_http.hpp
+    fpcp/fpcp_http.cpp
     fpcp/fpcp.hpp
     fpcp/fpcp.cpp
     frame_processing/algorithms.hpp

@@ -43,6 +43,11 @@ void read_json(string json, pt::ptree& root) {
 void from_json(string json, FPCPReq& req) {
 	pt::ptree root;
 	read_json(json, root);
+
+	req.reqId = root.get<id>("reqId", nullId);
+	req.scene = root.get<bool>("scene", false);
+	req.imgId = root.get<id>("imgId", nullId);
+	req.personId = root.get<id>("personId", nullId);
 }
 
 string to_json(const fproc::Scene& scene) {
