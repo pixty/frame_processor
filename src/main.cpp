@@ -27,13 +27,13 @@
 namespace po = boost::program_options;
 
 int main(int argc, char** argv) {
-	debug_enabled(true);
-	fpcp::FprocEndHttp end("1234", "http://localhost:5555/fpcp/");
-	end.withGetTimeout(1);
-	end.start(NULL);
-	usleep(5*1000000);
-	end.stop();
-	return 1;
+//	debug_enabled(true);
+//	fpcp::FprocEndHttp end("1234", "http://localhost:5555/fpcp/");
+//	end.withGetTimeout(1);
+//	end.start(NULL);
+//	usleep(5*1000000);
+//	end.stop();
+//	return 1;
 
 	po::options_description desc("Allowed options");
 	desc.add_options()("help,h", "print usage message")("gencfg,g",
