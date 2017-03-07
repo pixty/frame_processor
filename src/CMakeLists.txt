@@ -50,11 +50,15 @@ else()
     message(FATAL_ERROR "Boost not found, please install it.")
 endif()
 
+include_directories(${CPR_INCLUDE_DIRS})
+
 # add all files
 # aux_source_directory(. SRC_LIST)
 set(SRC_LIST
     config/app_config.cpp
     config/app_config.hpp
+    fpcp/fpcp.hpp
+    fpcp/fpcp.cpp
     frame_processing/algorithms.hpp
     frame_processing/box_overlap.cpp
     frame_processing/box_overlap.hpp
@@ -103,7 +107,7 @@ set(SRC_LIST
 
 add_executable(frame_processor ${SRC_LIST})
 # set_target_properties(frame_processor PROPERTIES OUTPUT_NAME "fp")
-target_link_libraries(frame_processor ${dlib_LIBS} ${OpenCV_LIBS} ${Boost_LIBRARIES})
+target_link_libraries(frame_processor ${dlib_LIBS} ${OpenCV_LIBS} ${Boost_LIBRARIES} ${CPR_LIBRARIES})
 
 # copy resources function
 

@@ -152,7 +152,7 @@ void NaiveSceneDetector::addFacesList(const PFrame &frame, const FaceRegionsList
 	pFace = PFace(new Face(fr.id(), frame->getTimestamp()));
 	faces->push_back(pFace);
       }
-      pFace->getImages().push_back(FrameRegion(frame, cvRoi_to_rectangle(fr.roi())));
+      pFace->addImage(FrameRegion(frame, cvRoi_to_rectangle(fr.roi())));
     }  
 }
 
@@ -190,7 +190,7 @@ void NaiveSceneDetector::updateFacesList(const PFrame &frame, const FaceRegionsL
       if(pFace == nullptr){
 	LOG_ERROR("FrameId=" << frame->getId() << " . Can't find face " << fr.id());
       }else{
-	pFace->getImages().push_back(FrameRegion(frame, cvRoi_to_rectangle(fr.roi())));	
+	pFace->addImage(FrameRegion(frame, cvRoi_to_rectangle(fr.roi())));
       }
     }  
 }
