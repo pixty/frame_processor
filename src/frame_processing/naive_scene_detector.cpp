@@ -49,13 +49,14 @@ void NaiveSceneDetector::doProcess(PFrame frame){
 	parseDetectedFaces(detectedFaces, trackedAtTheMoment, 
 			   &detectedAndNotTracked, &detectedAndTracked);
 	
-	// 5. start new trackers if new faces are detected
+    // 5. start new trackers if some new faces are detected
 	FaceRegionsList detectedAndStarted;
 	FaceRegionsList detectedAndNotStarted;
 	_multiTracker.start(_grayedFrame, detectedAndNotTracked, &detectedAndStarted, &detectedAndNotStarted);
 	
 	// 6. correct trackers with the best knowledge about the faces
-	// Disclaimer: Unfortunately the opencv trackers can not be corrected so just update the stored regions
+    // Disclaimer: Unfortunately the opencv trackers can not be corrected
+    // so the trackers are restarted if the diffirence of the regions is huge
 	FaceIdsList lostFaces;
 	_multiTracker.update(_grayedFrame, detectedAndTracked, &lostFaces);
 	
@@ -91,7 +92,16 @@ void NaiveSceneDetector::detectFaces(CvRois *detectedFaces){
 	// detect foreground objects
 	CvRois candidates;
 	_foreground_det->detect(_grayedFrame, &candidates);	
-	// find faces
+    // detect faces
+    // Let's increase the rectangles by 10%
+    //  due to slightly different approaches
+    //  between the first one detector and the hog detector
+	for(int i=0; i < candidates.size(); i++){
+	  CvRoi roi = candidates[i];
+	  double k = (min(roi.width, roi.height) * 10.0) / 100.0;
+	  CvRoi incRoi = CvRoi(roi.x - k/2.0, roi.y - k/2.0, roi.width + k, roi.height + k);
+	  candidates[i] = incRoi;
+	}
 	_face_det->detect(DlibYImg(_grayedFrame), candidates, detectedFaces);
 }
 
