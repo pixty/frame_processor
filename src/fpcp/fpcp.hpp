@@ -15,7 +15,7 @@ namespace fpcp {
 
 typedef std::string string;
 typedef string id;
-typedef int error;
+typedef int my_error;
 
 struct FPCPReq {
 	id reqId;
@@ -26,7 +26,7 @@ struct FPCPReq {
 
 struct FPCPResp {
 	id reqId;
-	error error;
+	my_error error;
 	fproc::Scene* scene;
 	fproc::FrameRegion* image;
 	fproc::Face* person;

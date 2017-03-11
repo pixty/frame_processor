@@ -21,6 +21,9 @@ public:
 	virtual FRList& detectRegions(PFrame pFrame);
 
 private:
+	void demo(cv::Mat &out, const int frame, std::vector<dlib::rectangle> faces);
+	void effect(cv::Mat&out, const std::vector<dlib::rectangle> &faces, const int effect);
+
 	FRList _frame_regions;
 	dlib::frontal_face_detector _detector;
 	dlib::shape_predictor _pose_model;
