@@ -19,6 +19,10 @@ typedef int error;
 
 constexpr static char const* nullId = "";
 
+inline bool is_empty(id id) {
+	return id == nullId;
+}
+
 struct FPCPReq {
 	id reqId;
 	bool scene;
@@ -38,8 +42,8 @@ struct SPRequestListener {
 	virtual ~SPRequestListener() {}
 
 	virtual void onSceneRequest() = 0;
-	virtual void onImageRequest(id reqId) = 0;
-	virtual void onPersonRequest(id personId) = 0;
+	virtual void onImageRequest(id reqId, id imgId) = 0;
+	virtual void onPersonRequest(id reqId, id personId) = 0;
 };
 typedef std::shared_ptr<SPRequestListener> PSPRequestListener;
 

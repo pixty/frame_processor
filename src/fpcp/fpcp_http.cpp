@@ -64,6 +64,17 @@ void FprocEndHttp::getF() {
 			FPCPReq req;
 			from_json(r.text, req);
 
+			if (req.scene) {
+				_listener->onSceneRequest();
+			}
+
+			if (is_empty(req.imgId)) {
+				_listener->onImageRequest(req.reqId, req.imgId);
+			}
+
+			if (is_empty(req.personId)) {
+				_listener->onPersonRequest(req.reqId, req.personId);
+			}
 		}
 	}
 	LOG_INFO("FprocEndHttp: exiting getF");
@@ -71,7 +82,7 @@ void FprocEndHttp::getF() {
 
 
 void FprocEndHttp::postResponse(FPCPResp& resp) {
-
+	if
 //	auto r = cpr::Post(cpr::Url{"http://www.httpbin.org/post"},
 //	                   cpr::Multipart{{"key", "large value"},
 //	                                  {"name", cpr::Buffer{content, content + length, "filename.txt"}}});
