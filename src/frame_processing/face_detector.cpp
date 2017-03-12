@@ -169,11 +169,12 @@ void FaceDetector::demo(cv::Mat &out, const int frame, std::vector<dlib::rectang
     if(ajustedFN % 10 == 1){
         LOG_INFO("Faces found " << faces.size() << " fn=" << ajustedFN);
     }
-    // start
+    // startse
     if(ajustedFN < 2*FPS){
         // blink rects
         effect(out, faces, 3);
     } else if(ajustedFN < 4*FPS){
+	resetTriangle();
         // solid + points
         effect(out, faces, 1);
     } else if(ajustedFN < 6*FPS){
@@ -237,8 +238,9 @@ void FaceDetector::effect(cv::Mat&out, const std::vector<dlib::rectangle> &faces
 		    rounded_rectangle(out, outerR, cv::Scalar(58, 16*phase, 252));
 		    break;
 	    case 4:
+		    phase = triangle(FPS/2);
 		    rounded_rectangle(out, outerR);
-                    put_text(out, "...", x, y);
+                    put_text(out, std::string(phase, '.'), x, y);
 		    break;
             default:
                     //do nothing
