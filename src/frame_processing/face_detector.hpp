@@ -22,6 +22,7 @@ public:
 
 private:
 	void demo(cv::Mat &out, const int frame, std::vector<dlib::rectangle> faces);
+	void demo1(cv::Mat &out, const int frame, std::vector<dlib::rectangle> faces);
 	void effect(cv::Mat&out, const std::vector<dlib::rectangle> &faces, const int effect);
 
 	FRList _frame_regions;
