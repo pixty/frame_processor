@@ -25,12 +25,18 @@ using namespace dlib;
 
 namespace fproc {
 
+static double FPS = 30;
+
 static void render_face (cv::Mat &out, const dlib::full_object_detection& d);
-static void rounded_rectangle(cv::Mat& out, cv::Rect rect, const cv::Scalar lineColor, const int thickness, const int lineType , const int cornerRadius);
+static void rounded_rectangle(cv::Mat& out, cv::Rect rect, const cv::Scalar lineColor=cv::Scalar(58, 242, 252),
+			      const int thickness=1, const int lineType=16, const int cornerRadius=5);
 static void put_text(cv::Mat &out, const std::string str, const int x, const int y,
                  const int fontFace = cv::FONT_HERSHEY_COMPLEX_SMALL, 
-                 const double fontScale = 0.8, const cv::Scalar color = cv::Scalar(255,255,255),
+                 const double fontScale = 0.8, const cv::Scalar color = cv::Scalar(25,255,25),
                  const int thickness=1, const int lineType=8);
+static cv::Rect outerRect(const dlib::full_object_detection& d);
+static int triangle(const int ratio);
+static void resetTriangle();
 
 FaceDetector::FaceDetector(const std::string &faceLandmarksModelFilename) {
 	_detector = get_frontal_face_detector();
@@ -136,21 +142,24 @@ void FaceDetector::demo(cv::Mat &out, const int frame, std::vector<dlib::rectang
     static std::vector<dlib::rectangle> init_faces = faces;    
     static int startFrom = 0;
     static int skipFrames;    
-    static int expectedNumFaces;
-    const double fps = 30; // 1 second
     
     if(startFrom == 0 ){// from the beginning
-        // Dima + Slava
+        if(faces.size() != 2)return;
+	// Dima + Slava
         startFrom = frame;
-        skipFrames = 3.5*fps; // delta
+        skipFrames = 3.5*FPS; // delta
         expectedNumFaces = 2;
+	resetTriangle();
+	latest.clear();
         LOG_INFO("Looking for Dima, Slava fn=" << startFrom);
-    }else if(frame == 43*fps){// Stas appears
-        // Stas
+    }else if(frame == 43*FPS){// Stas appears
+	// Stas
         startFrom = frame;
-        skipFrames = 0*fps; // delta
+        skipFrames = 0*FPS; // delta
         expectedNumFaces = 1;
-        LOG_INFO("Looking for Stas fn=" << startFrom);
+	resetTriangle();
+	latest.clear();
+        LOG_INFO("Looking for Stas fn=" << startFrom << " faces=" << faces.size());
     }
 
     const int ajustedFN = frame - startFrom - skipFrames;
@@ -161,78 +170,112 @@ void FaceDetector::demo(cv::Mat &out, const int frame, std::vector<dlib::rectang
         LOG_INFO("Faces found " << faces.size() << " fn=" << ajustedFN);
     }
     // start
-    static int rectOn = 0;
-    static int rectOff = -1;
-    const int blinkRatio = fps / 4; // 1/6 second
-    if(ajustedFN < 2*fps){
+    if(ajustedFN < 2*FPS){
         // blink rects
-        if(rectOn >= 0 && rectOn < blinkRatio){
-            effect(out, faces, 0);
-            rectOn++;
-        }
-        if(rectOff >= 0 && rectOff < blinkRatio){
-            rectOff++;
-        }
-        if(rectOn == blinkRatio){
-            rectOn = -1;
-            rectOff = 0;
-        }
-        if(rectOff == blinkRatio){
-            rectOn = 0;
-            rectOff = -1;
-        }
-    } else if(ajustedFN < 4*fps){
-        rectOn = 0;
-        rectOff = -1;
+        effect(out, faces, 3);
+    } else if(ajustedFN < 4*FPS){
         // draw rects
         effect(out, faces, 0);
-    } else if(ajustedFN < 6*fps){
+    } else if(ajustedFN < 6*FPS){
         // draw landmarks
         effect(out, faces, 1);
-    } else if(ajustedFN < 12*fps){
+    } else if(ajustedFN < 12*FPS){
         // put text
         effect(out, faces, 2);
     }
 }
 
 void FaceDetector::effect(cv::Mat&out, const std::vector<dlib::rectangle> &faces, const int effect){
-    std::string d_s[] = {"Slava", "Dima"};
-    std::string stas[] = {"Stas", "Unknown"};//sorry
-    std::string persons[2] = faces.size() == 2 ? d_s : stas;
-
+    std::string persons[] = {"Slava", "Dima", "Stas"};
     static std::string suffix(" a Pixty founder");
+    if(expectedNumFaces == faces.size()){
+      latest = faces;
+    }
 	for (unsigned long i = 0; i < faces.size(); ++i)
 	{
         dlib:Rectangle f = faces[i];
-		cv::Rect cv_f(f.left(), f.top(), f.width(), f.height());
+	cv::Rect cv_f(f.left(), f.top(), f.width(), f.height());
         cv_image<bgr_pixel> cout(out);
         
-        std::string txt = persons[i] + suffix;
+        std::string txt = persons[i] + suffix;        
+        full_object_detection shape = _pose_model(cout, f);
+        cv::Rect outerR = outerRect(shape);
         // i {0, 1} -> Person1___Person2
         int x;
         if (faces.size() == 2){
-            x = out.size().width/2.0 - txt.length() * 16.0 * (1 - i) + (i * 32.0);
+	  if(outerR.x < out.size().width / 2){
+            x = outerR.x;
+	    txt = persons[0] + suffix;
+	  }else{
+	    x = outerR.x;
+	    txt = persons[1] + suffix;
+	  }
         }else{
-            x = out.size().width/2.0 - txt.length() * 8.0 ;            
+            x = outerR.x - 32;
+	    txt = persons[2] + suffix;
         }
-        int y = y = out.size().height - 32;            
+	cv::Scalar color = (58, 242, 252);
+        int y = outerR.y - 16;
+	int phase = 0;
+	
         switch(effect){
             case 0:
-                    rounded_rectangle(out, cv_f, cv::Scalar(58, 242, 252), 1, 16, 5);
+                    rounded_rectangle(out, outerR);
                     break;
             case 1:
-		            // Landmark detection on full sized image
-		            // Custom Face Render
-		            render_face(out, _pose_model(cout, f));
+		    // Landmark detection on full sized image
+		    // Custom Face Render
+		    render_face(out, shape);
                     break;
-		    case 2:                    
+	    case 2:
+		    rounded_rectangle(out, outerR);
                     put_text(out, txt, x, y);
                     break;
+	    case 3:
+		    phase = triangle(FPS/2);
+		    rounded_rectangle(out, outerR, cv::Scalar(58, 16*phase, 252));
+		    
             default:
                     //do nothing
                     break;
         }
 	}
+}
+
+static cv::Rect outerRect(const dlib::full_object_detection& d){
+    int l = 65536;
+    int r = 0;
+    int t = 65536;
+    int b = 0;
+    for(int i=0; i< d.num_parts(); i++){
+        int x = d.part(i).x();
+        int y = d.part(i).y();
+        if(x < l) l = x;
+        if(x > r) r = x;
+        if(y < t) t = y;
+        if(y > b) b = y;
+    }
+    return cv::Rect(l,t, r - l, b - t);
+}
+
+static int triangle(const int ratio){
+  static int state = 0;
+  static bool v = true;
+  if(ratio < 1){
+    // reset
+    state = 0;
+    v = true;
+  }else if (state < ratio){
+    state++;
+  }else{
+    state = 1;
+    v = !v;
+  }
+  return v ? state : ratio - state;
+}
+
+static void resetTriangle(){
+  triangle(-1);
 }
 
 }

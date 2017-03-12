@@ -21,6 +21,8 @@ public:
 	virtual FRList& detectRegions(PFrame pFrame);
 
 private:
+        int expectedNumFaces;
+	std::vector<dlib::rectangle> latest;
 	void demo(cv::Mat &out, const int frame, std::vector<dlib::rectangle> faces);
 	void effect(cv::Mat&out, const std::vector<dlib::rectangle> &faces, const int effect);
 
