@@ -32,7 +32,7 @@ static void rounded_rectangle(cv::Mat& out, cv::Rect rect, const cv::Scalar line
 			      const int thickness=1, const int lineType=16, const int cornerRadius=5);
 static void put_text(cv::Mat &out, const std::string str, const int x, const int y,
                  const int fontFace = cv::FONT_HERSHEY_COMPLEX_SMALL, 
-                 const double fontScale = 0.8, const cv::Scalar color = cv::Scalar(25,255,25),
+                 const double fontScale = 0.8, const cv::Scalar color = cv::Scalar(25,25,255),
                  const int thickness=1, const int lineType=8);
 static cv::Rect outerRect(const dlib::full_object_detection& d);
 static int triangle(const int ratio);
@@ -175,7 +175,7 @@ void FaceDetector::demo(cv::Mat &out, const int frame, std::vector<dlib::rectang
         effect(out, faces, 3);
     } else if(ajustedFN < 4*FPS){
         // solid + points
-        effect(out, faces, 0);
+        effect(out, faces, 1);
     } else if(ajustedFN < 6*FPS){
         // solid + ...
         effect(out, faces, 4);
