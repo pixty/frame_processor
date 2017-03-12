@@ -174,13 +174,13 @@ void FaceDetector::demo(cv::Mat &out, const int frame, std::vector<dlib::rectang
         // blink rects
         effect(out, faces, 3);
     } else if(ajustedFN < 4*FPS){
-        // draw rects
+        // solid + points
         effect(out, faces, 0);
     } else if(ajustedFN < 6*FPS){
-        // draw landmarks
-        effect(out, faces, 1);
+        // solid + ...
+        effect(out, faces, 4);
     } else if(ajustedFN < 12*FPS){
-        // put text
+        // solid + name
         effect(out, faces, 2);
     }
 }
@@ -223,6 +223,7 @@ void FaceDetector::effect(cv::Mat&out, const std::vector<dlib::rectangle> &faces
                     rounded_rectangle(out, outerR);
                     break;
             case 1:
+		    rounded_rectangle(out, outerR);
 		    // Landmark detection on full sized image
 		    // Custom Face Render
 		    render_face(out, shape);
@@ -234,7 +235,11 @@ void FaceDetector::effect(cv::Mat&out, const std::vector<dlib::rectangle> &faces
 	    case 3:
 		    phase = triangle(FPS/2);
 		    rounded_rectangle(out, outerR, cv::Scalar(58, 16*phase, 252));
-		    
+		    break;
+	    case 4:
+		    rounded_rectangle(out, outerR);
+                    put_text(out, "...", x, y);
+		    break;
             default:
                     //do nothing
                     break;
