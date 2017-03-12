@@ -32,7 +32,7 @@ static void rounded_rectangle(cv::Mat& out, cv::Rect rect, const cv::Scalar line
 			      const int thickness=1, const int lineType=16, const int cornerRadius=5);
 static void put_text(cv::Mat &out, const std::string str, const int x, const int y,
                  const int fontFace = cv::FONT_HERSHEY_COMPLEX_SMALL, 
-                 const double fontScale = 0.8, const cv::Scalar color = cv::Scalar(25,25,255),
+                 const double fontScale = 0.8, const cv::Scalar color = cv::Scalar(125,125,255),
                  const int thickness=1, const int lineType=8);
 static cv::Rect outerRect(const dlib::full_object_detection& d);
 static int triangle(const int ratio);
@@ -238,9 +238,9 @@ void FaceDetector::effect(cv::Mat&out, const std::vector<dlib::rectangle> &faces
 		    rounded_rectangle(out, outerR, cv::Scalar(58, 16*phase, 252));
 		    break;
 	    case 4:
-		    phase = triangle(FPS/2);
+		    phase = triangle(FPS/2)/3;
 		    rounded_rectangle(out, outerR);
-                    put_text(out, std::string(phase, '.'), x, y);
+                    put_text(out, std::string(phase*3, '.'), x, y, cv::FONT_HERSHEY_COMPLEX_SMALL, 2.0);
 		    break;
             default:
                     //do nothing
