@@ -208,6 +208,8 @@ void FaceDetector::effect(cv::Mat&out,
 	//static std::string suffix(" a Pixty founder");
 	static std::string suffix("");
 	static int callCount = 0;
+	cv::Scalar txtColor = cv::Scalar(252, 239, 201);
+	cv::Scalar brdrColor = cv::Scalar(58, 242, 252);
 
 	callCount++;
 	if (expectedNumFaces == faces.size()) {
@@ -234,6 +236,9 @@ void FaceDetector::effect(cv::Mat&out,
 		} else {
 			x = outerR.x - 32;
 			txt = persons[2] + suffix;
+
+			txtColor = cv::Scalar(0, 206, 3);
+			brdrColor = cv::Scalar(0, 206, 3);
 		}
 		cv::Scalar color = (58, 242, 252);
 		//int y = outerR.y - 16;
@@ -253,9 +258,9 @@ void FaceDetector::effect(cv::Mat&out,
 			render_face(out, shape);
 			break;
 		case 2:
-			rounded_rectangle(out, outerR);
-			put_text(out, "Name: " + txt, x, y, cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2);
-			put_text(out, "Info: Pixty founder", x, y + 40, cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2);
+			rounded_rectangle(out, outerR, brdrColor);
+			put_text(out, txt, x, y, cv::FONT_HERSHEY_COMPLEX_SMALL, 1.3, txtColor);
+			put_text(out, "Pixty founder", x, y + 40, cv::FONT_HERSHEY_COMPLEX_SMALL, 1.0, txtColor);
 			break;
 		case 3:
 			// blinking
@@ -268,10 +273,10 @@ void FaceDetector::effect(cv::Mat&out,
 			//phase = triangle(3*FPS) / 5 + 1;
 			//phase = triangle(3*FPS) / (FPS/3) + 1;
 			phase = (int)(callCount / (FPS/3)) % 3 + 1;
-			rounded_rectangle(out, outerR);
+			rounded_rectangle(out, outerR, brdrColor);
 			//put_text(out, "Looking " + std::string(phase, '.'), x, y);
 			put_text(out, "Looking " + std::string(phase, '.'), x, y,
-					cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2);
+					cv::FONT_HERSHEY_COMPLEX_SMALL, 1.0, txtColor);
 			break;
 		default:
 			//do nothing
