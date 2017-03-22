@@ -24,6 +24,7 @@ inline bool is_empty(id id) {
 }
 
 struct FPCPReq {
+	FPCPReq(): reqId(""), scene(false), imgId(""), personId("") {}
 	id reqId;
 	bool scene;
 	id imgId;
@@ -31,6 +32,7 @@ struct FPCPReq {
 };
 
 struct FPCPResp {
+	FPCPResp(): reqId(""), error(0), scene(NULL), image(NULL), person(NULL) {}
 	id reqId;
 	error error;
 	fproc::Scene* scene;

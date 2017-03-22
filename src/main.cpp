@@ -31,6 +31,10 @@ int main(int argc, char** argv) {
 //	fpcp::FprocEndHttp end("1234", "http://localhost:5555/fpcp/");
 //	end.withGetTimeout(1);
 //	end.start(NULL);
+//
+//	fproc::Face face("1234", fproc::ts_now());
+//	end.sendPerson("req1234", face);
+//
 //	usleep(5*1000000);
 //	end.stop();
 //	return 1;

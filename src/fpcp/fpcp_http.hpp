@@ -30,9 +30,10 @@ public:
 	void start(SPRequestListener* listener);
 	void stop();
 
-	void sendScene(const fproc::Scene& scene);
-	void sendImage(const fproc::FrameRegion& frameReg);
-	void sendPerson(const fproc::Face& face);
+	void sendScene(id reqId, const fproc::Scene& scene);
+	void sendImage(id reqId, const fproc::FrameRegion& frameReg);
+	void sendPerson(id reqId, const fproc::Face& face);
+	void sendError(id reqId, error error);
 
 private:
 	void getF();
