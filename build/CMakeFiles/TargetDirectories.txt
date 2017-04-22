@@ -1,0 +1,5 @@
+/Users/dmitry/universe/pixty/frame_processor/build/CMakeFiles/rebuild_cache.dir
+/Users/dmitry/universe/pixty/frame_processor/build/CMakeFiles/edit_cache.dir
+/Users/dmitry/universe/pixty/frame_processor/build/src/CMakeFiles/rebuild_cache.dir
+/Users/dmitry/universe/pixty/frame_processor/build/src/CMakeFiles/edit_cache.dir
+/Users/dmitry/universe/pixty/frame_processor/build/src/CMakeFiles/frame_processor.dir
