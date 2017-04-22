@@ -15,6 +15,7 @@ namespace fproc {
 	 */
 	typedef cv::Rect CvRoi;
 	typedef std::vector<CvRoi> CvRois;
+
 	/*
 	 * The ForegroundObjectsDetector detects foreground objects in a frame and returns their regions in the frame
 	 */

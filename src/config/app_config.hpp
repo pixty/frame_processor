@@ -11,6 +11,7 @@
 #include "../video_streaming/file_video_stream.hpp"
 
 #include "../frame_processing/file_scene_detector_listener.hpp"
+#include "../frame_processing/fpcp_scene_detector_listener.hpp"
 #include "../frame_processing/naive_scene_detector.hpp"
 #include "../frame_processing/show_stream_detector.hpp"
 #include "../frame_processing/vfile_scene_detector.hpp"
@@ -39,7 +40,7 @@ namespace fproc {
   struct Cfgs {
     typedef boost::variant< CameraStreamCfg, FileVideoStreamCfg > VideoStreamCfg;
     typedef boost::variant< NaiveSceneDetectorCfg, ShowStreamDetectorCfg, VFileSceneDetectorCfg > SceneDetectorCfg;
-    typedef boost::variant< SceneNilListenerCfg, FileSceneDetectorListenerCfg > SceneDetectorListenerCfg;  
+    typedef boost::variant< SceneNilListenerCfg, FileSceneDetectorListenerCfg, FPCPSceneDetectorListenerCfg > SceneDetectorListenerCfg;
   };
 
   namespace pt = boost::property_tree;
@@ -91,6 +92,7 @@ namespace fproc {
   struct SceneDetectorListenerCfgToJson : public boost::static_visitor<pt::ptree>{
     pt::ptree operator()(const SceneNilListenerCfg & cfg) const;
     pt::ptree operator()(const FileSceneDetectorListenerCfg & cfg) const;
+    pt::ptree operator()(const FPCPSceneDetectorListenerCfg & cfg) const;
   };
 
   struct SceneDetectorListenerCfgJsonify{
@@ -103,6 +105,7 @@ namespace fproc {
   struct SceneDetectorListenerFactory : public boost::static_visitor<PSceneDetectorListener>{
     PSceneDetectorListener operator()(const SceneNilListenerCfg & cfg) const;
     PSceneDetectorListener operator()(const FileSceneDetectorListenerCfg & cfg) const;
+    PSceneDetectorListener operator()(const FPCPSceneDetectorListenerCfg & cfg) const;
   };
   
   class AppConfig

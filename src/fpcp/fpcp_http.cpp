@@ -98,17 +98,36 @@ void FprocEndHttp::getF() {
 	LOG_INFO("FprocEndHttp: exiting getF");
 }
 
+ void to_png_buf(cv::Mat &mat, std::vector<uchar>& buf) {
+	 std::vector<int> compression_params;
+	 compression_params.push_back(cv::IMWRITE_PNG_COMPRESSION);
+	 compression_params.push_back(9);
+
+	 try {
+		 cv::imencode(".png", mat, buf, compression_params);
+	 } catch (cv::Exception& ex) {
+		 LOG_ERROR("Exception converting image to PNG format: %s\n" << ex.what());
+	 }
+ }
+
 void FprocEndHttp::postResponse(FPCPResp& resp) {
 	LOG_DEBUG("FprocEndHttp: POST response");
 	string url = _url + _id;
 	cpr::Response r;
 	if (resp.image) {
 		cv::Mat &mat = resp.image->getFrame()->get_mat();
-		uchar *ptr = mat.data;
-		long length = mat.total() * mat.elemSize();
+		std::vector<uchar> buf;
+		to_png_buf(mat, buf);
+		long length = buf.size();
+		uchar* ptr = &buf[0];
 		r = cpr::Post(cpr::Url{url},
-						   cpr::Multipart{{"resp", to_json(resp)},
-										  {"image", cpr::Buffer{ptr, ptr + length, "image"}}});
+								   cpr::Multipart{{"resp", to_json(resp)},
+												  {"image", cpr::Buffer{ptr, ptr + length, "image"}}});
+//		uchar *ptr = mat.data;
+//		long length = mat.total() * mat.elemSize();
+//		r = cpr::Post(cpr::Url{url},
+//						   cpr::Multipart{{"resp", to_json(resp)},
+//										  {"image", cpr::Buffer{ptr, ptr + length, "image"}}});
 
 	} else {
 		string json = to_json(resp);

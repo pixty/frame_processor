@@ -40,11 +40,10 @@ int main(int argc, char** argv) {
 //	return 1;
 
 	po::options_description desc("Allowed options");
-	desc.add_options()("help,h", "print usage message")("gencfg,g",
-			po::value<std::string>(),
-			"generate config samples, see \"arg*.json\" files")("cfg,c",
-			po::value<std::string>(), "use \"arg\" config file")("debug",
-			po::value<bool>()->default_value(false), "enable debug log level");
+	desc.add_options()("help,h", "print usage message")
+			("gencfg,g", po::value<std::string>(), "generate config samples, see \"arg*.json\" files")
+			("cfg,c", po::value<std::string>(), "use \"arg\" config file")
+			("debug", po::value<bool>()->default_value(false), "enable debug log level");
 
 	po::variables_map vm;
 	po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -74,8 +73,7 @@ int main(int argc, char** argv) {
 		LOG_INFO("Use " << cfgFilename << " configuration file");
 		appConfig.fromJson(cfgFilename);
 	} else {
-		LOG_INFO(
-				"There is no config file specified. The default configuration is used.");
+		LOG_INFO("There is no config file specified. The default configuration is used.");
 	}
 
 	LOG_INFO("Actual configuration:\n" << appConfig);

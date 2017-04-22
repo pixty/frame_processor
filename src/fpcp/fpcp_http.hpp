@@ -18,7 +18,6 @@ class FprocEndHttp {
 	typedef boost::lock_guard<boost::mutex> MxGuard;
 public:
 	FprocEndHttp(id fpId, std::string url):_id(fpId), _url(url) {
-		_long_poll_to_sec = 0;
 		_started = false;
 		_listener = NULL;
 		_get_timeout = 0;
@@ -35,15 +34,19 @@ public:
 	void sendPerson(id reqId, const fproc::Face& face);
 	void sendError(id reqId, error error);
 
+	// Synchronous call (HTTP POST) to server
+	void postResponse(FPCPResp& resp);
+
 private:
 	void getF();
-	void postResponse(FPCPResp& resp);
 
 	id _id;
 	std::string _url;
 	SPRequestListener* _listener;
-	int _long_poll_to_sec;
 	bool _started;
+
+	// Specifies how long the GET request can be hold by server (in seconds) when
+	// long polling happens
 	int _get_timeout;
 
 	PThread _thread;

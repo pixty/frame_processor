@@ -222,12 +222,14 @@ string to_json(const fproc::Scene& scene) {
 void to_json(const fproc::Scene& scene, pt::ptree &root) {
 	/*
 	 {
-		 "timestamp": 123412341234
+	 	 "imgId": "12341234324",
+		 "timestamp": 123412341234,
 		 "persons": [{Person1 JSON}, ...]
 	 }
 	 */
 	// Create a root
 	fproc::Timestamp ts = scene.since();
+	root.put("imgId", std::to_string(scene.frame()->getId()), my_id_translator<string>());
 	root.put<fproc::Timestamp>("timestamp", ts > 0 ? ts : -1);
 	pt::ptree persons;
 	to_json(scene.getFaces(), persons);

@@ -154,6 +154,7 @@ namespace fproc {
 		Face(const FaceId id, const Timestamp firstTimeCatched):_id(id), _firstTimeCatched(firstTimeCatched), _lostTime(NoneTimestamp) {}
 
 		void addImage(FrameRegion frameRegion) { _regions.push_back(frameRegion); }
+		FRList& regions() { return _regions; }
 		const FRList& getImages() const { return _regions; }
 		const FaceId getId() const { return _id; }
 		const Timestamp firstTimeCatched() const { return _firstTimeCatched;}
@@ -178,19 +179,28 @@ namespace fproc {
 		Scene(): _since(NoneTimestamp) {}
 		Scene(Timestamp since): _since(since) {}
 		Scene(Timestamp since, PFList& faces):_since(since), _faces(faces) {}
+		Scene(Timestamp since, PFList& faces, PFrame frame):_since(since), _faces(faces), _frame(frame) {}
 
 		// Returns list of faces, who are on the scene right now
-		const PFList& getFaces() const { return _faces; }
-		PFList& getFaces() { return _faces; }
+		inline PFList& getFaces() { return _faces; }
+		inline const PFList& getFaces() const { return _faces; }
 
 		// Returns timestamp when the scene forms. Actually it is a moment when the
 		// SceneDetector "built" the faces list first time.
 		inline Timestamp since() const { return _since; }
 		inline void since(Timestamp ts) { _since = ts; }
 
+		// Returns the scene frame
+		inline PFrame frame() { return _frame;}
+		inline const PFrame frame() const { return _frame;}
+		inline void frame(PFrame frame) { _frame = frame; }
+
 	private:
 		Timestamp _since;
 		PFList _faces;
+
+		// Optional. Contains frame for the scene
+		PFrame _frame;
 	};
 	typedef std::shared_ptr<Scene> PScene;
 
@@ -199,7 +209,10 @@ namespace fproc {
 	 * during video stream processing.
 	 */
 	struct SceneDetectorListener {
+		// Invoked when the scene is changed (first time captured)
 		virtual void onSceneChanged(const Scene& scene) {};
+		// Invoked when the scene is updated (not changed, but some parameters are changed)
+		virtual void onSceneUpdated(const Scene& scene) {};
 		virtual void onStopped() {};
 		virtual ~SceneDetectorListener() {}
 	};

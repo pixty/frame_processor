@@ -70,6 +70,8 @@ set(SRC_LIST
     frame_processing/face_detector.hpp
     frame_processing/file_scene_detector_listener.cpp
     frame_processing/file_scene_detector_listener.hpp
+    frame_processing/fpcp_scene_detector_listener.cpp
+    frame_processing/fpcp_scene_detector_listener.hpp
     frame_processing/frame_processor.cpp
     frame_processing/grayscaler.hpp
     frame_processing/haarcascade_frontalface_default_xml.cpp
