@@ -3,6 +3,7 @@
 #include "../video_streaming/file_video_stream.hpp"
 #include "../frame_processing/naive_scene_detector_debugger.hpp"
 #include "../frame_processing/show_stream_detector.hpp"
+#include "../logger.hpp"
 
 namespace fproc {
 
@@ -237,9 +238,9 @@ const Cfgs::SceneDetectorListenerCfg SceneDetectorListenerCfgJsonify::fromJson(
 	value = root.get_child_optional("FPCPSceneDetectorListenerCfg");
 	if (value) {
 		FPCPSceneDetectorListenerCfg cfg;
-		value.get().get<std::string>("fp_id", cfg.fp_id);
-		value.get().get<std::string>("url", cfg.url);
-		value.get().get<int>("get_timeout", cfg.get_timeout);
+		cfg.fp_id = value.get().get<std::string>("fp_id", cfg.fp_id);
+		cfg.url = value.get().get<std::string>("url", cfg.url);
+		cfg.get_timeout = value.get().get<int>("get_timeout", cfg.get_timeout);
 		return Cfgs::SceneDetectorListenerCfg(cfg);
 	}
 

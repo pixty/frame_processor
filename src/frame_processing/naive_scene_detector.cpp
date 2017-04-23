@@ -135,7 +135,10 @@ void NaiveSceneDetector::updateScene(const PFrame &frame,
 			PFList &faces = _scene.getFaces();
 			updateFacesList(frame, detectedAndTracked, &faces);
 		}
-		_scene.frame(frame);
+		cv::Size size = frame->get_mat().size();
+		Rectangle rect(size.width, size.height);
+		PFrameRegion fr(new FrameRegion(frame, rect));
+		_scene.frame(fr);
 		_listener->onSceneUpdated(_scene);
 	}
 }

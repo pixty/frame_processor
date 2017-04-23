@@ -30,13 +30,13 @@ namespace fproc {
 	 */
 	class WebcamVideoStream: public VideoStream {
 	public:
-		WebcamVideoStream(const CameraStreamCfg &cfg = CameraStreamCfg()): VideoStream(std::unique_ptr<cv::VideoCapture>(new cv::VideoCapture())) {
+		WebcamVideoStream(const CameraStreamCfg &cfg = CameraStreamCfg()): VideoStream(std::unique_ptr<cv::VideoCapture>(new cv::VideoCapture())), _fn(ts_now()) {
 			_cap->open(cfg.internalCameraId());
 		}
 
 		virtual PFrame captureFrame();
-
-		/* Other methods and members are not defined yet */
+	private:
+		long _fn;
 	};
 }
 

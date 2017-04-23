@@ -179,7 +179,8 @@ namespace fproc {
 		Scene(): _since(NoneTimestamp) {}
 		Scene(Timestamp since): _since(since) {}
 		Scene(Timestamp since, PFList& faces):_since(since), _faces(faces) {}
-		Scene(Timestamp since, PFList& faces, PFrame frame):_since(since), _faces(faces), _frame(frame) {}
+		Scene(Timestamp since, PFList& faces, PFrameRegion& frame):_since(since), _faces(faces), _frame(frame) {}
+		Scene(Scene& s): Scene(s._since, s._faces, s._frame) {}
 
 		// Returns list of faces, who are on the scene right now
 		inline PFList& getFaces() { return _faces; }
@@ -191,16 +192,16 @@ namespace fproc {
 		inline void since(Timestamp ts) { _since = ts; }
 
 		// Returns the scene frame
-		inline PFrame frame() { return _frame;}
-		inline const PFrame frame() const { return _frame;}
-		inline void frame(PFrame frame) { _frame = frame; }
+		inline PFrameRegion& frame() { return _frame;}
+		inline const PFrameRegion& frame() const { return _frame;}
+		inline void frame(PFrameRegion& frame) { _frame = frame; }
 
 	private:
 		Timestamp _since;
 		PFList _faces;
 
 		// Optional. Contains frame for the scene
-		PFrame _frame;
+		PFrameRegion _frame;
 	};
 	typedef std::shared_ptr<Scene> PScene;
 

@@ -120,6 +120,8 @@ void FprocEndHttp::postResponse(FPCPResp& resp) {
 		to_png_buf(mat, buf);
 		long length = buf.size();
 		uchar* ptr = &buf[0];
+		std::string resp_str = to_json(resp);
+		LOG_DEBUG("Sending POST " << resp_str);
 		r = cpr::Post(cpr::Url{url},
 								   cpr::Multipart{{"resp", to_json(resp)},
 												  {"image", cpr::Buffer{ptr, ptr + length, "image"}}});

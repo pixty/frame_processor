@@ -16,6 +16,7 @@ FPCPSceneDetectorListener::FPCPSceneDetectorListener(
 	LOG_INFO("FPCPSceneDetectorListener: constructing...");
 	_fpcp.reset(new fpcp::FprocEndHttp(cfg.fp_id, cfg.url));
 	_fpcp->withGetTimeout(cfg.get_timeout);
+	_scene->since(ts_now());
 
 	MxGuard guard(_lock);
 	_started = true;
@@ -36,14 +37,14 @@ void FPCPSceneDetectorListener::on_new_scene(const Scene& scene) {
 	if (!_started) {
 		return;
 	}
-//	_scene.reset(const_cast<fproc::Scene*>(&scene));
-//	_cond.notify_one();
+	_scene.reset(new Scene(const_cast<Scene&>(scene)));
+	_cond.notify_one();
 }
 
 void FPCPSceneDetectorListener::run() {
 	LOG_INFO("FPCPSceneDetectorListener: started thread.");
 	while (_started) {
-		fproc::Scene *s = nullptr;
+		PScene s;
 		{
 			MxGuard guard(_lock);
 			if (!_scene.get()) {
@@ -52,12 +53,15 @@ void FPCPSceneDetectorListener::run() {
 			if (!_scene.get() || !_started) {
 				continue;
 			}
-			s = _scene.get();
+			s = _scene;
 			_scene.reset();
 		}
-		LOG_DEBUG("Sending scene=" << s);
+		LOG_DEBUG("Sending sId=" << s->frame()->getFrame()->getId() << ", ts=" << s->since());
 		fpcp::FPCPResp resp;
-		resp.scene = s;
+		resp.scene = s.get();
+		if (s.get() && s.get()->frame().get()) {
+			resp.image = s.get()->frame().get();
+		}
 		try {
 			_fpcp->postResponse(resp);
 		} catch (...) {

@@ -229,7 +229,9 @@ void to_json(const fproc::Scene& scene, pt::ptree &root) {
 	 */
 	// Create a root
 	fproc::Timestamp ts = scene.since();
-	root.put("imgId", std::to_string(scene.frame()->getId()), my_id_translator<string>());
+	if (scene.frame().get()) {
+		root.put("imgId", std::to_string(scene.frame()->getFrame()->getId()), my_id_translator<string>());
+	}
 	root.put<fproc::Timestamp>("timestamp", ts > 0 ? ts : -1);
 	pt::ptree persons;
 	to_json(scene.getFaces(), persons);
@@ -279,6 +281,7 @@ void to_json(const fproc::FrameRegion &fregion, pt::ptree &root) {
 	pt::ptree region_node;
 	to_json(fregion.getRectangle(), region_node);
 	root.add_child("region", region_node);
+	root.put<fproc::Timestamp>("timestamp", fregion.getFrame()->getTimestamp());
 }
 
 void to_json(const fproc::Rectangle &r, pt::ptree &root) {

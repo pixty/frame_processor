@@ -6,11 +6,12 @@
  */
 
 #include "webcam_video_stream.hpp"
+#include "../logger.hpp"
 
 namespace fproc {
 
 	PFrame WebcamVideoStream::captureFrame() {
-		Frame* frame = new Frame(1, ts_now());
+		Frame* frame = new Frame(_fn++, ts_now());
 		*_cap >> frame->get_mat();
 		return PFrame(frame);
 	}
