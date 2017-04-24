@@ -22,8 +22,8 @@ void FprocEndHttp::start(SPRequestListener* listener) {
 	}
 
 	LOG_INFO("FprocEndHttp: starting...");
-	_thread.reset(new boost::thread(&FprocEndHttp::getF, this));
 	_started = true;
+	_thread.reset(new boost::thread(&FprocEndHttp::getF, this));
 }
 
 void FprocEndHttp::stop() {

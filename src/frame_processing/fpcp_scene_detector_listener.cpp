@@ -16,12 +16,16 @@ FPCPSceneDetectorListener::FPCPSceneDetectorListener(
 	LOG_INFO("FPCPSceneDetectorListener: constructing...");
 	_fpcp.reset(new fpcp::FprocEndHttp(cfg.fp_id, cfg.url));
 	_fpcp->withGetTimeout(cfg.get_timeout);
-	_scene->since(ts_now());
+	LOG_INFO("FPCPSceneDetectorListener: created");
+}
 
+void FPCPSceneDetectorListener::onStarted() {
+	LOG_INFO("FPCPSceneDetectorListener: starting");
 	MxGuard guard(_lock);
 	_started = true;
 	_thread.reset(new boost::thread(&FPCPSceneDetectorListener::run, this));
 	_fpcp->start(this);
+	LOG_INFO("FPCPSceneDetectorListener: started");
 }
 
 void FPCPSceneDetectorListener::onSceneChanged(const Scene& scene) {
@@ -37,7 +41,8 @@ void FPCPSceneDetectorListener::on_new_scene(const Scene& scene) {
 	if (!_started) {
 		return;
 	}
-	_scene.reset(new Scene(const_cast<Scene&>(scene)));
+	Scene *sc = new Scene(const_cast<Scene&>(scene));
+	_scene.reset(sc);
 	_cond.notify_one();
 }
 
@@ -55,6 +60,9 @@ void FPCPSceneDetectorListener::run() {
 			}
 			s = _scene;
 			_scene.reset();
+		}
+		if (!s->frame().get()) {
+			continue;
 		}
 		LOG_DEBUG("Sending sId=" << s->frame()->getFrame()->getId() << ", ts=" << s->since());
 		fpcp::FPCPResp resp;

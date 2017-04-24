@@ -210,6 +210,7 @@ namespace fproc {
 	 * during video stream processing.
 	 */
 	struct SceneDetectorListener {
+		virtual void onStarted() {};
 		// Invoked when the scene is changed (first time captured)
 		virtual void onSceneChanged(const Scene& scene) {};
 		// Invoked when the scene is updated (not changed, but some parameters are changed)

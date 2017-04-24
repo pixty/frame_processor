@@ -43,7 +43,7 @@ private:
 	id _id;
 	std::string _url;
 	SPRequestListener* _listener;
-	bool _started;
+	volatile bool _started;
 
 	// Specifies how long the GET request can be hold by server (in seconds) when
 	// long polling happens

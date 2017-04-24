@@ -29,6 +29,7 @@ namespace fproc {
 		~FPCPSceneDetectorListener() {}
 
 		// SceneDetectorListener
+		void onStarted();
 		void onSceneChanged(const Scene& scene);
 		void onSceneUpdated(const Scene& scene);
 		void onStopped();

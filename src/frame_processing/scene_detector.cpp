@@ -18,6 +18,7 @@ void SceneDetector::process() {
 	}
 
 	LOG_INFO("SceneDetector: Entering processing.");
+	_listener->onStarted();
 	try {
 		while (_started) {
 			PFrame frame = _vstream->captureFrame();
