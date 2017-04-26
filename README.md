@@ -30,6 +30,7 @@ Use cmake to build it. You must create (due to cpr dependency) build directory i
 ```
 cd frame_processor
 mkdir build; cd build
-cmake ../src ; cmake --build .
+cmake ..
+make
 ```
 The executable is ./build/bin/frameprocessor
