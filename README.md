@@ -6,6 +6,8 @@ Clone opencv and opencv contrib:
 ```
 git clone git@github.com:opencv/opencv.git
 git clone https://github.com/opencv/opencv_contrib
+for each opencv & opencv_contrib
+git tag -l 3.2.0
 ```
 
 Use version 3.2.0 (it should be tagged). Build the opencv using opencv contrib (look at README instuctions in both repos)
