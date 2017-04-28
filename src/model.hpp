@@ -76,9 +76,6 @@ namespace fproc {
 		Frame(FrameId id, Timestamp ts): _id(id), _ts(ts) {}
 		/*
 		 * Unique frame identifier. Gradually increased, so can be used for comparison.
-		 * QUESTION - I am not sure we need it, cause Timestamp can be used instead. The only
-		 * reason why we can have it is uniqueness, cause in theory 2 and more frames can have the same
-		 * timestamp, but we need to distinguish them somehow..
 		 */
 		const FrameId getId() const { return _id;}
 

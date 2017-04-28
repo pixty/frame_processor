@@ -130,11 +130,12 @@ void NaiveSceneDetector::updateScene(const PFrame &frame,
 		_listener->onSceneChanged(_scene);
 		removeFacesList(lostFaces, &faces);
 	} else {
-		if (detectedAndTracked.size() > 0) {
+		//if (detectedAndTracked.size() > 0) {
 			// update faces frames, if needed
 			PFList &faces = _scene.getFaces();
-			updateFacesList(frame, detectedAndTracked, &faces);
-		}
+			//updateFacesList(frame, detectedAndTracked, &faces);
+		//}
+		updateFacesList(frame, tracked, &faces);
 		cv::Size size = frame->get_mat().size();
 		Rectangle rect(size.width, size.height);
 		PFrameRegion fr(new FrameRegion(frame, rect));
