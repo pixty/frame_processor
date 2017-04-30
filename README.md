@@ -3,7 +3,6 @@ After cloning the repo run:
 ```
 git submodule update --init --recursive
 ```
-
 ## Libs Installation
 ### OpenCV 3.2+
 Clone opencv and opencv contrib:
