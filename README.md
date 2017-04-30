@@ -31,5 +31,8 @@ cd frame_processor
 mkdir build; cd build
 cmake ..
 make
+
+option for use system curl:
+cmake .. -DUSE_SYSTEM_CURL=YES
 ```
 The executable is ./build/bin/frameprocessor
