@@ -149,20 +149,19 @@ namespace fproc {
 	 */
 	struct Face {
 		Face(const FaceId id, const Timestamp firstTimeCatched):_id(id), _firstTimeCatched(firstTimeCatched), _lostTime(NoneTimestamp) {}
+		Face(const FaceId id, FRList regions, const Timestamp firstTimeCatched):_id(id), _firstTimeCatched(firstTimeCatched), _lostTime(NoneTimestamp), _regions(regions) {}
+		Face(const FaceId id, FRList regions, const Timestamp firstTimeCatched, const Timestamp lostTime):_id(id), _firstTimeCatched(firstTimeCatched), _lostTime(lostTime), _regions(regions) {}
 
-		void addImage(FrameRegion frameRegion) { _regions.push_back(frameRegion); }
-		FRList& regions() { return _regions; }
 		const FRList& getImages() const { return _regions; }
 		const FaceId getId() const { return _id; }
 		const Timestamp firstTimeCatched() const { return _firstTimeCatched;}
 		const Timestamp lostTime() const { return _lostTime; }
-		void setLostTime(const Timestamp lostTime) { _lostTime = lostTime; }
 		/* Other methods and members are not defined yet */
 	private:
 		const FaceId _id;
 		const Timestamp _firstTimeCatched;
-		Timestamp _lostTime;
-		FRList _regions;
+		const Timestamp _lostTime;
+		const FRList _regions;
 	};
 	typedef std::shared_ptr<Face> PFace;
 	typedef std::list<PFace> PFList;
@@ -181,6 +180,7 @@ namespace fproc {
 
 		// Returns list of faces, who are on the scene right now
 		inline PFList& getFaces() { return _faces; }
+		inline void setFaces(PFList& faces) { _faces = faces; };
 		inline const PFList& getFaces() const { return _faces; }
 
 		// Returns timestamp when the scene forms. Actually it is a moment when the

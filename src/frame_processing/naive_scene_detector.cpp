@@ -101,6 +101,21 @@ void NaiveSceneDetector::detectFaces(CvRois *detectedFaces) {
 	_face_det->detect(DlibYImg(_grayedFrame), candidates, detectedFaces);
 }
 
+void normalizeScene(Scene &scene, const PFrame &frame) {
+	PFList& lst = scene.getFaces();
+	PFList newLst;
+	for (PFList::iterator it=lst.begin(); it != lst.end(); ++it) {
+		PFace face = *it;
+		const FRList& regs = face->getImages();
+		const FrameRegion &fr = regs.back();
+		FRList fr_list;
+		fr_list.push_back(FrameRegion(frame, fr.getRectangle()));
+		PFace pf(new Face(face->getId(), fr_list, face->firstTimeCatched(), face->lostTime()));
+		newLst.push_back(pf);
+	}
+	scene.setFaces(newLst);
+}
+
 void NaiveSceneDetector::updateScene(const PFrame &frame,
 		const FaceRegionsList &tracked,
 		const FaceRegionsList &detectedAndStarted,
@@ -127,6 +142,12 @@ void NaiveSceneDetector::updateScene(const PFrame &frame,
 		addFacesList(frame, detectedAndStarted, &faces);
 		updateFacesList(frame, detectedAndTracked, &faces);
 		updateFacesList(frame, lostFaces, &faces);
+		cv::Size size = frame->get_mat().size();
+		Rectangle rect(size.width, size.height);
+		PFrameRegion fr(new FrameRegion(frame, rect));
+		LOG_INFO("Set scene frame Id=" << fr->getFrame()->getId());
+		_scene.frame(fr);
+		normalizeScene(_scene, frame); // HACK
 		_listener->onSceneChanged(_scene);
 		removeFacesList(lostFaces, &faces);
 	} else {
@@ -139,6 +160,7 @@ void NaiveSceneDetector::updateScene(const PFrame &frame,
 		cv::Size size = frame->get_mat().size();
 		Rectangle rect(size.width, size.height);
 		PFrameRegion fr(new FrameRegion(frame, rect));
+		normalizeScene(_scene, frame); // HACK
 		_scene.frame(fr);
 		_listener->onSceneUpdated(_scene);
 	}
@@ -152,10 +174,11 @@ void NaiveSceneDetector::addFacesList(const PFrame &frame,
 			LOG_ERROR(
 					"FrameId=" << frame->getId() << " . " << fr.id() << " has been already added");
 		} else {
-			pFace = PFace(new Face(fr.id(), frame->getTimestamp()));
+			FRList regions;
+			regions.push_back(FrameRegion(frame, cvRoi_to_rectangle(fr.roi())));
+			pFace = PFace(new Face(fr.id(), regions, frame->getTimestamp()));
 			faces->push_back(pFace);
 		}
-		pFace->addImage(FrameRegion(frame, cvRoi_to_rectangle(fr.roi())));
 	}
 }
 
@@ -185,7 +208,9 @@ void NaiveSceneDetector::updateFacesList(const PFrame &frame,
 			LOG_ERROR(
 					"FrameId=" << frame->getId() << " . Can't find face " << id);
 		} else {
-			pFace->setLostTime(ts);
+			faces->remove(pFace);
+			PFace newFace(new Face(pFace->getId(), pFace->getImages(), pFace->firstTimeCatched(), ts));
+			faces->push_back(newFace);
 		}
 	}
 }
@@ -199,11 +224,11 @@ void NaiveSceneDetector::updateFacesList(const PFrame &frame,
 					"FrameId=" << frame->getId() << " . Can't find face " << fr.id());
 		} else {
 			// We don't add new regions unless there is no one. or just update existing one
-			FRList& fl = pFace->regions();
-			while (!fl.empty()) {
-				fl.pop_front();
-			}
-			pFace->addImage(FrameRegion(frame, cvRoi_to_rectangle(fr.roi())));
+			FRList fl;
+			fl.push_back(FrameRegion(frame, cvRoi_to_rectangle(fr.roi())));
+			faces->remove(pFace);
+			PFace newFace(new Face(pFace->getId(), fl, pFace->firstTimeCatched(), pFace->lostTime()));
+			faces->push_back(newFace);
 		}
 	}
 }
