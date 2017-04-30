@@ -26,12 +26,16 @@ namespace fproc {
 	 */
 	typedef dlib::rectangle Rectangle;
 
+	typedef cv::Size Size;
+
 	/*
 	 * Timestamp is a type which describes a timestamp in millis. We can define
 	 * some methods of transformation and comparison later, lets use long as a standard holder
 	 * for millis since 01.01.1970
 	 */
 	typedef long Timestamp;
+
+	constexpr static Timestamp NoneTimestamp = -1;
 
 	/*
 	 * Returns current timestamp
@@ -59,28 +63,33 @@ namespace fproc {
 	 * indicates the time when the Frame was taken.
 	 */
 	class Frame {
-		typedef std::unique_ptr<dlib::cv_image<dlib::bgr_pixel>> pcv_image;
 	public:
+		/*
+		 * Different represenations of a frame
+		 */
+		typedef cv::Mat CvBgrMat;
+		typedef dlib::cv_image<dlib::bgr_pixel> DlibBgrImg;
+	private:
+		typedef std::unique_ptr<DlibBgrImg> pcv_image;
+	public:
+
 		Frame(FrameId id, Timestamp ts): _id(id), _ts(ts) {}
 		/*
 		 * Unique frame identifier. Gradually increased, so can be used for comparison.
-		 * QUESTION - I am not sure we need it, cause Timestamp can be used instead. The only
-		 * reason why we can have it is uniqueness, cause in theory 2 and more frames can have the same
-		 * timestamp, but we need to distinguish them somehow..
 		 */
-		const FrameId getId() const { return _id; }
+		const FrameId getId() const { return _id;}
 
 		/*
 		 * The frame timestamp, contains timestamp when the frame was taken.
 		 */
 		const Timestamp getTimestamp() const { return _ts; }
 
-		dlib::cv_image<dlib::bgr_pixel>& get_cv_image();
-		cv::Mat& get_mat() { return _mat; }
+		DlibBgrImg& get_cv_image();
+		CvBgrMat& get_mat() { return _mat; }
 	private:
 		FrameId _id;
 		Timestamp _ts;
-		cv::Mat _mat;
+		CvBgrMat _mat;
 		pcv_image _cv_img;
 	};
 	typedef std::shared_ptr<Frame> PFrame;
@@ -89,10 +98,23 @@ namespace fproc {
 	 * FrameRegion - describes a region in a frame. Used for describing objects
 	 * in a frame. Always has a non-NULL frame because it connects to it.
 	 */
-	class FrameRegion {
-	public:
-		PFrame getFrame();
-		Rectangle getRectangle();
+	struct FrameRegion {
+		FrameRegion(PFrame pFrame, Rectangle rec) : _frame(pFrame), _rec(rec) {}
+		const PFrame getFrame() const { return _frame; }
+		const Rectangle& getRectangle() const { return _rec; }
+	private:
+		const PFrame _frame;
+		const Rectangle _rec;
+	};
+	typedef std::shared_ptr<FrameRegion> PFrameRegion;
+	typedef std::list<FrameRegion> FRList;
+
+	/*
+	 * The ObjectDetector detects objects in a frame and returns their regions in the frame
+	 */
+	struct ObjectDetector {
+		virtual ~ObjectDetector() {}
+		virtual FRList& detectRegions(PFrame pFrame) = 0;
 	};
 
 	/*
@@ -105,12 +127,16 @@ namespace fproc {
 		 * over (depends on source and implementation)
 		 */
 		virtual PFrame captureFrame() = 0;
-		virtual ~VideoStream() { };
-	protected:
-		VideoStream(std::unique_ptr<cv::VideoCapture> cap): _cap(std::move(cap)) {}
+		virtual ~VideoStream() {};
 
+		Size getSize();
+		double getFps() { return _cap->get(CV_CAP_PROP_FPS); };
+		int getFourcc() { return static_cast<int>(_cap->get(CV_CAP_PROP_FOURCC)); };
+	protected:
+		VideoStream(std::unique_ptr<cv::VideoCapture> cap): _cap(std::move(cap)) { }
 		std::unique_ptr<cv::VideoCapture> _cap;
 	};
+	typedef std::unique_ptr<VideoStream> PVideoStream;
 
 	/*
 	 * A Face description. An immutable object which is built for describing a scene. It keeps a list
@@ -122,14 +148,23 @@ namespace fproc {
 	 * the images are for the same face.
 	 */
 	struct Face {
-		std::list<FrameRegion> getImages();
-		FaceId getId();
-		Timestamp firstTimeCatched();
+		Face(const FaceId id, const Timestamp firstTimeCatched):_id(id), _firstTimeCatched(firstTimeCatched), _lostTime(NoneTimestamp) {}
+		Face(const FaceId id, FRList regions, const Timestamp firstTimeCatched):_id(id), _firstTimeCatched(firstTimeCatched), _lostTime(NoneTimestamp), _regions(regions) {}
+		Face(const FaceId id, FRList regions, const Timestamp firstTimeCatched, const Timestamp lostTime):_id(id), _firstTimeCatched(firstTimeCatched), _lostTime(lostTime), _regions(regions) {}
 
+		const FRList& getImages() const { return _regions; }
+		const FaceId getId() const { return _id; }
+		const Timestamp firstTimeCatched() const { return _firstTimeCatched;}
+		const Timestamp lostTime() const { return _lostTime; }
 		/* Other methods and members are not defined yet */
+	private:
+		const FaceId _id;
+		const Timestamp _firstTimeCatched;
+		const Timestamp _lostTime;
+		const FRList _regions;
 	};
-
-    typedef std::shared_ptr<Face> PFace;
+	typedef std::shared_ptr<Face> PFace;
+	typedef std::list<PFace> PFList;
 
 	/*
 	 * Scene is a cognitive description (or semantic) what is going on in the VideoStream at a moment.
@@ -137,31 +172,50 @@ namespace fproc {
 	 * conclusions made by the SceneDetector implementation logic.
 	 */
 	struct Scene {
+		Scene(): _since(NoneTimestamp) {}
 		Scene(Timestamp since): _since(since) {}
-		Scene(Timestamp since, std::list<PFace>& faces) :_since(since), _faces(faces) {}
+		Scene(Timestamp since, PFList& faces):_since(since), _faces(faces) {}
+		Scene(Timestamp since, PFList& faces, PFrameRegion& frame):_since(since), _faces(faces), _frame(frame) {}
+		Scene(Scene& s): Scene(s._since, s._faces, s._frame) {}
 
 		// Returns list of faces, who are on the scene right now
-		std::list<PFace> getFaces() const {return _faces; }
+		inline PFList& getFaces() { return _faces; }
+		inline void setFaces(PFList& faces) { _faces = faces; };
+		inline const PFList& getFaces() const { return _faces; }
 
 		// Returns timestamp when the scene forms. Actually it is a moment when the
 		// SceneDetector "built" the faces list first time.
-		inline Timestamp since() const { return _since; };
+		inline Timestamp since() const { return _since; }
+		inline void since(Timestamp ts) { _since = ts; }
+
+		// Returns the scene frame
+		inline PFrameRegion& frame() { return _frame;}
+		inline const PFrameRegion& frame() const { return _frame;}
+		inline void frame(PFrameRegion& frame) { _frame = frame; }
 
 	private:
 		Timestamp _since;
-		std::list<PFace> _faces;
+		PFList _faces;
+
+		// Optional. Contains frame for the scene
+		PFrameRegion _frame;
 	};
+	typedef std::shared_ptr<Scene> PScene;
 
 	/*
 	 * An interface which defines notifications that SceneDetector implementation can call
 	 * during video stream processing.
 	 */
 	struct SceneDetectorListener {
-		virtual void onSceneChanged(Scene& scene) {};
+		virtual void onStarted() {};
+		// Invoked when the scene is changed (first time captured)
+		virtual void onSceneChanged(const Scene& scene) {};
+		// Invoked when the scene is updated (not changed, but some parameters are changed)
+		virtual void onSceneUpdated(const Scene& scene) {};
 		virtual void onStopped() {};
 		virtual ~SceneDetectorListener() {}
 	};
-	extern SceneDetectorListener nil_sc_detecor_listener;
+	typedef std::unique_ptr<SceneDetectorListener> PSceneDetectorListener;
 
 	/*
 	 * SceneDetector is an interface which defines a scene detector life-cycle. The SceneDetector
@@ -173,24 +227,28 @@ namespace fproc {
 	 * another thread.
 	 */
 	struct SceneDetector {
-		SceneDetector(VideoStream& vstream, SceneDetectorListener& listener);
+		SceneDetector(PVideoStream vstream, PSceneDetectorListener listener);
 		// Returns the scene state
-        const Scene& getScene() const { return _scene; }
+		const Scene& getScene() const { return _scene; }
 		void process();
 		void stop();
 
 		virtual ~SceneDetector() {}
-
 	protected:
-        virtual void doProcess(PFrame &frame)=0;
 
-		VideoStream& _vstream;
-		SceneDetectorListener& _listener;
+		virtual void doProcess(PFrame frame)=0;
+		virtual void onStop() {
+		}
+
+		std::unique_ptr<VideoStream> _vstream;
+		std::unique_ptr<SceneDetectorListener> _listener;
 		Scene _scene;
 		bool _started;
-        boost::mutex _lock;
+		boost::mutex _lock;
 	};
-
-};// namespace
+	typedef std::unique_ptr<SceneDetector> PSceneDetector;
+}
+;
+// namespace
 
 #endif /* SRC_MODEL_HPP_ */

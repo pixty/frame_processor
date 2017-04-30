@@ -33,3 +33,6 @@
 
 #IDE files
 *.user
+*.kdev4
+.kdev4
+/build*

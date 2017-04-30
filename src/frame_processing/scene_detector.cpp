@@ -4,12 +4,9 @@
 
 namespace fproc {
 
-SceneDetectorListener nil_sc_detecor_listener;
-
-SceneDetector::SceneDetector(VideoStream& vstream, SceneDetectorListener& listener):
-    _scene(-1),// TODO Fix me
-    _vstream(vstream),
-    _listener(listener),
+SceneDetector::SceneDetector(PVideoStream vstream, PSceneDetectorListener listener):
+    _vstream(std::move(vstream)),
+    _listener(std::move(listener)),
     _started(false)
 {
 }
@@ -21,11 +18,12 @@ void SceneDetector::process() {
 	}
 
 	LOG_INFO("SceneDetector: Entering processing.");
+	_listener->onStarted();
 	try {
 		while (_started) {
-			PFrame frame = _vstream.captureFrame();
-			if (frame.get() == nullptr) {
-				LOG_INFO("SceneDetector: got null frame. Stop processing");
+			PFrame frame = _vstream->captureFrame();
+            if (frame.get()->get_mat().size().width < 1) {
+                LOG_INFO("SceneDetector: got an empty frame. Stop processing");
 				stop();
 				break;
 			}
@@ -46,6 +44,7 @@ void SceneDetector::stop() {
 	}
 	LOG_INFO("SceneDetector: stop()");
 	_started = false;
-	_listener.onStopped();
+	_listener->onStopped();
+	onStop();
 }
 }

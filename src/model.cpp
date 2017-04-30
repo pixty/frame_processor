@@ -12,9 +12,9 @@ using namespace dlib;
 
 namespace fproc {
 
-cv_image<bgr_pixel>& Frame::get_cv_image() {
+Frame::DlibBgrImg& Frame::get_cv_image() {
 	if (_cv_img.get() == NULL) {
-		pcv_image pcvi(new cv_image<bgr_pixel>(_mat));
+		pcv_image pcvi(new Frame::DlibBgrImg(_mat));
 		_cv_img = std::move(pcvi);
 	}
 	return *_cv_img;
@@ -27,6 +27,12 @@ Timestamp ts_now() {
 	system_clock::duration dtn = tp.time_since_epoch();
 
 	return duration_cast<milliseconds>(dtn).count();
+}
+
+Size VideoStream::getSize() {
+	int width = (int)_cap->get(cv::CAP_PROP_FRAME_WIDTH);
+	int height = (int)_cap->get(cv::CAP_PROP_FRAME_HEIGHT);
+	return Size(width, height);
 }
 
 }
