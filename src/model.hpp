@@ -25,7 +25,6 @@ namespace fproc {
 	 * Just a Rectangle. Let's use dlib one for beginning.
 	 */
 	typedef dlib::rectangle Rectangle;
-
 	typedef cv::Size Size;
 
 	/*
@@ -35,7 +34,7 @@ namespace fproc {
 	 */
 	typedef long Timestamp;
 
-	constexpr static Timestamp NoneTimestamp = -1;
+	constexpr static Timestamp NoTimestamp = -1;
 
 	/*
 	 * Returns current timestamp
@@ -45,6 +44,7 @@ namespace fproc {
 	/*
 	 * A Frame identifier. All Frames provided by a VideoStream are unique and the number is gradually
 	 * increased in the time. So frames with low number is older than frames with high one.
+	 * Different VideoStreams can produce frames with the same id
 	 */
 	typedef long FrameId;
 
@@ -65,7 +65,7 @@ namespace fproc {
 	class Frame {
 	public:
 		/*
-		 * Different represenations of a frame
+		 * Different representations of a frame
 		 */
 		typedef cv::Mat CvBgrMat;
 		typedef dlib::cv_image<dlib::bgr_pixel> DlibBgrImg;
@@ -84,8 +84,11 @@ namespace fproc {
 		 */
 		const Timestamp getTimestamp() const { return _ts; }
 
+		bool isEmpty() const { return _mat.size().width < 1; }
+
 		DlibBgrImg& get_cv_image();
 		CvBgrMat& get_mat() { return _mat; }
+
 	private:
 		FrameId _id;
 		Timestamp _ts;
@@ -107,7 +110,7 @@ namespace fproc {
 		const Rectangle _rec;
 	};
 	typedef std::shared_ptr<FrameRegion> PFrameRegion;
-	typedef std::list<FrameRegion> FRList;
+	typedef std::list<PFrameRegion> FRList;
 
 	/*
 	 * The ObjectDetector detects objects in a frame and returns their regions in the frame
@@ -139,6 +142,35 @@ namespace fproc {
 	typedef std::unique_ptr<VideoStream> PVideoStream;
 
 	/*
+	 * VideoStreamConsumer is a helper interface for copying frames strategy
+	 */
+	struct VideoStreamConsumer {
+		VideoStreamConsumer() {}
+		virtual ~VideoStreamConsumer() {}
+
+		virtual bool consumeFrame(PFrame frame) { return true; };
+		virtual void close() {};
+	};
+	typedef std::unique_ptr<VideoStreamConsumer> PVideoStreamConsumer;
+
+	/**
+	 * The VideoStreamCopier just copies frames from src to dst
+	 */
+	struct VideoStreamCopier {
+		VideoStreamCopier(PVideoStream& src, PVideoStreamConsumer& dst):_src(std::move(src)), _dst(std::move(dst)), _started(false) {}
+
+		// returns whether the processing was normally over(true) or stopped by explicit stop() call(false)
+		bool process();
+		void stop();
+
+	private:
+		PVideoStream _src;
+		PVideoStreamConsumer _dst;
+		bool _started;
+		boost::mutex _lock;
+	};
+
+	/*
 	 * A Face description. An immutable object which is built for describing a scene. It keeps a list
 	 * of images (frame regions) where the face was detected. Not all frames can be included into
 	 * the list, but only some images that can be helpful for further processing (good quality etc.)
@@ -148,20 +180,21 @@ namespace fproc {
 	 * the images are for the same face.
 	 */
 	struct Face {
-		Face(const FaceId id, const Timestamp firstTimeCatched):_id(id), _firstTimeCatched(firstTimeCatched), _lostTime(NoneTimestamp) {}
-		Face(const FaceId id, FRList regions, const Timestamp firstTimeCatched):_id(id), _firstTimeCatched(firstTimeCatched), _lostTime(NoneTimestamp), _regions(regions) {}
-		Face(const FaceId id, FRList regions, const Timestamp firstTimeCatched, const Timestamp lostTime):_id(id), _firstTimeCatched(firstTimeCatched), _lostTime(lostTime), _regions(regions) {}
+		Face(const FaceId id, const Timestamp firstTimeCatched):_id(id), _firstTimeCatched(firstTimeCatched), _lostTime(NoTimestamp) {}
+		Face(Face& face):_id(face._id), _firstTimeCatched(face._firstTimeCatched), _lostTime(face._lostTime), _regions(face._regions) {}
 
 		const FRList& getImages() const { return _regions; }
 		const FaceId getId() const { return _id; }
 		const Timestamp firstTimeCatched() const { return _firstTimeCatched;}
 		const Timestamp lostTime() const { return _lostTime; }
+		void setLostTime(Timestamp ts) { _lostTime = ts; }
+		void add(PFrameRegion& pfr) { _regions.push_back(pfr); }
 		/* Other methods and members are not defined yet */
 	private:
 		const FaceId _id;
 		const Timestamp _firstTimeCatched;
-		const Timestamp _lostTime;
-		const FRList _regions;
+		Timestamp _lostTime;
+		FRList _regions;
 	};
 	typedef std::shared_ptr<Face> PFace;
 	typedef std::list<PFace> PFList;
@@ -172,7 +205,7 @@ namespace fproc {
 	 * conclusions made by the SceneDetector implementation logic.
 	 */
 	struct Scene {
-		Scene(): _since(NoneTimestamp) {}
+		Scene(): _since(NoTimestamp) {}
 		Scene(Timestamp since): _since(since) {}
 		Scene(Timestamp since, PFList& faces):_since(since), _faces(faces) {}
 		Scene(Timestamp since, PFList& faces, PFrameRegion& frame):_since(since), _faces(faces), _frame(frame) {}
@@ -217,38 +250,7 @@ namespace fproc {
 	};
 	typedef std::unique_ptr<SceneDetectorListener> PSceneDetectorListener;
 
-	/*
-	 * SceneDetector is an interface which defines a scene detector life-cycle. The SceneDetector
-	 * itself intends for processing a video stream frames, to handle them and eventually detecting
-	 * the current scene state.
-	 *
-	 * The normal usage of the detector is to call the process() method, which will block the invoker
-	 * thread until an unrecoverable error (exception) happens, or the stop() method is called by
-	 * another thread.
-	 */
-	struct SceneDetector {
-		SceneDetector(PVideoStream vstream, PSceneDetectorListener listener);
-		// Returns the scene state
-		const Scene& getScene() const { return _scene; }
-		void process();
-		void stop();
-
-		virtual ~SceneDetector() {}
-	protected:
-
-		virtual void doProcess(PFrame frame)=0;
-		virtual void onStop() {
-		}
-
-		std::unique_ptr<VideoStream> _vstream;
-		std::unique_ptr<SceneDetectorListener> _listener;
-		Scene _scene;
-		bool _started;
-		boost::mutex _lock;
-	};
-	typedef std::unique_ptr<SceneDetector> PSceneDetector;
-}
-;
+};
 // namespace
 
 #endif /* SRC_MODEL_HPP_ */

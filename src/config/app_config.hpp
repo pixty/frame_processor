@@ -10,11 +10,11 @@
 #include "../video_streaming/webcam_video_stream.hpp"
 #include "../video_streaming/file_video_stream.hpp"
 
-#include "../frame_processing/file_scene_detector_listener.hpp"
-#include "../frame_processing/fpcp_scene_detector_listener.hpp"
 #include "../frame_processing/naive_scene_detector.hpp"
 #include "../frame_processing/show_stream_detector.hpp"
 #include "../frame_processing/vfile_scene_detector.hpp"
+#include "../frame_processing1/file_scene_detector_listener.hpp"
+#include "../frame_processing1/fpcp_scene_detector_listener.hpp"
 
 namespace fproc {
   struct NaiveSceneDetectorCfg{

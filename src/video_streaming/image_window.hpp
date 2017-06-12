@@ -13,19 +13,27 @@
 
 namespace fproc {
 
-	class ImageWindow {
-	public:
-		ImageWindow() {}
-		virtual ~ImageWindow() { if (!_win.is_closed()) _win.close_window(); }
+struct ImageWindow: VideoStreamConsumer {
+	ImageWindow() {}
+	virtual ~ImageWindow() {
+		if (!_win.is_closed()) {
+			_win.close_window();
+		}
+	}
 
-		void show(PFrame frame);
-		bool isClosed() {return _win.is_closed();}
-	private:
-		dlib::image_window _win;
-	};
+	bool consumeFrame(PFrame frame) {
+		_win.set_image(frame->get_cv_image());
+		return !_win.is_closed();
+	}
+
+	void close() {
+		_win.close_window();
+	}
+
+private:
+	dlib::image_window _win;
+};
 
 }
-
-
 
 #endif /* SRC_VIDEO_STREAMING_IMAGE_WINDOW_HPP_ */

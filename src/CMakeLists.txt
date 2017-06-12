@@ -55,55 +55,13 @@ include_directories(${CPR_INCLUDE_DIRS})
 # add all files
 # aux_source_directory(. SRC_LIST)
 set(SRC_LIST
-    config/app_config.cpp
-    config/app_config.hpp
-    fpcp/fpcp_http.hpp
-    fpcp/fpcp_http.cpp
-    fpcp/fpcp.hpp
-    fpcp/fpcp.cpp
-    frame_processing/algorithms.hpp
-    frame_processing/box_overlap.cpp
-    frame_processing/box_overlap.hpp
-    frame_processing/default_scene_detector.cpp
-    frame_processing/default_scene_detector.hpp
-    frame_processing/face_detector.cpp
-    frame_processing/face_detector.hpp
-    frame_processing/file_scene_detector_listener.cpp
-    frame_processing/file_scene_detector_listener.hpp
-    frame_processing/fpcp_scene_detector_listener.cpp
-    frame_processing/fpcp_scene_detector_listener.hpp
-    frame_processing/frame_processor.cpp
-    frame_processing/grayscaler.hpp
-    frame_processing/haarcascade_frontalface_default_xml.cpp
-    frame_processing/haarcascade_frontalface_default_xml.hpp
-    frame_processing/haar_face_detector.cpp
-    frame_processing/haar_face_detector.hpp
-    frame_processing/hog_face_detector.cpp
-    frame_processing/hog_face_detector.hpp
-    frame_processing/multi_tracker.cpp
-    frame_processing/multi_tracker.hpp
-    frame_processing/naive_scene_detector.cpp
-    frame_processing/naive_scene_detector.hpp
-    frame_processing/naive_scene_detector_debugger.cpp
-    frame_processing/naive_scene_detector_debugger.hpp
-    frame_processing/scene_detector.cpp
-    frame_processing/scene_jsonify.cpp
-    frame_processing/scene_jsonify.hpp
-    frame_processing/show_stream_detector.cpp
-    frame_processing/show_stream_detector.hpp
-    frame_processing/uuid.cpp
-    frame_processing/uuid.hpp
-    frame_processing/vfile_scene_detector.cpp
-    frame_processing/vfile_scene_detector.hpp
     video_streaming/file_video_stream.cpp
     video_streaming/file_video_stream.hpp
-    video_streaming/image_window.cpp
     video_streaming/image_window.hpp
     video_streaming/webcam_video_stream.cpp
     video_streaming/webcam_video_stream.hpp
     logger.cpp
     logger.hpp
-    simple_profiler.hpp
     main.cpp
     model.cpp
     model.hpp

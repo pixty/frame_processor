@@ -1,8 +1,8 @@
 #include "app_config.hpp"
 #include "../video_streaming/webcam_video_stream.hpp"
 #include "../video_streaming/file_video_stream.hpp"
-#include "../frame_processing/naive_scene_detector_debugger.hpp"
 #include "../frame_processing/show_stream_detector.hpp"
+#include "../frame_processing1/naive_scene_detector_debugger.hpp"
 #include "../logger.hpp"
 
 namespace fproc {

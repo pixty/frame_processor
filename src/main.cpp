@@ -7,43 +7,23 @@
  */
 
 #include <boost/program_options.hpp>
+#include <unistd.h>
 
 #include "logger.hpp"
-
-#include "frame_processing/show_stream_detector.hpp"
-#include "frame_processing/vfile_scene_detector.hpp"
+#include "model.hpp"
 #include "video_streaming/webcam_video_stream.hpp"
 #include "video_streaming/file_video_stream.hpp"
-#include "frame_processing/naive_scene_detector.hpp"
-#include "frame_processing/naive_scene_detector_debugger.hpp"
-
-#include "model.hpp"
-#include "frame_processing/scene_jsonify.hpp"
-#include "config/app_config.hpp"
-
-#include "fpcp/fpcp_http.hpp"
-#include <unistd.h>
+#include "video_streaming/image_window.hpp"
 
 namespace po = boost::program_options;
 
 int main(int argc, char** argv) {
-//	debug_enabled(true);
-//	fpcp::FprocEndHttp end("1234", "http://localhost:5555/fpcp/");
-//	end.withGetTimeout(1);
-//	end.start(NULL);
-//
-//	fproc::Face face("1234", fproc::ts_now());
-//	end.sendPerson("req1234", face);
-//
-//	usleep(5*1000000);
-//	end.stop();
-//	return 1;
-
 	po::options_description desc("Allowed options");
-	desc.add_options()("help,h", "print usage message")
-			("gencfg,g", po::value<std::string>(), "generate config samples, see \"arg*.json\" files")
-			("cfg,c", po::value<std::string>(), "use \"arg\" config file")
-			("debug", po::value<bool>()->default_value(false), "enable debug log level");
+	desc.add_options()
+			("help,h", "Print usage message")
+			("debug", po::value<bool>()->default_value(false), "Enable debug log level")
+			("src_file", po::value<std::string>(), "Read frame stream from the file")
+			("dst_display", po::value<bool>()->default_value(false), "Snow stream on the screen.");
 
 	po::variables_map vm;
 	po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -59,24 +39,27 @@ int main(int argc, char** argv) {
 		debug_enabled(true);
 	}
 
-	if (vm.count("gencfg") || vm.count("-g")) {
-		const char *oname = vm.count("gencfg") ? "gencfg" : "-g";
-		std::string prefix = vm[oname].as<std::string>();
-		fproc::DefaultCfgs::create(prefix);
-		return 0;
-	}
-
-	fproc::AppConfig appConfig;
-	if (vm.count("cfg") || vm.count("-c")) {
-		const char *oname = vm.count("cfg") ? "cfg" : "-c";
-		std::string cfgFilename = vm[oname].as<std::string>();
-		LOG_INFO("Use " << cfgFilename << " configuration file");
-		appConfig.fromJson(cfgFilename);
+	fproc::PVideoStream src;
+	std::string src_file = vm.count("src_file") ? vm["src_file"].as<std::string>() : "";
+	if (src_file.length()) {
+		LOG_INFO("Will read video stream from file=" << src_file);
+		src = fproc::PVideoStream(new fproc::FileVideoStream(src_file, 0, -1));
 	} else {
-		LOG_INFO("There is no config file specified. The default configuration is used.");
+		LOG_INFO("Will read video stream from built in camera");
+		src = fproc::PVideoStream(new fproc::WebcamVideoStream());
 	}
 
-	LOG_INFO("Actual configuration:\n" << appConfig);
-	appConfig.createSceneDetector()->process();
+	fproc::PVideoStreamConsumer dst;
+	if (vm["dst_display"].as<bool>()) {
+		LOG_INFO("Will show video in a window");
+		dst = fproc::PVideoStreamConsumer(new fproc::ImageWindow());
+	} else {
+		LOG_INFO("Will not show video (null consumer)");
+		dst = fproc::PVideoStreamConsumer(new fproc::VideoStreamConsumer());
+	}
+
+	fproc::VideoStreamCopier vsc(src, dst);
+	vsc.process();
+
 	return 0;
 }
