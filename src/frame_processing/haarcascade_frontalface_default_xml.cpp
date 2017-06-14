@@ -1,4 +1,4 @@
-#include "../frame_processing1/haarcascade_frontalface_default_xml.hpp"
+#include "../frame_processing/haarcascade_frontalface_default_xml.hpp"
 
 namespace fproc {
 const cv::String haarcascade_frontalface_default_xml(

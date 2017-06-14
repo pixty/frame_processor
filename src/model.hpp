@@ -27,6 +27,9 @@ namespace fproc {
 	typedef dlib::rectangle Rectangle;
 	typedef cv::Size Size;
 
+	typedef cv::Rect CvRect;
+	Rectangle toRectangle(const CvRect& cv_rect);
+
 	/*
 	 * Timestamp is a type which describes a timestamp in millis. We can define
 	 * some methods of transformation and comparison later, lets use long as a standard holder
@@ -102,7 +105,7 @@ namespace fproc {
 	 * in a frame. Always has a non-NULL frame because it connects to it.
 	 */
 	struct FrameRegion {
-		FrameRegion(PFrame pFrame, Rectangle rec) : _frame(pFrame), _rec(rec) {}
+		FrameRegion(PFrame pFrame, const Rectangle& rec) : _frame(pFrame), _rec(rec) {}
 		const PFrame getFrame() const { return _frame; }
 		const Rectangle& getRectangle() const { return _rec; }
 	private:
@@ -117,7 +120,11 @@ namespace fproc {
 	 */
 	struct ObjectDetector {
 		virtual ~ObjectDetector() {}
-		virtual FRList& detectRegions(PFrame pFrame) = 0;
+		virtual const FRList& detectRegions(PFrame pFrame) = 0;
+		virtual const FRList& detectRegions(PFrame pFrame, const std::vector<Rectangle>& suggested_rects) { return _objects; }
+	protected:
+		// helper to return detected objects
+		FRList _objects;
 	};
 
 	/*
@@ -132,6 +139,7 @@ namespace fproc {
 		virtual PFrame captureFrame() = 0;
 		virtual ~VideoStream() {};
 
+		void setResolution(int width, int height);
 		Size getSize();
 		double getFps() { return _cap->get(CV_CAP_PROP_FPS); };
 		int getFourcc() { return static_cast<int>(_cap->get(CV_CAP_PROP_FOURCC)); };
@@ -240,7 +248,7 @@ namespace fproc {
 	 * during video stream processing.
 	 */
 	struct SceneDetectorListener {
-		virtual void onStarted() {};
+		virtual void onStarted(VideoStreamConsumer& sceneDetector) {};
 		// Invoked when the scene is changed (first time captured)
 		virtual void onSceneChanged(const Scene& scene) {};
 		// Invoked when the scene is updated (not changed, but some parameters are changed)

@@ -55,6 +55,12 @@ include_directories(${CPR_INCLUDE_DIRS})
 # add all files
 # aux_source_directory(. SRC_LIST)
 set(SRC_LIST
+	frame_processing/haar_face_detector.cpp
+	frame_processing/hog_face_detector.cpp
+	frame_processing/haarcascade_frontalface_default_xml.cpp
+	frame_processing/haarcascade_frontalface_default_xml.hpp
+	frame_processing/object_detectors.hpp
+	frame_processing/scene_detector.cpp
     video_streaming/file_video_stream.cpp
     video_streaming/file_video_stream.hpp
     video_streaming/image_window.hpp

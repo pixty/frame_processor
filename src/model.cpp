@@ -23,6 +23,12 @@ Frame::DlibBgrImg& Frame::get_cv_image() {
 	return *_cv_img;
 }
 
+//================================== VideoStream ===============================
+void VideoStream::setResolution(int width, int height) {
+	_cap->set(CV_CAP_PROP_FRAME_WIDTH, width);
+	_cap->set(CV_CAP_PROP_FRAME_HEIGHT, height);
+}
+
 //============================== VideoStreamCopier =============================
 bool VideoStreamCopier::process() {
 	{
@@ -71,6 +77,10 @@ void VideoStreamCopier::stop() {
 }
 
 //==================================== Misc ===================================
+
+Rectangle toRectangle(const CvRect& cvr) {
+	return Rectangle(cvr.x, cvr.y, cvr.x + cvr.width, cvr.y + cvr.height);
+}
 
 Timestamp ts_now() {
 	using namespace std::chrono;
