@@ -82,6 +82,14 @@ Rectangle toRectangle(const CvRect& cvr) {
 	return Rectangle(cvr.x, cvr.y, cvr.x + cvr.width, cvr.y + cvr.height);
 }
 
+Rectangle toRectangle(const cv::Rect2d& cvr) {
+	return Rectangle((int)cvr.x, (int)cvr.y, (int)(cvr.x + cvr.width), (int)(cvr.y + cvr.height));
+}
+
+CvRect toCvRect(const Rectangle& rect) {
+	return cvRect(rect.left(), rect.top(), rect.width(), rect.height());
+}
+
 Timestamp ts_now() {
 	using namespace std::chrono;
 

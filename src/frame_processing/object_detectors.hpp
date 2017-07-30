@@ -12,6 +12,7 @@
 #include <dlib/image_processing/frontal_face_detector.h>
 #include <dlib/image_processing/render_face_detections.h>
 #include <dlib/image_processing.h>
+#include <opencv2/tracking.hpp>
 
 namespace fproc {
 
@@ -33,6 +34,16 @@ private:
 	dlib::frontal_face_detector _detector;
 };
 
+struct ObjectTracker {
+	ObjectTracker();
+	void setRegion(PFrameRegion region);
+	bool startTracking();
+	PFrameRegion track(PFrame pFrame);
+private:
+	PFrameRegion _region;
+	cv::Ptr<cv::Tracker> _cvTracker;
+};
+
 struct SceneDetectorVisualizer;
 typedef std::unique_ptr<SceneDetectorVisualizer> PSceneDetectorVisualizer;
 
@@ -49,20 +60,32 @@ private:
 
 	PSceneDetectorListener _listener;
 	HogFaceDetector _hog_detector;
+	ObjectTracker _obj_tracker;
 	int _state;
 	PSceneDetectorVisualizer _sc_visualizer;
 };
 
 struct SceneDetectorVisualizer: public SceneDetectorListener {
-	SceneDetectorVisualizer(SceneDetector& scn_detector): _scn_detector(scn_detector) {}
+	SceneDetectorVisualizer(SceneDetector& scn_detector): _scn_detector(scn_detector), _new_frame(false) {}
 	virtual ~SceneDetectorVisualizer();
 
-	void onScene(PFrame frame, const FRList& hog_result);
+	void onScene(PFrame frame, const FRList& hog_result, PFrameRegion track_reg);
 	bool isClosed() { return _win.is_closed(); }
+	void start();
 	void close();
+protected:
+	void run();
 private:
 	SceneDetector& _scn_detector;
 	dlib::image_window _win;
+
+	PFrame _frame;
+	FRList _hog_result;
+	PFrameRegion _track_reg;
+	volatile bool _new_frame;
+	PThread _thread;
+	boost::mutex _lock;
+	boost::condition_variable _cond;
 };
 
 }

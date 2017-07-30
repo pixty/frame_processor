@@ -12,6 +12,7 @@
 
 #include <boost/thread/lockable_concepts.hpp>
 #include <boost/thread/mutex.hpp>
+#include <boost/thread/thread.hpp>
 
 #include <dlib/geometry/rectangle.h>
 #include <dlib/opencv.h>
@@ -28,7 +29,12 @@ namespace fproc {
 	typedef cv::Size Size;
 
 	typedef cv::Rect CvRect;
+	Rectangle toRectangle(const cv::Rect2d& cv_rect);
 	Rectangle toRectangle(const CvRect& cv_rect);
+	CvRect toCvRect(const Rectangle& rect);
+
+	typedef std::shared_ptr<boost::thread> PThread;
+	typedef boost::unique_lock<boost::mutex> MxGuard;
 
 	/*
 	 * Timestamp is a type which describes a timestamp in millis. We can define
