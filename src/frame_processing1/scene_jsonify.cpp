@@ -33,7 +33,7 @@ void SceneJsonify::toJson(const Scene &scene, pt::ptree *root) const{
   root->add_child("persons", faces_node);    
 }
 
-void SceneJsonify::toJson(const PFList &faces, pt::ptree *faces_node) const{
+void SceneJsonify::toJson(const PFaceList &faces, pt::ptree *faces_node) const{
 /*
 Person
 {
@@ -59,7 +59,7 @@ Person
   }
 }
 
-void SceneJsonify::toJson(const FRList &pictures, pt::ptree *pictures_node) const{
+void SceneJsonify::toJson(const PFrameRegList &pictures, pt::ptree *pictures_node) const{
     //{"imgId": "pic1234", "region": {Rectangle JSON}}
     for (auto &picture : pictures){
 	// Create an unnamed node containing the value

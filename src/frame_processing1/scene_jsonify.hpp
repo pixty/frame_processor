@@ -18,8 +18,8 @@ public:
   const std::string operator()(const Scene &scene, bool pretty = true) const;
 private:
   void toJson(const Scene &scene, pt::ptree *root) const;
-  void toJson(const PFList &faces, pt::ptree *faces_node) const;
-  void toJson(const FRList &pictures, pt::ptree *pictures_node) const;
+  void toJson(const PFaceList &faces, pt::ptree *faces_node) const;
+  void toJson(const PFrameRegList &pictures, pt::ptree *pictures_node) const;
   void toJson(const Rectangle &r, pt::ptree *out) const;
 };
 

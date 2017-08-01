@@ -13,9 +13,9 @@ namespace pt = boost::property_tree;
 namespace fpcp {
 
 void to_json(const fproc::Scene& scene, pt::ptree &root);
-void to_json(const fproc::PFList &faces, pt::ptree &root);
+void to_json(const fproc::PFaceList &faces, pt::ptree &root);
 void to_json(const fproc::Face& face, pt::ptree &root);
-void to_json(const fproc::FRList &frame_regions, pt::ptree &root);
+void to_json(const fproc::PFrameRegList &frame_regions, pt::ptree &root);
 void to_json(const fproc::FrameRegion &fregion, pt::ptree &root);
 void to_json(const fproc::Rectangle &r, pt::ptree &root);
 
@@ -239,7 +239,7 @@ void to_json(const fproc::Scene& scene, pt::ptree &root) {
 		root.add_child("persons", persons);
 }
 
-void to_json(const fproc::PFList &faces, pt::ptree &root) {
+void to_json(const fproc::PFaceList &faces, pt::ptree &root) {
 	/*
 	 [ Person1, Person2 ...]
 	 */
@@ -268,7 +268,7 @@ void to_json(const fproc::Face& face, pt::ptree &root) {
 		root.add_child("faces", pictures_node);
 }
 
-void to_json(const fproc::FRList &frame_regions, pt::ptree &root) {
+void to_json(const fproc::PFrameRegList &frame_regions, pt::ptree &root) {
 	for (auto &fregion : frame_regions) {
 		pt::ptree picture_node;
 		to_json(fregion, picture_node);

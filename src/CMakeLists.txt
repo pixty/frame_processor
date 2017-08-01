@@ -27,13 +27,10 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "lib/")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "lib/")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin/")
 
-# add dlib
-find_package(dlib)
-if(dlib_FOUND)
-    include_directories(${dlib_INCLUDE_DIRS})
-else()
-    message(FATAL_ERROR "dlib not found, please install it.")
-endif()
+# Tell cmake we will need dlib.  This command will pull in dlib and compile it
+# into your project.  Note that you don't need to compile or install dlib.  All
+# it needs is the dlib source code folder and it will take care of everything.
+include(../dlib/dlib/cmake)
 
 # add opencv
 find_package(OpenCV)
@@ -50,7 +47,7 @@ else()
     message(FATAL_ERROR "Boost not found, please install it.")
 endif()
 
-include_directories(${CPR_INCLUDE_DIRS})
+#include_directories(${CPR_INCLUDE_DIRS})
 
 # add all files
 # aux_source_directory(. SRC_LIST)
@@ -63,12 +60,17 @@ set(SRC_LIST
 	frame_processing/haarcascade_frontalface_default_xml.hpp
 	frame_processing/object_detectors.hpp
 	frame_processing/object_tracker.cpp
+	frame_processing/scene_detector.hpp
 	frame_processing/scene_detector.cpp
     video_streaming/file_video_stream.cpp
     video_streaming/file_video_stream.hpp
     video_streaming/image_window.hpp
     video_streaming/webcam_video_stream.cpp
     video_streaming/webcam_video_stream.hpp
+    recognizer/dnn_face_recognition_model.cpp
+    recognizer/dnn_face_recognition_model.hpp
+    recognizer/recognition_manager.hpp
+    recognizer/recognition_manager.cpp
     logger.cpp
     logger.hpp
     main.cpp
@@ -78,7 +80,7 @@ set(SRC_LIST
 
 add_executable(frame_processor ${SRC_LIST})
 # set_target_properties(frame_processor PROPERTIES OUTPUT_NAME "fp")
-target_link_libraries(frame_processor ${dlib_LIBS} ${OpenCV_LIBS} ${Boost_LIBRARIES} ${CPR_LIBRARIES})
+target_link_libraries(frame_processor dlib::dlib ${OpenCV_LIBS} ${Boost_LIBRARIES})
 
 # copy resources function
 

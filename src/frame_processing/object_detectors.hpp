@@ -13,12 +13,13 @@
 #include <dlib/image_processing/render_face_detections.h>
 #include <dlib/image_processing.h>
 #include <opencv2/tracking.hpp>
+#include "../recognizer/recognition_manager.hpp"
 
 namespace fproc {
 
 struct HaarFaceDetector: public ObjectDetector {
 	HaarFaceDetector(const int minFaceSize, const int maxFaceSize);
-	virtual const FRList& detectRegions(PFrame pFrame);
+	virtual const PFrameRegList& detectRegions(PFrame pFrame);
 
 private:
 	cv::CascadeClassifier _cvFaceDetector;
@@ -28,8 +29,8 @@ private:
 
 struct HogFaceDetector: public ObjectDetector {
 	HogFaceDetector();
-	const FRList& detectRegions(PFrame pFrame);
-	const FRList& detectRegions(PFrame pFrame, const std::vector<Rectangle>& suggested_rects);
+	PFrameRegList& detectRegions(PFrame pFrame);
+	PFrameRegList& detectRegions(PFrame pFrame, const std::vector<Rectangle>& suggested_rects);
 private:
 	dlib::frontal_face_detector _detector;
 };
@@ -44,49 +45,6 @@ private:
 	cv::Ptr<cv::Tracker> _cvTracker;
 };
 
-struct SceneDetectorVisualizer;
-typedef std::unique_ptr<SceneDetectorVisualizer> PSceneDetectorVisualizer;
-
-struct SceneDetector: public VideoStreamConsumer {
-	SceneDetector(PSceneDetectorListener listener):_listener(std::move(listener)), _state(ST_INIT) {};
-
-	void setVisualizer(SceneDetectorVisualizer* sdv) { _sc_visualizer = PSceneDetectorVisualizer(sdv); };
-	bool consumeFrame(PFrame frame);
-	void close();
-private:
-	const static int ST_INIT = 0;
-	const static int ST_STARTED = 1;
-	const static int ST_STOPPED = 2;
-
-	PSceneDetectorListener _listener;
-	HogFaceDetector _hog_detector;
-	ObjectTracker _obj_tracker;
-	int _state;
-	PSceneDetectorVisualizer _sc_visualizer;
-};
-
-struct SceneDetectorVisualizer: public SceneDetectorListener {
-	SceneDetectorVisualizer(SceneDetector& scn_detector): _scn_detector(scn_detector), _new_frame(false) {}
-	virtual ~SceneDetectorVisualizer();
-
-	void onScene(PFrame frame, const FRList& hog_result, PFrameRegion track_reg);
-	bool isClosed() { return _win.is_closed(); }
-	void start();
-	void close();
-protected:
-	void run();
-private:
-	SceneDetector& _scn_detector;
-	dlib::image_window _win;
-
-	PFrame _frame;
-	FRList _hog_result;
-	PFrameRegion _track_reg;
-	volatile bool _new_frame;
-	PThread _thread;
-	boost::mutex _lock;
-	boost::condition_variable _cond;
-};
 
 }
 

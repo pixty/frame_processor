@@ -103,13 +103,13 @@ void NaiveSceneDetector::detectFaces(CvRois *detectedFaces) {
 }
 
 void normalizeScene(Scene &scene, const PFrame &frame) {
-	PFList& lst = scene.getFaces();
-	PFList newLst;
-	for (PFList::iterator it=lst.begin(); it != lst.end(); ++it) {
+	PFaceList& lst = scene.getFaces();
+	PFaceList newLst;
+	for (PFaceList::iterator it=lst.begin(); it != lst.end(); ++it) {
 		PFace face = *it;
-		const FRList& regs = face->getImages();
+		const PFrameRegList& regs = face->getImages();
 		const FrameRegion &fr = regs.back();
-		FRList fr_list;
+		PFrameRegList fr_list;
 		fr_list.push_back(FrameRegion(frame, fr.getRectangle()));
 		PFace pf(new Face(face->getId(), fr_list, face->firstTimeCatched(), face->lostTime()));
 		newLst.push_back(pf);
@@ -139,7 +139,7 @@ void NaiveSceneDetector::updateScene(const PFrame &frame,
 	if (detectedAndStarted.size() > 0 || lostFaces.size() > 0) {
 		// start a new scene
 		_scene.since(frame->getTimestamp());
-		PFList &faces = _scene.getFaces();
+		PFaceList &faces = _scene.getFaces();
 		addFacesList(frame, detectedAndStarted, &faces);
 		updateFacesList(frame, detectedAndTracked, &faces);
 		updateFacesList(frame, lostFaces, &faces);
@@ -154,7 +154,7 @@ void NaiveSceneDetector::updateScene(const PFrame &frame,
 	} else {
 		//if (detectedAndTracked.size() > 0) {
 			// update faces frames, if needed
-			PFList &faces = _scene.getFaces();
+			PFaceList &faces = _scene.getFaces();
 			//updateFacesList(frame, detectedAndTracked, &faces);
 		//}
 		updateFacesList(frame, tracked, &faces);
@@ -168,14 +168,14 @@ void NaiveSceneDetector::updateScene(const PFrame &frame,
 }
 
 void NaiveSceneDetector::addFacesList(const PFrame &frame,
-		const FaceRegionsList &faceRegions, PFList *faces) {
+		const FaceRegionsList &faceRegions, PFaceList *faces) {
 	for (FaceRegion fr : faceRegions) {
 		PFace pFace = getFace(fr.id(), *faces);
 		if (pFace != nullptr) {
 			LOG_ERROR(
 					"FrameId=" << frame->getId() << " . " << fr.id() << " has been already added");
 		} else {
-			FRList regions;
+			PFrameRegList regions;
 			regions.push_back(FrameRegion(frame, cvRoi_to_rectangle(fr.roi())));
 			pFace = PFace(new Face(fr.id(), regions, frame->getTimestamp()));
 			faces->push_back(pFace);
@@ -184,9 +184,9 @@ void NaiveSceneDetector::addFacesList(const PFrame &frame,
 }
 
 void NaiveSceneDetector::removeFacesList(const FaceIdsList &lostFaces,
-		PFList *faces) {
+		PFaceList *faces) {
 	for (FaceId id : lostFaces) {
-		PFList::iterator itr = faces->begin();
+		PFaceList::iterator itr = faces->begin();
 		bool removed = false;
 		while (!removed && itr != faces->end()) {
 			if ((*itr)->getId() == id) {
@@ -201,7 +201,7 @@ void NaiveSceneDetector::removeFacesList(const FaceIdsList &lostFaces,
 }
 
 void NaiveSceneDetector::updateFacesList(const PFrame &frame,
-		const FaceIdsList &lostFaces, PFList *faces) {
+		const FaceIdsList &lostFaces, PFaceList *faces) {
 	const Timestamp ts = frame->getTimestamp();
 	for (FaceId id : lostFaces) {
 		PFace pFace = getFace(id, *faces);
@@ -217,7 +217,7 @@ void NaiveSceneDetector::updateFacesList(const PFrame &frame,
 }
 
 void NaiveSceneDetector::updateFacesList(const PFrame &frame,
-		const FaceRegionsList &faceRegions, PFList *faces) {
+		const FaceRegionsList &faceRegions, PFaceList *faces) {
 	for (FaceRegion fr : faceRegions) {
 		PFace pFace = getFace(fr.id(), *faces);
 		if (pFace == nullptr) {
@@ -225,7 +225,7 @@ void NaiveSceneDetector::updateFacesList(const PFrame &frame,
 					"FrameId=" << frame->getId() << " . Can't find face " << fr.id());
 		} else {
 			// We don't add new regions unless there is no one. or just update existing one
-			FRList fl;
+			PFrameRegList fl;
 			fl.push_back(FrameRegion(frame, cvRoi_to_rectangle(fr.roi())));
 			faces->remove(pFace);
 			PFace newFace(new Face(pFace->getId(), fl, pFace->firstTimeCatched(), pFace->lostTime()));
@@ -234,7 +234,7 @@ void NaiveSceneDetector::updateFacesList(const PFrame &frame,
 	}
 }
 
-PFace NaiveSceneDetector::getFace(const FaceId &id, const PFList &faces) {
+PFace NaiveSceneDetector::getFace(const FaceId &id, const PFaceList &faces) {
 	PFace pFace = nullptr;
 	// Usualy there are only few faces
 	for (PFace candidate : faces) {

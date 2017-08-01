@@ -18,10 +18,10 @@ namespace fproc {
 class FaceDetector: public ObjectDetector {
 public:
 	FaceDetector(const std::string &faceLandmarksModelFilename);
-	virtual FRList& detectRegions(PFrame pFrame);
+	virtual PFrameRegList& detectRegions(PFrame pFrame);
 
 private:
-	FRList _frame_regions;
+	PFrameRegList _frame_regions;
 	dlib::frontal_face_detector _detector;
 	dlib::shape_predictor _pose_model;
 };

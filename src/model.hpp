@@ -27,8 +27,14 @@ namespace fproc {
 	 */
 	typedef dlib::rectangle Rectangle;
 	typedef cv::Size Size;
-
 	typedef cv::Rect CvRect;
+
+	/*
+	 * Face descriptor in 128-dimensional space
+	 */
+	typedef dlib::matrix<float,0,1> V128D;
+	float distance(V128D &v1, V128D &v2);
+
 	Rectangle toRectangle(const cv::Rect2d& cv_rect);
 	Rectangle toRectangle(const CvRect& cv_rect);
 	CvRect toCvRect(const Rectangle& rect);
@@ -78,8 +84,10 @@ namespace fproc {
 		 */
 		typedef cv::Mat CvBgrMat;
 		typedef dlib::cv_image<dlib::bgr_pixel> DlibBgrImg;
+		typedef dlib::matrix<dlib::rgb_pixel> DlibRgbImg;
 	private:
-		typedef std::unique_ptr<DlibBgrImg> pcv_image;
+		typedef std::unique_ptr<DlibBgrImg> bgr_image;
+		typedef std::unique_ptr<DlibRgbImg> rgb_image;
 	public:
 
 		Frame(FrameId id, Timestamp ts): _id(id), _ts(ts) {}
@@ -95,14 +103,16 @@ namespace fproc {
 
 		bool isEmpty() const { return _mat.size().width < 1; }
 
-		DlibBgrImg& get_cv_image();
+		DlibBgrImg& get_bgr_image();
+		DlibRgbImg& get_rgb_image();
 		CvBgrMat& get_mat() { return _mat; }
 
 	private:
 		FrameId _id;
 		Timestamp _ts;
 		CvBgrMat _mat;
-		pcv_image _cv_img;
+		bgr_image _bgr_img;
+		rgb_image _rgb_img;
 	};
 	typedef std::shared_ptr<Frame> PFrame;
 
@@ -114,23 +124,27 @@ namespace fproc {
 		FrameRegion(PFrame pFrame, const Rectangle& rec) : _frame(pFrame), _rec(rec) {}
 		const PFrame getFrame() const { return _frame; }
 		const Rectangle& getRectangle() const { return _rec; }
+		V128D& v128d() {return _v128d;};
+		void set_vector(const V128D& v) { _v128d = v;};
+
 	private:
 		const PFrame _frame;
 		const Rectangle _rec;
+		V128D _v128d;
 	};
 	typedef std::shared_ptr<FrameRegion> PFrameRegion;
-	typedef std::list<PFrameRegion> FRList;
+	typedef std::list<PFrameRegion> PFrameRegList;
 
 	/*
 	 * The ObjectDetector detects objects in a frame and returns their regions in the frame
 	 */
 	struct ObjectDetector {
 		virtual ~ObjectDetector() {}
-		virtual const FRList& detectRegions(PFrame pFrame) = 0;
-		virtual const FRList& detectRegions(PFrame pFrame, const std::vector<Rectangle>& suggested_rects) { return _objects; }
+		virtual const PFrameRegList& detectRegions(PFrame pFrame) = 0;
+		virtual const PFrameRegList& detectRegions(PFrame pFrame, const std::vector<Rectangle>& suggested_rects) { return _objects; }
 	protected:
 		// helper to return detected objects
-		FRList _objects;
+		PFrameRegList _objects;
 	};
 
 	/*
@@ -185,7 +199,7 @@ namespace fproc {
 	};
 
 	/*
-	 * A Face description. An immutable object which is built for describing a scene. It keeps a list
+	 * A Face description. An object which is built for describing a scene. It keeps a list
 	 * of images (frame regions) where the face was detected. Not all frames can be included into
 	 * the list, but only some images that can be helpful for further processing (good quality etc.)
 	 *
@@ -194,24 +208,17 @@ namespace fproc {
 	 * the images are for the same face.
 	 */
 	struct Face {
-		Face(const FaceId id, const Timestamp firstTimeCatched):_id(id), _firstTimeCatched(firstTimeCatched), _lostTime(NoTimestamp) {}
-		Face(Face& face):_id(face._id), _firstTimeCatched(face._firstTimeCatched), _lostTime(face._lostTime), _regions(face._regions) {}
+		Face(const FaceId id):_id(id) {}
+		Face(Face& face):_id(face._id), regions(face.regions) {}
 
-		const FRList& getImages() const { return _regions; }
 		const FaceId getId() const { return _id; }
-		const Timestamp firstTimeCatched() const { return _firstTimeCatched;}
-		const Timestamp lostTime() const { return _lostTime; }
-		void setLostTime(Timestamp ts) { _lostTime = ts; }
-		void add(PFrameRegion& pfr) { _regions.push_back(pfr); }
-		/* Other methods and members are not defined yet */
+
+		std::map<FrameId, PFrameRegion> regions;
 	private:
 		const FaceId _id;
-		const Timestamp _firstTimeCatched;
-		Timestamp _lostTime;
-		FRList _regions;
 	};
 	typedef std::shared_ptr<Face> PFace;
-	typedef std::list<PFace> PFList;
+	typedef std::list<PFace> PFaceList;
 
 	/*
 	 * Scene is a cognitive description (or semantic) what is going on in the VideoStream at a moment.
@@ -221,14 +228,14 @@ namespace fproc {
 	struct Scene {
 		Scene(): _since(NoTimestamp) {}
 		Scene(Timestamp since): _since(since) {}
-		Scene(Timestamp since, PFList& faces):_since(since), _faces(faces) {}
-		Scene(Timestamp since, PFList& faces, PFrameRegion& frame):_since(since), _faces(faces), _frame(frame) {}
+		Scene(Timestamp since, PFaceList& faces):_since(since), _faces(faces) {}
+		Scene(Timestamp since, PFaceList& faces, PFrameRegion& frame):_since(since), _faces(faces), _frame(frame) {}
 		Scene(Scene& s): Scene(s._since, s._faces, s._frame) {}
 
 		// Returns list of faces, who are on the scene right now
-		inline PFList& getFaces() { return _faces; }
-		inline void setFaces(PFList& faces) { _faces = faces; };
-		inline const PFList& getFaces() const { return _faces; }
+		inline PFaceList& getFaces() { return _faces; }
+		inline void setFaces(PFaceList& faces) { _faces = faces; };
+		inline const PFaceList& getFaces() const { return _faces; }
 
 		// Returns timestamp when the scene forms. Actually it is a moment when the
 		// SceneDetector "built" the faces list first time.
@@ -242,7 +249,7 @@ namespace fproc {
 
 	private:
 		Timestamp _since;
-		PFList _faces;
+		PFaceList _faces;
 
 		// Optional. Contains frame for the scene
 		PFrameRegion _frame;
@@ -263,6 +270,8 @@ namespace fproc {
 		virtual ~SceneDetectorListener() {}
 	};
 	typedef std::unique_ptr<SceneDetectorListener> PSceneDetectorListener;
+
+	std::string uuid();
 
 };
 // namespace

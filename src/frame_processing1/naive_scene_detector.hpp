@@ -112,13 +112,13 @@ private:
 			const FaceRegionsList &detectedAndTracked,
 			const FaceIdsList &lostFaces);
 	void addFacesList(const PFrame &frame, const FaceRegionsList &faceRegions,
-			PFList *faces);
-	void removeFacesList(const FaceIdsList &lostFaces, PFList *faces);
+			PFaceList *faces);
+	void removeFacesList(const FaceIdsList &lostFaces, PFaceList *faces);
 	void updateFacesList(const PFrame &frame, const FaceIdsList &lostFaces,
-			PFList *faces);
+			PFaceList *faces);
 	void updateFacesList(const PFrame &frame,
-			const FaceRegionsList &faceRegions, PFList *faces);
-	PFace getFace(const FaceId &id, const PFList &faces);
+			const FaceRegionsList &faceRegions, PFaceList *faces);
+	PFace getFace(const FaceId &id, const PFaceList &faces);
 	CvYMat _grayedFrame;
 	const int _maxFaces;
 	std::unique_ptr<ForegroundObjectsDetector> _foreground_det;

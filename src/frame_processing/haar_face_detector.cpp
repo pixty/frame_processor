@@ -12,7 +12,7 @@ HaarFaceDetector::HaarFaceDetector(const int minFaceSize, const int maxFaceSize)
 	_cvFaceDetector.read(fs.getFirstTopLevelNode());
 }
 
-const FRList& HaarFaceDetector::detectRegions(PFrame pFrame) {
+const PFrameRegList& HaarFaceDetector::detectRegions(PFrame pFrame) {
 	std::vector<CvRect> objects;
 	Frame::CvBgrMat& frame = pFrame->get_mat();
 

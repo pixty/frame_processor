@@ -48,7 +48,7 @@ void printList(std::ostream &os, const Pair<Begin, Last> &data) {
 void print_now();
 
 template<typename List>
-void log(std::string level, const LogData<List> &data, bool print = true) {
+void ____log____(std::string level, const LogData<List> &data, bool print = true) {
 	if (!print) {
 		return;
 	}
@@ -64,9 +64,9 @@ inline void debug_enabled(bool debugEnabled) {
 	::debugEnabled = debugEnabled;
 }
 
-#define LOG_INFO(x) (log("INFO  ", LogData<None>() << x))
-#define LOG_WARN(x) (log("WARN  ", LogData<None>() << x))
-#define LOG_ERROR(x) (log("ERROR ", LogData<None>() << x))
-#define LOG_DEBUG(x) (log("DEBUG ", LogData<None>() << x, debugEnabled))
+#define LOG_INFO(x) (____log____("INFO  ", LogData<None>() << x))
+#define LOG_WARN(x) (____log____("WARN  ", LogData<None>() << x))
+#define LOG_ERROR(x) (____log____("ERROR ", LogData<None>() << x))
+#define LOG_DEBUG(x) (____log____("DEBUG ", LogData<None>() << x, debugEnabled))
 
 #endif /* SRC_LOGGER_HPP_ */

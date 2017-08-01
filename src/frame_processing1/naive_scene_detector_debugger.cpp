@@ -61,7 +61,7 @@ void NaiveSceneDetectorDebugger::operator()(
     return;
   }
   // draw the stuff
-  _win.set_image(frame->get_cv_image());
+  _win.set_image(frame->get_bgr_image());
   _win.clear_overlay();
   std::vector<Rectangle> out;
   getRects(detectedAndStarted, &out);

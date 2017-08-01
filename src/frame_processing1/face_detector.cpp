@@ -29,7 +29,7 @@ FaceDetector::FaceDetector(const std::string &faceLandmarksModelFilename) {
 	deserialize(faceLandmarksModelFilename) >> _pose_model;
 }
 
-FRList& FaceDetector::detectRegions(PFrame pFrame) {
+PFrameRegList& FaceDetector::detectRegions(PFrame pFrame) {
 	cv::Mat& im = pFrame->get_mat();
 	cv_image<bgr_pixel> cimg(im);
 	std::vector<dlib::rectangle> faces = _detector(cimg);

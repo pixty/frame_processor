@@ -22,7 +22,7 @@ struct ImageWindow: VideoStreamConsumer {
 	}
 
 	bool consumeFrame(PFrame frame) {
-		_win.set_image(frame->get_cv_image());
+		_win.set_image(frame->get_bgr_image());
 		return !_win.is_closed();
 	}
 

@@ -9,20 +9,32 @@
 #include "logger.hpp"
 #include <chrono>
 #include <boost/thread/locks.hpp>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <dlib/matrix/matrix_utilities.h>
 
 using namespace dlib;
 
 namespace fproc {
 
 //==================================== Frame ===================================
-Frame::DlibBgrImg& Frame::get_cv_image() {
-	if (_cv_img.get() == NULL) {
-		pcv_image pcvi(new Frame::DlibBgrImg(_mat));
-		_cv_img = std::move(pcvi);
+Frame::DlibBgrImg& Frame::get_bgr_image() {
+	if (_bgr_img.get() == NULL) {
+		bgr_image pcvi(new Frame::DlibBgrImg(_mat));
+		_bgr_img = std::move(pcvi);
 	}
-	return *_cv_img;
+	return *_bgr_img;
 }
 
+Frame::DlibRgbImg& Frame::get_rgb_image() {
+	if (_rgb_img.get() == NULL) {
+		rgb_image pcvi(new Frame::DlibRgbImg(dlib::mat(dlib::cv_image<dlib::rgb_pixel>(_mat))));
+		_rgb_img = std::move(pcvi);
+	}
+	return *_rgb_img;
+}
 //================================== VideoStream ===============================
 void VideoStream::setResolution(int width, int height) {
 	_cap->set(CV_CAP_PROP_FRAME_WIDTH, width);
@@ -104,6 +116,15 @@ Size VideoStream::getSize() {
 	int height = (int)_cap->get(cv::CAP_PROP_FRAME_HEIGHT);
 	return Size(width, height);
 }
+
+std::string uuid() {
+	static boost::uuids::random_generator ug;
+	return boost::lexical_cast<std::string>(ug());
+};
+
+float distance(V128D &v1, V128D &v2) {
+	return dlib::length(v1-v2);
+};
 
 }
 
