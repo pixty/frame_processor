@@ -69,6 +69,7 @@ namespace fproc {
 	 * persons always have different FaceIds.
 	 */
 	typedef std::string FaceId;
+	typedef std::list<FaceId> FaceList;
 
 	/*
 	 * Frame class describes a video snapshot (picture). The class contains some internal structures
@@ -207,54 +208,54 @@ namespace fproc {
 	 * faces, select the list of images and defines a strategy why it (SceneDetector) decides that
 	 * the images are for the same face.
 	 */
-	struct Face {
-		Face(const FaceId id):_id(id) {}
-		Face(Face& face):_id(face._id), regions(face.regions) {}
-
-		const FaceId getId() const { return _id; }
-
-		std::map<FrameId, PFrameRegion> regions;
-	private:
-		const FaceId _id;
-	};
-	typedef std::shared_ptr<Face> PFace;
-	typedef std::list<PFace> PFaceList;
+//	struct Face {
+//		Face(const FaceId id):_id(id) {}
+//		Face(Face& face):_id(face._id), regions(face.regions) {}
+//
+//		const FaceId getId() const { return _id; }
+//
+//		std::map<FrameId, PFrameRegion> regions;
+//	private:
+//		const FaceId _id;
+//	};
+//	typedef std::shared_ptr<Face> PFace;
+//	typedef std::list<PFace> PFaceList;
 
 	/*
 	 * Scene is a cognitive description (or semantic) what is going on in the VideoStream at a moment.
 	 * The scene object is built by SceneDetector and it is a result of some frame processing and
 	 * conclusions made by the SceneDetector implementation logic.
 	 */
-	struct Scene {
-		Scene(): _since(NoTimestamp) {}
-		Scene(Timestamp since): _since(since) {}
-		Scene(Timestamp since, PFaceList& faces):_since(since), _faces(faces) {}
-		Scene(Timestamp since, PFaceList& faces, PFrameRegion& frame):_since(since), _faces(faces), _frame(frame) {}
-		Scene(Scene& s): Scene(s._since, s._faces, s._frame) {}
-
-		// Returns list of faces, who are on the scene right now
-		inline PFaceList& getFaces() { return _faces; }
-		inline void setFaces(PFaceList& faces) { _faces = faces; };
-		inline const PFaceList& getFaces() const { return _faces; }
-
-		// Returns timestamp when the scene forms. Actually it is a moment when the
-		// SceneDetector "built" the faces list first time.
-		inline Timestamp since() const { return _since; }
-		inline void since(Timestamp ts) { _since = ts; }
-
-		// Returns the scene frame
-		inline PFrameRegion& frame() { return _frame;}
-		inline const PFrameRegion& frame() const { return _frame;}
-		inline void frame(PFrameRegion& frame) { _frame = frame; }
-
-	private:
-		Timestamp _since;
-		PFaceList _faces;
-
-		// Optional. Contains frame for the scene
-		PFrameRegion _frame;
-	};
-	typedef std::shared_ptr<Scene> PScene;
+//	struct Scene {
+//		Scene(): _since(NoTimestamp) {}
+//		Scene(Timestamp since): _since(since) {}
+//		Scene(Timestamp since, PFaceList& faces):_since(since), _faces(faces) {}
+//		Scene(Timestamp since, PFaceList& faces, PFrameRegion& frame):_since(since), _faces(faces), _frame(frame) {}
+//		Scene(Scene& s): Scene(s._since, s._faces, s._frame) {}
+//
+//		// Returns list of faces, who are on the scene right now
+//		inline PFaceList& getFaces() { return _faces; }
+//		inline void setFaces(PFaceList& faces) { _faces = faces; };
+//		inline const PFaceList& getFaces() const { return _faces; }
+//
+//		// Returns timestamp when the scene forms. Actually it is a moment when the
+//		// SceneDetector "built" the faces list first time.
+//		inline Timestamp since() const { return _since; }
+//		inline void since(Timestamp ts) { _since = ts; }
+//
+//		// Returns the scene frame
+//		inline PFrameRegion& frame() { return _frame;}
+//		inline const PFrameRegion& frame() const { return _frame;}
+//		inline void frame(PFrameRegion& frame) { _frame = frame; }
+//
+//	private:
+//		Timestamp _since;
+//		PFaceList _faces;
+//
+//		// Optional. Contains frame for the scene
+//		PFrameRegion _frame;
+//	};
+//	typedef std::shared_ptr<Scene> PScene;
 
 	/*
 	 * An interface which defines notifications that SceneDetector implementation can call
@@ -263,9 +264,9 @@ namespace fproc {
 	struct SceneDetectorListener {
 		virtual void onStarted(VideoStreamConsumer& sceneDetector) {};
 		// Invoked when the scene is changed (first time captured)
-		virtual void onSceneChanged(const Scene& scene) {};
+		//virtual void onSceneChanged(const Scene& scene) {};
 		// Invoked when the scene is updated (not changed, but some parameters are changed)
-		virtual void onSceneUpdated(const Scene& scene) {};
+		//virtual void onSceneUpdated(const Scene& scene) {};
 		virtual void onStopped() {};
 		virtual ~SceneDetectorListener() {}
 	};

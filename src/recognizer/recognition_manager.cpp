@@ -10,43 +10,46 @@
 
 namespace fproc {
 
-PFaceList RecognitionManager::recognize(PFrameRegList& frameRegs) {
-	PFaceList result;
+FaceList RecognitionManager::recognize(PFrameRegList& frameRegs) {
+	FaceList result;
 	for (auto &pfr: frameRegs) {
 		_rn->set_vector(pfr);
-		PFace pf;
+		Face* pf = NULL;
 		for(auto &knwn_face: _faces) {
-			PFace& face = knwn_face.second;
+			Face& face = knwn_face.second;
 			if (isTheFace(face, pfr)) {
 				// Adding the face to the list of known faces...
-				pf = face;
-				LOG_DEBUG("Found a match of the face with already known face id=" << pf->getId());
+				pf = &face;
+				LOG_DEBUG("Found a match of the face with already known face id=" << pf->id);
 				break;
 			}
 		}
 
-		if (!pf.get()) {
+		if (!pf) {
 			for(auto &knwn_face: _faces) {
-				PFace& face = knwn_face.second;
+				Face& face = knwn_face.second;
 				isTheFace(face, pfr, true);
 			}
 			// We found new face, adding it here
-			pf = PFace(new Face(uuid()));
-			_faces[pf->getId()] = pf;
-			LOG_INFO("New face detected, id=" << pf->getId());
+			FaceId fid = uuid();
+			pf = &_faces[fid];
+			LOG_INFO("New face detected, pf=" << pf);
+			pf->id = fid;
+			LOG_INFO("New face detected, id=" << pf->id);
 		}
 
-		addRegionToFace(pf, pfr);
-		result.push_back(pf);
+		addRegionToFace(*pf, pfr);
+		result.push_back(pf->id);
 	}
 	return result;
 }
 
-bool RecognitionManager::isTheFace(PFace& face, PFrameRegion& pfr, bool log) {
+bool RecognitionManager::isTheFace(Face& face, PFrameRegion& pfr, bool log) {
 	if (log) {
 		LOG_INFO("Looking for region=" << pfr->getRectangle());
 	}
-	for (auto &reg: face->regions) {
+
+	for (auto &reg: face.regions) {
 		PFrameRegion& fr = reg.second;
 		float d = distance(fr->v128d(), pfr->v128d());
 		if (log) {
@@ -59,9 +62,9 @@ bool RecognitionManager::isTheFace(PFace& face, PFrameRegion& pfr, bool log) {
 	return false;
 }
 
-void RecognitionManager::addRegionToFace(PFace& face, PFrameRegion& reg) {
+void RecognitionManager::addRegionToFace(Face& face, PFrameRegion& reg) {
 	FrameId frid = reg->getFrame()->getId();
-	face->regions[frid] = reg;
+	face.regions[frid] = reg;
 }
 
 }

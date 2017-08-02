@@ -32,7 +32,7 @@ bool SceneDetector::consumeFrame(PFrame frame) {
 
 	LOG_DEBUG("SceneDetector: before detecting face");
 	PFrameRegList& hog_result = _hog_detector.detectRegions(frame);
-	PFaceList pfl = _rec_manager->recognize(hog_result);
+	FaceList pfl = _rec_manager->recognize(hog_result);
 	_scene_state.onFaces(pfl);
 	LOG_DEBUG("SceneDetector: after detecting face");
 
@@ -125,44 +125,44 @@ SceneState::SceneState(): _transitionTimeoutMs(4000), _state(SST_OBSERVING) {
 	_scene_since = _state_since;
 }
 
-static int compare(SceneState::FaceMap& m1, SceneState::FaceMap& m2) {
-	if (m1.size() != m2.size()) {
-		return  m1.size() > m2.size() ? 1 : -1;
+static int compare(SceneState::FaceSet& s1, SceneState::FaceSet& s2) {
+	if (s1.size() != s2.size()) {
+		return  s1.size() > s2.size() ? 1 : -1;
 	}
 
-	for (auto &e: m1) {
-		if (m2.find(e.first) == m2.end()) {
+	for (auto &e: s1) {
+		if (s2.find(e) == s2.end()) {
 			return 1;
 		}
 	}
 	return 0;
 }
 
-static void to_map(PFaceList pfl, SceneState::FaceMap& m) {
-	m.clear();
-	for (auto &pf: pfl) {
-		m[pf->getId()] = pf;
+static void to_map(FaceList& fl, SceneState::FaceSet& s) {
+	s.clear();
+	for (auto &f: fl) {
+		s.insert(f);
 	}
 }
 
-void SceneState::onFaces(PFaceList pfl) {
+void SceneState::onFaces(FaceList& fl) {
 	Timestamp now = ts_now();
-	SceneState::FaceMap faceMap;
-	to_map(pfl, faceMap);
+	SceneState::FaceSet faceSet;
+	to_map(fl, faceSet);
 	if (_state == SST_TRANSITION) {
-		int cmp = compare(faceMap, _lastReportedFaces);
-		_lastReportedFaces = faceMap;
+		int cmp = compare(faceSet, _lastReportedFaces);
+		_lastReportedFaces = faceSet;
 
 		if (_state_since + _transitionTimeoutMs < now || cmp > 0) {
 			// Time is out, or somebody come to the scene
 			LOG_DEBUG("SceneState switching to SST_OBSERVING by timeout.");
 			_state_since = now;
 			_state = SST_OBSERVING;
-			if (compare(_facesOnScene, faceMap) != 0) {
+			if (compare(_facesOnScene, faceSet) != 0) {
 				_scene_since = now;
-				LOG_INFO("SceneState: switching to SST_OBSERVING, but with a new person on the scene, or sombebody gone. Now " << faceMap.size() << " persons.");
+				LOG_INFO("SceneState: switching to SST_OBSERVING, but with a new person on the scene, or sombebody gone. Now " << faceSet.size() << " persons.");
 			}
-			_facesOnScene = faceMap;
+			_facesOnScene = faceSet;
 			return;
 		}
 
@@ -175,13 +175,13 @@ void SceneState::onFaces(PFaceList pfl) {
 	}
 
 	//SST_OBSERVING here
-	int cmp = compare(faceMap, _facesOnScene);
+	int cmp = compare(faceSet, _facesOnScene);
 	if (cmp > 0) {
 		// A new person come
-		LOG_INFO("SceneState: New person detected. Now " << faceMap.size() << " persons on the scene.");
+		LOG_INFO("SceneState: New person detected. Now " << faceSet.size() << " persons on the scene.");
 		_state_since = now;
 		_scene_since = now;
-		_facesOnScene = faceMap;
+		_facesOnScene = faceSet;
 		return;
 	}
 
@@ -189,7 +189,7 @@ void SceneState::onFaces(PFaceList pfl) {
 		LOG_DEBUG("SceneState: Somebody disappeared, switching to SST_TRANSITION");
 		_state = SST_TRANSITION;
 		_state_since = now;
-		_lastReportedFaces = faceMap;
+		_lastReportedFaces = faceSet;
 	}
 }
 

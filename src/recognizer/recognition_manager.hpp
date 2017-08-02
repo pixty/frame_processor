@@ -12,17 +12,22 @@
 
 namespace fproc {
 
+struct Face {
+	FaceId id;
+	std::map<FrameId, PFrameRegion> regions;
+};
+
 struct RecognitionManager {
 	RecognitionManager(std::shared_ptr<DnnFaceRecognitionNet> rn): _rn(rn) {}
 
 	// Returns list of faces found between provided frames
-	PFaceList recognize(PFrameRegList& frameRegs);
+	FaceList recognize(PFrameRegList& frameRegs);
 private:
-	bool isTheFace(PFace& face, PFrameRegion& reg, bool log = false);
-	void addRegionToFace(PFace& face, PFrameRegion& reg);
+	bool isTheFace(Face& face, PFrameRegion& reg, bool log = false);
+	void addRegionToFace(Face& face, PFrameRegion& reg);
 
 	std::shared_ptr<DnnFaceRecognitionNet> _rn;
-	std::map<FaceId, PFace> _faces;
+	std::map<FaceId, Face> _faces;
 };
 typedef std::shared_ptr<RecognitionManager> PRecognitionManager;
 

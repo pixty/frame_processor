@@ -16,10 +16,10 @@ struct SceneDetectorVisualizer;
 typedef std::unique_ptr<SceneDetectorVisualizer> PSceneDetectorVisualizer;
 
 struct SceneState {
-	typedef std::map<FaceId, PFace> FaceMap;
+	typedef std::set<FaceId> FaceSet;
 
 	SceneState();
-	void onFaces(PFaceList pfl);
+	void onFaces(FaceList& pfl);
 	void setTransitionTimeout(long tt_ms);
 
 private:
@@ -36,8 +36,8 @@ private:
 
 	long _transitionTimeoutMs;
 
-	FaceMap _facesOnScene;
-	FaceMap _lastReportedFaces;
+	FaceSet _facesOnScene;
+	FaceSet _lastReportedFaces;
 	int _state;
 	Timestamp _state_since;
 	Timestamp _scene_since;
