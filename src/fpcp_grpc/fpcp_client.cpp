@@ -80,22 +80,46 @@ void FpcpClient::check_response(grpc::Status& status, grpc::ClientContext& conte
 	}
 }
 
-void to_fpcpRect(fproc::Rectangle& r, fpcp::Rectangle rect) {
-
+void to_fpcpRect(const fproc::Rectangle& r, fpcp::Rectangle& rect) {
+	rect.set_top(r.top());
+	rect.set_left(r.left());
+	rect.set_bottom(r.bottom());
+	rect.set_right(r.right());
 }
 
 void to_fpcpFrame(fproc::PFrame pframe, fpcp::Frame& frame) {
+	frame.set_id(std::to_string(pframe->getId()));
+	frame.set_timestamp(pframe->getTimestamp());
 
+	fpcp::Size* size = frame.mutable_size();
+	size->set_width(pframe->get_mat().cols);
+	size->set_height(pframe->get_mat().rows);
+
+	std::vector<uchar>& ubuf = pframe->png_buf();
+	frame.set_data(&ubuf[0], ubuf.size());
+
+	frame.set_format(Frame_Format::Frame_Format_PNG);
+}
+
+void to_fpcpFace(const fproc::FrameFace ff, fpcp::Face& face) {
+	face.set_id(ff.faceId());
+	to_fpcpRect(ff.frameReg()->getRectangle(), *face.mutable_rect());
 }
 
 void to_fpcpScene(fproc::PScene pscene, fpcp::Scene& scene) {
-
+	to_fpcpFrame(pscene->getFrame(), *scene.mutable_frame());
+	for (auto ff: *pscene->getFrameFaceList()) {
+		fpcp::Face * face = scene.add_faces();
+		to_fpcpFace(ff, *face);
+	}
 }
 
 void FpcpClient::onScene(fproc::PScene pscene) {
 	check_session();
 
 	fpcp::Scene request;
+	to_fpcpScene(pscene, request);
+
 	fpcp::Void response;
 	grpc::ClientContext context;
 	context.AddMetadata(META_KEY_SESSION_ID, session_id_);

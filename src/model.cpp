@@ -35,6 +35,25 @@ Frame::DlibRgbImg& Frame::get_rgb_image() {
 	}
 	return *_rgb_img;
 }
+
+std::vector<uchar>& Frame::png_buf() {
+	if (formatted_buf_.size() > 0) {
+		return formatted_buf_;
+	}
+	formatted_buf_.clear();
+	std::vector<int> compression_params;
+	compression_params.push_back(cv::IMWRITE_PNG_COMPRESSION);
+	compression_params.push_back(9);
+
+	try {
+		cv::imencode(".png", _mat, formatted_buf_, compression_params);
+	} catch (cv::Exception& ex) {
+		LOG_ERROR("Exception converting image to PNG format: %s\n" << ex.what());
+		formatted_buf_.clear();
+	}
+	return formatted_buf_;
+}
+
 //================================== VideoStream ===============================
 void VideoStream::setResolution(int width, int height) {
 	_cap->set(CV_CAP_PROP_FRAME_WIDTH, width);

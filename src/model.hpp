@@ -107,6 +107,7 @@ namespace fproc {
 		DlibBgrImg& get_bgr_image();
 		DlibRgbImg& get_rgb_image();
 		CvBgrMat& get_mat() { return _mat; }
+		std::vector<uchar>& png_buf();
 
 	private:
 		FrameId _id;
@@ -114,6 +115,7 @@ namespace fproc {
 		CvBgrMat _mat;
 		bgr_image _bgr_img;
 		rgb_image _rgb_img;
+		std::vector<uchar> formatted_buf_;
 	};
 	typedef std::shared_ptr<Frame> PFrame;
 
