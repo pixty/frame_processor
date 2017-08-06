@@ -136,6 +136,23 @@ namespace fproc {
 	typedef std::shared_ptr<FrameRegion> PFrameRegion;
 	typedef std::list<PFrameRegion> PFrameRegList;
 
+	// A Face associated with a single frame only
+	struct FrameFace {
+		FrameFace(FaceId fid, const PFrameRegion fr): face_id_(fid), frame_reg_(fr) { };
+		FrameFace& operator=(const FrameFace& othr) {
+			face_id_ = othr.face_id_;
+			frame_reg_ = othr.frame_reg_;
+			return *this;
+		}
+		bool operator<(const FrameFace& othr) const { return face_id_ < othr.face_id_;}
+		const FaceId& faceId() const { return face_id_; }
+		const PFrameRegion frameReg() const { return frame_reg_; }
+	private:
+		FaceId face_id_;
+		PFrameRegion frame_reg_;
+	};
+	typedef std::list<const FrameFace> FrameFaceList;
+
 	/*
 	 * The ObjectDetector detects objects in a frame and returns their regions in the frame
 	 */
@@ -199,81 +216,7 @@ namespace fproc {
 		boost::mutex _lock;
 	};
 
-	/*
-	 * A Face description. An object which is built for describing a scene. It keeps a list
-	 * of images (frame regions) where the face was detected. Not all frames can be included into
-	 * the list, but only some images that can be helpful for further processing (good quality etc.)
-	 *
-	 * Same Faces are ALWAYS reported with same FaceId. It is SceneDetector responsibility to distinguish
-	 * faces, select the list of images and defines a strategy why it (SceneDetector) decides that
-	 * the images are for the same face.
-	 */
-//	struct Face {
-//		Face(const FaceId id):_id(id) {}
-//		Face(Face& face):_id(face._id), regions(face.regions) {}
-//
-//		const FaceId getId() const { return _id; }
-//
-//		std::map<FrameId, PFrameRegion> regions;
-//	private:
-//		const FaceId _id;
-//	};
-//	typedef std::shared_ptr<Face> PFace;
-//	typedef std::list<PFace> PFaceList;
-
-	/*
-	 * Scene is a cognitive description (or semantic) what is going on in the VideoStream at a moment.
-	 * The scene object is built by SceneDetector and it is a result of some frame processing and
-	 * conclusions made by the SceneDetector implementation logic.
-	 */
-//	struct Scene {
-//		Scene(): _since(NoTimestamp) {}
-//		Scene(Timestamp since): _since(since) {}
-//		Scene(Timestamp since, PFaceList& faces):_since(since), _faces(faces) {}
-//		Scene(Timestamp since, PFaceList& faces, PFrameRegion& frame):_since(since), _faces(faces), _frame(frame) {}
-//		Scene(Scene& s): Scene(s._since, s._faces, s._frame) {}
-//
-//		// Returns list of faces, who are on the scene right now
-//		inline PFaceList& getFaces() { return _faces; }
-//		inline void setFaces(PFaceList& faces) { _faces = faces; };
-//		inline const PFaceList& getFaces() const { return _faces; }
-//
-//		// Returns timestamp when the scene forms. Actually it is a moment when the
-//		// SceneDetector "built" the faces list first time.
-//		inline Timestamp since() const { return _since; }
-//		inline void since(Timestamp ts) { _since = ts; }
-//
-//		// Returns the scene frame
-//		inline PFrameRegion& frame() { return _frame;}
-//		inline const PFrameRegion& frame() const { return _frame;}
-//		inline void frame(PFrameRegion& frame) { _frame = frame; }
-//
-//	private:
-//		Timestamp _since;
-//		PFaceList _faces;
-//
-//		// Optional. Contains frame for the scene
-//		PFrameRegion _frame;
-//	};
-//	typedef std::shared_ptr<Scene> PScene;
-
-	/*
-	 * An interface which defines notifications that SceneDetector implementation can call
-	 * during video stream processing.
-	 */
-	struct SceneDetectorListener {
-		virtual void onStarted(VideoStreamConsumer& sceneDetector) {};
-		// Invoked when the scene is changed (first time captured)
-		//virtual void onSceneChanged(const Scene& scene) {};
-		// Invoked when the scene is updated (not changed, but some parameters are changed)
-		//virtual void onSceneUpdated(const Scene& scene) {};
-		virtual void onStopped() {};
-		virtual ~SceneDetectorListener() {}
-	};
-	typedef std::unique_ptr<SceneDetectorListener> PSceneDetectorListener;
-
 	std::string uuid();
-
 };
 // namespace
 

@@ -10,8 +10,7 @@
 
 namespace fproc {
 
-FaceList RecognitionManager::recognize(PFrameRegList& frameRegs) {
-	FaceList result;
+void RecognitionManager::recognize(PFrameRegList& frameRegs, FrameFaceList& result) {
 	for (auto &pfr: frameRegs) {
 		_rn->set_vector(pfr);
 		Face* pf = NULL;
@@ -39,9 +38,8 @@ FaceList RecognitionManager::recognize(PFrameRegList& frameRegs) {
 		}
 
 		addRegionToFace(*pf, pfr);
-		result.push_back(pf->id);
+		result.push_back(FrameFace(pf->id, pfr));
 	}
-	return result;
 }
 
 bool RecognitionManager::isTheFace(Face& face, PFrameRegion& pfr, bool log) {

@@ -32,8 +32,10 @@ bool SceneDetector::consumeFrame(PFrame frame) {
 
 	LOG_DEBUG("SceneDetector: before detecting face");
 	PFrameRegList& hog_result = _hog_detector.detectRegions(frame);
-	FaceList pfl = _rec_manager->recognize(hog_result);
-	_scene_state.onFaces(pfl);
+	FrameFaceList frame_faces;
+	_rec_manager->recognize(hog_result, frame_faces);
+	_scene_state.onFaces(frame_faces);
+	_listener->onFaces(frame_faces);
 	LOG_DEBUG("SceneDetector: after detecting face");
 
 	if (_sc_visualizer) {
@@ -138,14 +140,14 @@ static int compare(SceneState::FaceSet& s1, SceneState::FaceSet& s2) {
 	return 0;
 }
 
-static void to_map(FaceList& fl, SceneState::FaceSet& s) {
+static void to_map(FrameFaceList& fl, SceneState::FaceSet& s) {
 	s.clear();
 	for (auto &f: fl) {
 		s.insert(f);
 	}
 }
 
-void SceneState::onFaces(FaceList& fl) {
+void SceneState::onFaces(FrameFaceList& fl) {
 	Timestamp now = ts_now();
 	SceneState::FaceSet faceSet;
 	to_map(fl, faceSet);

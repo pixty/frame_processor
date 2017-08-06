@@ -16,10 +16,10 @@ struct SceneDetectorVisualizer;
 typedef std::unique_ptr<SceneDetectorVisualizer> PSceneDetectorVisualizer;
 
 struct SceneState {
-	typedef std::set<FaceId> FaceSet;
+	typedef std::set<FrameFace> FaceSet;
 
 	SceneState();
-	void onFaces(FaceList& pfl);
+	void onFaces(FrameFaceList& faces);
 	void setTransitionTimeout(long tt_ms);
 
 private:
@@ -43,6 +43,18 @@ private:
 	Timestamp _scene_since;
 };
 
+/*
+ * An interface which defines notifications that SceneDetector implementation can call
+ * during video stream processing.
+ */
+struct SceneDetectorListener {
+	virtual void onStarted(VideoStreamConsumer& sceneDetector) {};
+	virtual void onStopped() {};
+	virtual void onFaces(const FrameFaceList& fcList) {};
+	virtual ~SceneDetectorListener() {}
+};
+typedef std::unique_ptr<SceneDetectorListener> PSceneDetectorListener;
+
 struct SceneDetector: public VideoStreamConsumer {
 	SceneDetector(PSceneDetectorListener listener, PRecognitionManager recManager);
 
@@ -63,7 +75,7 @@ private:
 	PSceneDetectorVisualizer _sc_visualizer;
 };
 
-struct SceneDetectorVisualizer: public SceneDetectorListener {
+struct SceneDetectorVisualizer {
 	SceneDetectorVisualizer(SceneDetector& scn_detector): _scn_detector(scn_detector), _new_frame(false) {}
 	virtual ~SceneDetectorVisualizer();
 

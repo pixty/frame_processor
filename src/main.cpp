@@ -14,7 +14,7 @@
 #include "video_streaming/webcam_video_stream.hpp"
 #include "video_streaming/file_video_stream.hpp"
 #include "video_streaming/image_window.hpp"
-#include "frame_processing/scene_detector.hpp"
+#include "frame_processing/fpcp_connector.hpp"
 #include "recognizer/recognition_manager.hpp"
 
 namespace po = boost::program_options;
@@ -26,6 +26,9 @@ int main(int argc, char** argv) {
 			("debug", po::value<bool>()->default_value(false), "Enable debug log level")
 			("res_path", po::value<std::string>(), "Path to the data files place.")
 			("src_file", po::value<std::string>(), "Read frame stream from the file")
+			("sp_address", po::value<std::string>()->default_value("localhost:50051"), "Address for connecting to Service provider.")
+			("access_key", po::value<std::string>(), "Authentication access key")
+			("secret_key", po::value<std::string>(), "Authentication secret key")
 			("dst_display", po::value<bool>()->default_value(false), "Snow stream on the screen.")
 			("scn_no_visual", po::value<bool>()->default_value(false), "Do not visualize scene detection.");
 
@@ -60,13 +63,31 @@ int main(int argc, char** argv) {
 			res_path + "shape_predictor_68_face_landmarks.dat"));
 	PRecognitionManager rm(new RecognitionManager(rn));
 
+	// Creating gRPC connection to Service Provider
+	std::string sp_address = vm["sp_address"].as<std::string>();
+	LOG_INFO("Service provider address is " << sp_address);
+
+	// Auth token
+	std::string access_key = vm.count("access_key") ? vm["access_key"].as<std::string>() : "";
+	if (access_key.size() == 0) {
+		LOG_WARN("No access key.");
+	} else {
+		LOG_INFO("access key is " << access_key);
+	}
+
+	std::string secret_key = vm.count("secret_key") ? vm["secret_key"].as<std::string>() : "";
+	if (secret_key.size() == 0) {
+		LOG_WARN("No secret key.");
+	}
+
+	// Creating video stream consumer
 	fproc::PVideoStreamConsumer dst;
 	if (vm["dst_display"].as<bool>()) {
 		LOG_INFO("Will show video in a window");
 		dst = PVideoStreamConsumer(new ImageWindow());
 	} else {
 		LOG_INFO("Using standard scene detector");
-		SceneDetector* sd = new SceneDetector(PSceneDetectorListener(new SceneDetectorListener()), rm);
+		SceneDetector* sd = new SceneDetector(PSceneDetectorListener(new FpcpConnector(sp_address, access_key, secret_key)), rm);
 		if (!vm["scn_no_visual"].as<bool>()) {
 			LOG_INFO("Will visualize scene detection");
 			sd->setVisualizer(new SceneDetectorVisualizer(*sd));

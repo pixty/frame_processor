@@ -9,6 +9,17 @@
 #define SRC_LOGGER_HPP_
 
 #include <iostream>
+#include <map>
+
+template <typename T1, typename T2>
+inline std::ostream& operator<<(std::ostream& ostr, const std::multimap<T1, T2>& mm) {
+	ostr << "[";
+	for (typename std::multimap<T1, T2>::const_iterator it = mm.begin(); it != mm.end();++it) {
+		ostr << (*it).first << " " << (*it).second;
+	};
+	ostr << "]";
+	return ostr;
+}
 
 struct None {
 };

@@ -40,12 +40,18 @@ else()
     message(FATAL_ERROR "OpenCV not found, please install it.")
 endif()
 
+# Boost
 FIND_PACKAGE(Boost REQUIRED program_options signals thread system)
 if (Boost_FOUND)
     INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 else()
     message(FATAL_ERROR "Boost not found, please install it.")
 endif()
+
+# gRPC stuff
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+find_package(Protobuf REQUIRED)
+find_package(GRPC REQUIRED)
 
 #include_directories(${CPR_INCLUDE_DIRS})
 
@@ -62,6 +68,8 @@ set(SRC_LIST
 	frame_processing/object_tracker.cpp
 	frame_processing/scene_detector.hpp
 	frame_processing/scene_detector.cpp
+	frame_processing/fpcp_connector.hpp
+	frame_processing/fpcp_connector.cpp
     video_streaming/file_video_stream.cpp
     video_streaming/file_video_stream.hpp
     video_streaming/image_window.hpp
@@ -71,6 +79,12 @@ set(SRC_LIST
     recognizer/dnn_face_recognition_model.hpp
     recognizer/recognition_manager.hpp
     recognizer/recognition_manager.cpp
+    fpcp_grpc/fpcp.grpc.pb.cc
+    fpcp_grpc/fpcp.grpc.pb.h
+    fpcp_grpc/fpcp.pb.cc
+    fpcp_grpc/fpcp.pb.h
+    fpcp_grpc/fpcp_client.hpp
+    fpcp_grpc/fpcp_client.cpp
     logger.cpp
     logger.hpp
     main.cpp
@@ -80,7 +94,7 @@ set(SRC_LIST
 
 add_executable(frame_processor ${SRC_LIST})
 # set_target_properties(frame_processor PROPERTIES OUTPUT_NAME "fp")
-target_link_libraries(frame_processor dlib::dlib ${OpenCV_LIBS} ${Boost_LIBRARIES})
+target_link_libraries(frame_processor dlib::dlib ${OpenCV_LIBS} ${Boost_LIBRARIES} protobuf::libprotobuf gRPC::grpc++_reflection)
 
 # copy resources function
 
