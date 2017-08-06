@@ -22,7 +22,7 @@ class DnnFaceRecognitionNet {
                               const string &face_landmarks_model_fn=string("shape_predictor_68_face_landmarks.dat"));
 
         const V128Ds face_descriptors(const matrix<rgb_pixel> img, const BBoxes bounding_boxes);
-        void set_vector(PFrameRegion fr);
+        void set_vector(PFrame f, PFrameRegion fr);
 
     private:
         // ----------------------------------------------------------------------------------------

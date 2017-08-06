@@ -33,7 +33,7 @@ namespace fproc {
 	 * Face descriptor in 128-dimensional space
 	 */
 	typedef dlib::matrix<float,0,1> V128D;
-	float distance(V128D &v1, V128D &v2);
+	float distance(const V128D &v1, const V128D &v2);
 
 	Rectangle toRectangle(const cv::Rect2d& cv_rect);
 	Rectangle toRectangle(const CvRect& cv_rect);
@@ -119,19 +119,24 @@ namespace fproc {
 
 	/*
 	 * FrameRegion - describes a region in a frame. Used for describing objects
-	 * in a frame. Always has a non-NULL frame because it connects to it.
+	 * in a frame. Always has a non-NULL frame id because it connects to it.
 	 */
 	struct FrameRegion {
-		FrameRegion(PFrame pFrame, const Rectangle& rec) : _frame(pFrame), _rec(rec) {}
-		const PFrame getFrame() const { return _frame; }
+		FrameRegion(PFrame pFrame, const Rectangle& rec) : frame_id_(pFrame->getId()), _rec(rec), v128d_(NULL) {}
+		virtual ~FrameRegion() {
+			if (v128d_) {
+				delete v128d_;
+			}
+		}
+		const FrameId& getFrameId() const { return frame_id_; }
 		const Rectangle& getRectangle() const { return _rec; }
-		V128D& v128d() {return _v128d;};
-		void set_vector(const V128D& v) { _v128d = v;};
+		const V128D* v128d() const { return v128d_; };
+		void set_vector(const V128D& v) { v128d_ = new V128D(v);};
 
 	private:
-		const PFrame _frame;
+		const FrameId frame_id_;
 		const Rectangle _rec;
-		V128D _v128d;
+		V128D* v128d_;
 	};
 	typedef std::shared_ptr<FrameRegion> PFrameRegion;
 	typedef std::list<PFrameRegion> PFrameRegList;
@@ -152,6 +157,17 @@ namespace fproc {
 		PFrameRegion frame_reg_;
 	};
 	typedef std::list<const FrameFace> FrameFaceList;
+	typedef std::shared_ptr<FrameFaceList> PFrameFaceList;
+
+	struct Scene {
+		Scene(PFrame frame, PFrameFaceList flist): frame_(frame), flist_(flist) {}
+		PFrame getFrame() { return frame_; };
+		const PFrameFaceList& getFrameFaceList() const { return flist_; }
+	private:
+		PFrame frame_;
+		PFrameFaceList flist_;
+	};
+	typedef std::shared_ptr<Scene> PScene;
 
 	/*
 	 * The ObjectDetector detects objects in a frame and returns their regions in the frame

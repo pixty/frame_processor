@@ -122,7 +122,7 @@ std::string uuid() {
 	return boost::lexical_cast<std::string>(ug());
 };
 
-float distance(V128D &v1, V128D &v2) {
+float distance(const V128D &v1, const V128D &v2) {
 	return dlib::length(v1-v2);
 };
 

@@ -10,9 +10,10 @@
 
 namespace fproc {
 
-void RecognitionManager::recognize(PFrameRegList& frameRegs, FrameFaceList& result) {
+PFrameFaceList RecognitionManager::recognize(PFrame& frame, PFrameRegList& frameRegs) {
+	PFrameFaceList result(new FrameFaceList());
 	for (auto &pfr: frameRegs) {
-		_rn->set_vector(pfr);
+		_rn->set_vector(frame, pfr);
 		Face* pf = NULL;
 		for(auto &knwn_face: _faces) {
 			Face& face = knwn_face.second;
@@ -38,8 +39,9 @@ void RecognitionManager::recognize(PFrameRegList& frameRegs, FrameFaceList& resu
 		}
 
 		addRegionToFace(*pf, pfr);
-		result.push_back(FrameFace(pf->id, pfr));
+		result->push_back(FrameFace(pf->id, pfr));
 	}
+	return result;
 }
 
 bool RecognitionManager::isTheFace(Face& face, PFrameRegion& pfr, bool log) {
@@ -49,7 +51,7 @@ bool RecognitionManager::isTheFace(Face& face, PFrameRegion& pfr, bool log) {
 
 	for (auto &reg: face.regions) {
 		PFrameRegion& fr = reg.second;
-		float d = distance(fr->v128d(), pfr->v128d());
+		float d = distance(*fr->v128d(), *pfr->v128d());
 		if (log) {
 			LOG_INFO("\twith region=" << fr->getRectangle() << ", distance d=" << d);
 		}
@@ -61,7 +63,7 @@ bool RecognitionManager::isTheFace(Face& face, PFrameRegion& pfr, bool log) {
 }
 
 void RecognitionManager::addRegionToFace(Face& face, PFrameRegion& reg) {
-	FrameId frid = reg->getFrame()->getId();
+	FrameId frid = reg->getFrameId();
 	face.regions[frid] = reg;
 }
 

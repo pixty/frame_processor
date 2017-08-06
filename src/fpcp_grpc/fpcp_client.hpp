@@ -13,10 +13,6 @@
 namespace fpcp {
 namespace rpc {
 
-struct Scene {
-
-};
-
 // Scene Processor can throw the errors
 enum Error {
 	NONE = 0,
@@ -29,7 +25,7 @@ enum Error {
 
 struct SceneProcessor {
 	virtual ~SceneProcessor(){}
-	virtual void onScene(Scene& s) {};
+	virtual void onScene(fproc::PScene pscene) {};
 };
 typedef std::shared_ptr<SceneProcessor> PSceneProcessor;
 

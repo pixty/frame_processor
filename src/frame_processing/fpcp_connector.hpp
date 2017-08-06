@@ -19,10 +19,12 @@ public:
 	FpcpConnector(std::string sp_address, std::string akey, std::string skey): sp_address_(sp_address), access_key_(akey), secret_key_(skey) , scene_detector_(NULL) {
 		reconnect();
 	}
+
+	void setMaxScenesSize(int scenesSize) { max_scenes_size_ = scenesSize; }
 	void onStarted(VideoStreamConsumer& sceneDetector);
 	void onStopped();
 	// Unblocking call which sends a signal to scene_updater() to update the scene.
-	void onFaces(const FrameFaceList& fcList);
+	void onScene(PScene ps);
 
 private:
 	// Them method is updating scenes in a separate thread.
@@ -32,11 +34,15 @@ private:
 		scp_ = fpcp::rpc::connectGRPC(sp_address_, access_key_, secret_key_);
 	}
 
+	int max_scenes_size_ = 50;
+
 	std::string sp_address_;
 	std::string access_key_;
 	std::string secret_key_;
 	fpcp::rpc::PSceneProcessor scp_;
+	std::list<PScene> scenes_;
 
+	volatile bool started_;
 	VideoStreamConsumer* scene_detector_;
 	PThread thread_;
 	boost::mutex lock_;

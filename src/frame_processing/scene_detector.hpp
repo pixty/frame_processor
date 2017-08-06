@@ -19,7 +19,7 @@ struct SceneState {
 	typedef std::set<FrameFace> FaceSet;
 
 	SceneState();
-	void onFaces(FrameFaceList& faces);
+	void onScene(PScene scene);
 	void setTransitionTimeout(long tt_ms);
 
 private:
@@ -50,7 +50,7 @@ private:
 struct SceneDetectorListener {
 	virtual void onStarted(VideoStreamConsumer& sceneDetector) {};
 	virtual void onStopped() {};
-	virtual void onFaces(const FrameFaceList& fcList) {};
+	virtual void onScene(PScene scene) {};
 	virtual ~SceneDetectorListener() {}
 };
 typedef std::unique_ptr<SceneDetectorListener> PSceneDetectorListener;

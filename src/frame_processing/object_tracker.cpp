@@ -13,7 +13,8 @@ namespace fproc {
 ObjectTracker::ObjectTracker() {
 }
 
-void ObjectTracker::setRegion(PFrameRegion region) {
+void ObjectTracker::setRegion(PFrame frame, PFrameRegion region) {
+	frame_ = frame;
 	_region = region;
 }
 
@@ -23,7 +24,7 @@ bool ObjectTracker::startTracking() {
 	}
 	LOG_INFO("ObjectTracker: start tracking");
 	_cvTracker = cv::Tracker::create("MEDIANFLOW");
-	Frame::CvBgrMat& mat = _region->getFrame()->get_mat();
+	Frame::CvBgrMat& mat = frame_->get_mat();
 	CvRect r = toCvRect(_region->getRectangle());
 	_region.reset();
 	if (!_cvTracker->init(mat, r)) {

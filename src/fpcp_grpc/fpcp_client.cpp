@@ -20,7 +20,7 @@ protected:
 	}
 
 public:
-	void onScene(Scene& s);
+	void onScene(fproc::PScene pscene);
 
 private:
 	void authenticate(grpc::ClientContext& context);
@@ -80,7 +80,19 @@ void FpcpClient::check_response(grpc::Status& status, grpc::ClientContext& conte
 	}
 }
 
-void FpcpClient::onScene(Scene& s) {
+void to_fpcpRect(fproc::Rectangle& r, fpcp::Rectangle rect) {
+
+}
+
+void to_fpcpFrame(fproc::PFrame pframe, fpcp::Frame& frame) {
+
+}
+
+void to_fpcpScene(fproc::PScene pscene, fpcp::Scene& scene) {
+
+}
+
+void FpcpClient::onScene(fproc::PScene pscene) {
 	check_session();
 
 	fpcp::Scene request;

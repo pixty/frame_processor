@@ -37,10 +37,11 @@ private:
 
 struct ObjectTracker {
 	ObjectTracker();
-	void setRegion(PFrameRegion region);
+	void setRegion(PFrame frame, PFrameRegion region);
 	bool startTracking();
 	PFrameRegion track(PFrame pFrame);
 private:
+	PFrame frame_;
 	PFrameRegion _region;
 	cv::Ptr<cv::Tracker> _cvTracker;
 };

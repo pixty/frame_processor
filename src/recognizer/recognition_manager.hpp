@@ -21,7 +21,7 @@ struct RecognitionManager {
 	RecognitionManager(std::shared_ptr<DnnFaceRecognitionNet> rn): _rn(rn) {}
 
 	// Returns list of faces found between provided frames
-	void recognize(PFrameRegList& frameRegs, FrameFaceList& res);
+	PFrameFaceList recognize(PFrame& frame, PFrameRegList& frameRegs);
 private:
 	bool isTheFace(Face& face, PFrameRegion& reg, bool log = false);
 	void addRegionToFace(Face& face, PFrameRegion& reg);
