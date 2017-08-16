@@ -19,7 +19,8 @@ struct SceneState {
 	typedef std::set<FrameFace> FaceSet;
 
 	SceneState();
-	void onScene(PScene scene);
+	// show the scene. Returns whether the scene should be reported to SP or not
+	bool onScene(PScene scene);
 	void setTransitionTimeout(long tt_ms);
 
 private:
@@ -34,6 +35,8 @@ private:
 	const static int SST_OBSERVING = 0;
 	const static int SST_TRANSITION = 1;
 
+	bool shouldReport(Timestamp at);
+
 	long _transitionTimeoutMs;
 
 	FaceSet _facesOnScene;
@@ -41,6 +44,7 @@ private:
 	int _state;
 	Timestamp _state_since;
 	Timestamp _scene_since;
+	Timestamp next_report_at_ = 0;
 };
 
 /*

@@ -40,7 +40,7 @@ std::vector<uchar>& Frame::png_buf() {
 	if (formatted_buf_.size() > 0) {
 		return formatted_buf_;
 	}
-	formatted_buf_.clear();
+	formatted_buf_.reserve(2000000);
 	std::vector<int> compression_params;
 	compression_params.push_back(cv::IMWRITE_PNG_COMPRESSION);
 	compression_params.push_back(9);

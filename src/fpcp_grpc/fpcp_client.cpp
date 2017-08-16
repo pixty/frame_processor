@@ -74,6 +74,10 @@ void FpcpClient::check_response(grpc::Status& status, grpc::ClientContext& conte
 	}
 
 	Error err = getErrorVal(context);
+	if (err == Error::AUTH_REQUIRED) {
+		session_id_ = "";
+		LOG_WARN("FpcpClient: gRPC call to \"" << method << "\" was successful, but SP returns AUTH_REQUIRED. Dropping current session_id_");
+	}
 	if (err != Error::NONE) {
 		LOG_WARN("FpcpClient: gRPC call to \"" << method << "\" was successful, but SP returns the error in meta-data: err=" << err << ", current session_id=" << session_id_);
 		throw err;

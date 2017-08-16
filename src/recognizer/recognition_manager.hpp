@@ -12,22 +12,31 @@
 
 namespace fproc {
 
-struct Face {
-	FaceId id;
-	std::map<FrameId, PFrameRegion> regions;
-};
+struct Face;
 
 struct RecognitionManager {
 	RecognitionManager(std::shared_ptr<DnnFaceRecognitionNet> rn): _rn(rn) {}
 
 	// Returns list of faces found between provided frames
 	PFrameFaceList recognize(PFrame& frame, PFrameRegList& frameRegs);
+
+	// every face has no more than maxVectorsPerFace vectors. All faces should not exceed maxVectors
+	void setLimits(int maxVectors, int maxVectorsPerFace) {
+		max_vectors_ = maxVectors;
+		max_vectors_per_face_ = maxVectorsPerFace;
+	}
 private:
+	typedef std::list<Face*> face_ptrs;
 	bool isTheFace(Face& face, PFrameRegion& reg, bool log = false);
-	void addRegionToFace(Face& face, PFrameRegion& reg);
+	void sweep();
+
+	// constrains
+	int max_vectors_ = 50000;
+	int max_vectors_per_face_ = 50;
 
 	std::shared_ptr<DnnFaceRecognitionNet> _rn;
-	std::map<FaceId, Face> _faces;
+	face_ptrs faces_;
+	int sweep_count_ = 0;
 };
 typedef std::shared_ptr<RecognitionManager> PRecognitionManager;
 

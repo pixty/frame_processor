@@ -29,8 +29,8 @@ int main(int argc, char** argv) {
 			("sp_address", po::value<std::string>()->default_value("localhost:50051"), "Address for connecting to Service provider.")
 			("access_key", po::value<std::string>(), "Authentication access key")
 			("secret_key", po::value<std::string>(), "Authentication secret key")
-			("dst_display", po::value<bool>()->default_value(false), "Snow stream on the screen.")
-			("scn_no_visual", po::value<bool>()->default_value(false), "Do not visualize scene detection.");
+			("dst_display", po::value<bool>()->default_value(false), "Don't try to detect, but snow camera video-stream on the screen.")
+			("scn_no_visual", po::value<bool>()->default_value(false), "Do not visualize scene detection (no video scene on the screen).");
 
 	po::variables_map vm;
 	po::store(po::parse_command_line(argc, argv, desc), vm);

@@ -65,7 +65,7 @@ set(SRC_LIST
 	frame_processing/haarcascade_frontalface_default_xml.cpp
 	frame_processing/haarcascade_frontalface_default_xml.hpp
 	frame_processing/object_detectors.hpp
-	frame_processing/object_tracker.cpp
+#	frame_processing/object_tracker.cpp
 	frame_processing/scene_detector.hpp
 	frame_processing/scene_detector.cpp
 	frame_processing/fpcp_connector.hpp

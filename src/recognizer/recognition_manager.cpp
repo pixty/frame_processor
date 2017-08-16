@@ -10,37 +10,42 @@
 
 namespace fproc {
 
+struct Face {
+	FaceId id;
+	list<PFrameRegion> regions;
+};
+
 PFrameFaceList RecognitionManager::recognize(PFrame& frame, PFrameRegList& frameRegs) {
 	PFrameFaceList result(new FrameFaceList());
 	for (auto &pfr: frameRegs) {
 		_rn->set_vector(frame, pfr);
 		Face* pf = NULL;
-		for(auto &knwn_face: _faces) {
-			Face& face = knwn_face.second;
+		for(face_ptrs::iterator knwn_face = faces_.begin(); knwn_face != faces_.end(); knwn_face++) {
+			Face& face = **knwn_face;
 			if (isTheFace(face, pfr)) {
-				// Adding the face to the list of known faces...
 				pf = &face;
+				if (knwn_face != faces_.begin()) {
+					faces_.erase(knwn_face);
+					faces_.push_front(pf);
+				}
 				LOG_DEBUG("Found a match of the face with already known face id=" << pf->id);
 				break;
 			}
 		}
 
 		if (!pf) {
-			for(auto &knwn_face: _faces) {
-				Face& face = knwn_face.second;
-				isTheFace(face, pfr, true);
-			}
 			// We found new face, adding it here
 			FaceId fid = uuid();
-			pf = &_faces[fid];
-			LOG_INFO("New face detected, pf=" << pf);
+			pf = new Face();
+			faces_.push_front(pf);
 			pf->id = fid;
 			LOG_INFO("New face detected, id=" << pf->id);
 		}
 
-		addRegionToFace(*pf, pfr);
+		pf->regions.push_back(pfr);
 		result->push_back(FrameFace(pf->id, pfr));
 	}
+	sweep();
 	return result;
 }
 
@@ -49,22 +54,37 @@ bool RecognitionManager::isTheFace(Face& face, PFrameRegion& pfr, bool log) {
 		LOG_INFO("Looking for region=" << pfr->getRectangle());
 	}
 
-	for (auto &reg: face.regions) {
-		PFrameRegion& fr = reg.second;
+	for (auto &fr: face.regions) {
 		float d = distance(*fr->v128d(), *pfr->v128d());
 		if (log) {
 			LOG_INFO("\twith region=" << fr->getRectangle() << ", distance d=" << d);
 		}
-		if (d < 0.58) {
+		if (d < 0.59) {
 			return true;
 		}
 	}
 	return false;
 }
 
-void RecognitionManager::addRegionToFace(Face& face, PFrameRegion& reg) {
-	FrameId frid = reg->getFrameId();
-	face.regions[frid] = reg;
+void RecognitionManager::sweep() {
+	if (sweep_count_++ < max_vectors_per_face_) {
+		return;
+	}
+	sweep_count_ = 0;
+	int count = 0;
+	for(auto &face: faces_) {
+		while (face->regions.size() > max_vectors_per_face_) {
+			face->regions.pop_front();
+		}
+		count += face->regions.size();
+	}
+
+	while (count > max_vectors_) {
+		Face* f = faces_.back();
+		count -= f->regions.size();
+		// oldest one
+		faces_.pop_back();
+	}
 }
 
 }

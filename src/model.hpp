@@ -158,13 +158,13 @@ namespace fproc {
 		FaceId face_id_;
 		PFrameRegion frame_reg_;
 	};
-	typedef std::list<const FrameFace> FrameFaceList;
+	typedef std::list<FrameFace> FrameFaceList;
 	typedef std::shared_ptr<FrameFaceList> PFrameFaceList;
 
 	struct Scene {
 		Scene(PFrame frame, PFrameFaceList flist): frame_(frame), flist_(flist) {}
 		PFrame getFrame() { return frame_; };
-		const PFrameFaceList& getFrameFaceList() const { return flist_; }
+		PFrameFaceList getFrameFaceList() const { return flist_; }
 	private:
 		PFrame frame_;
 		PFrameFaceList flist_;
