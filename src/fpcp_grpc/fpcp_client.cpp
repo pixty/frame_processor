@@ -63,6 +63,10 @@ Error getErrorVal(const grpc::ClientContext& context) {
 		LOG_WARN("FpcpClient: SP returns - Wrong credentials.");
 		return Error::WRONG_CREDENTIALS;
 	}
+	if (err == "3") {
+		LOG_WARN("FpcpClient: SP returns - Unable. Try again later.");
+		return Error::TRY_AGAIN_LATER;
+	}
 	LOG_WARN("FpcpClient: SP returns error=\"" << err << "\"");
 	return Error::UNKNOWN;
 }
@@ -116,6 +120,9 @@ void to_fpcpScene(fproc::PScene pscene, fpcp::Scene& scene) {
 		fpcp::Face * face = scene.add_faces();
 		to_fpcpFace(ff, *face);
 	}
+	scene.set_id(pscene->getId());
+	scene.set_since(pscene->getSince());
+	scene.set_persons(pscene->getPersons());
 }
 
 void FpcpClient::onScene(fproc::PScene pscene) {

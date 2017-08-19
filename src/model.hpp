@@ -163,11 +163,24 @@ namespace fproc {
 
 	struct Scene {
 		Scene(PFrame frame, PFrameFaceList flist): frame_(frame), flist_(flist) {}
-		PFrame getFrame() { return frame_; };
-		PFrameFaceList getFrameFaceList() const { return flist_; }
+		inline PFrame getFrame() { return frame_; };
+		inline PFrameFaceList getFrameFaceList() const { return flist_; }
+
+		inline std::string getId() const { return id_; }
+		void setId(std::string id) {id_ = id;}
+
+		inline Timestamp getSince() const { return since_; }
+		void setSince(Timestamp ts) { since_ = ts;}
+
+		inline int getPersons() {return persons_;}
+		void setPersons(int persons) {persons_ = persons;}
 	private:
 		PFrame frame_;
 		PFrameFaceList flist_;
+
+		std::string id_;
+		Timestamp since_ = 0;
+		int persons_ = 0;
 	};
 	typedef std::shared_ptr<Scene> PScene;
 

@@ -64,6 +64,7 @@ void FpcpConnector::scene_updater() {
 			if (e == fpcp::rpc::Error::WRONG_CREDENTIALS) {
 				LOG_ERROR("FpcpClient reports about wrong credentials, stopping processing :(.");
 				scene_detector_->close();
+				break;
 			}
 		}
 	}

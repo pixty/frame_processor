@@ -35,7 +35,7 @@ private:
 	const static int SST_OBSERVING = 0;
 	const static int SST_TRANSITION = 1;
 
-	bool shouldReport(Timestamp at);
+	bool shouldReport(Timestamp at, PScene ps);
 
 	long _transitionTimeoutMs;
 

@@ -18,6 +18,7 @@ enum Error {
 	NONE = 0,
 	AUTH_REQUIRED = 1,
 	WRONG_CREDENTIALS = 2,
+	TRY_AGAIN_LATER = 3,
 	GRPC_FAILED, // connection with SP is failed or wire is broken
 	PROTOCOL_ISSUE, // the expectations are not met
 	UNKNOWN

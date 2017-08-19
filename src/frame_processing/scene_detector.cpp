@@ -169,7 +169,7 @@ bool SceneState::onScene(PScene ps) {
 				LOG_INFO("SceneState: switching to SST_OBSERVING, but with a new person on the scene, or sombebody gone. Now " << faceSet.size() << " persons.");
 			}
 			_facesOnScene = faceSet;
-			return shouldReport(now);
+			return shouldReport(now, ps);
 		}
 
 		if (cmp < 0) {
@@ -177,7 +177,7 @@ bool SceneState::onScene(PScene ps) {
 			_state_since += _transitionTimeoutMs/2;
 			LOG_DEBUG("SceneState: prolonging SST_TRANSITION due to a person gone.");
 		}
-		return shouldReport(now);
+		return shouldReport(now, ps);
 	}
 
 	//SST_OBSERVING here
@@ -189,7 +189,7 @@ bool SceneState::onScene(PScene ps) {
 		_scene_since = now;
 		next_report_at_ = 0;
 		_facesOnScene = faceSet;
-		return shouldReport(now);
+		return shouldReport(now, ps);
 	}
 
 	if (cmp < 0) {
@@ -198,14 +198,21 @@ bool SceneState::onScene(PScene ps) {
 		_state_since = now;
 		_lastReportedFaces = faceSet;
 	}
-	return shouldReport(now);
+	return shouldReport(now, ps);
 }
 
-bool SceneState::shouldReport(Timestamp at) {
-	if (at < next_report_at_ || _facesOnScene.size() == 0) {
+bool SceneState::shouldReport(Timestamp at, PScene ps) {
+	if (at < next_report_at_) {
 		return false;
 	}
-	if (at - _scene_since > 5000) {
+
+	ps->setId(std::to_string(_scene_since));
+	ps->setSince(_scene_since);
+	ps->setPersons(_facesOnScene.size());
+
+	if (_facesOnScene.size() == 0) {
+		next_report_at_ = at + 5000;
+	} else if (at - _scene_since > 5000) {
 		next_report_at_ = at + 5000;
 	} else if (at - _scene_since > 3000) {
 		next_report_at_ = at + 2000;
@@ -214,6 +221,7 @@ bool SceneState::shouldReport(Timestamp at) {
 	} else {
 		next_report_at_ = at;
 	}
+
 	return true;
 }
 

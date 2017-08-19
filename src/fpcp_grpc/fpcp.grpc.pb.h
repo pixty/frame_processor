@@ -26,7 +26,7 @@ class ServerContext;
 
 namespace fpcp {
 
-// All methods(exception is except authenticate()) of SceneProcessorService should be invoked
+// All methods(exception is authenticate()) of SceneProcessorService should be invoked
 // with non-null "session_id" (fucking gRPC silently transcode to lowercase!) methadata key value. 
 // Session Provider will reject the call if the session_id is not known (invalid) and response 
 // appropriate error by "error" key in trailing metadata value. 
