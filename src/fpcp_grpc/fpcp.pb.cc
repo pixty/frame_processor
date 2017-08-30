@@ -119,6 +119,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Face, id_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Face, rect_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Face, vector_),
 };
 
 static const ::google::protobuf::internal::MigrationSchema schemas[] = {
@@ -217,14 +218,15 @@ void AddDescriptorsImpl() {
       "fpcp.Face\"\216\001\n\005Frame\022\n\n\002id\030\001 \001(\t\022\021\n\ttimes"
       "tamp\030\002 \001(\004\022\030\n\004size\030\003 \001(\0132\n.fpcp.Size\022\014\n\004"
       "data\030\004 \001(\014\022\"\n\006format\030\005 \001(\0162\022.fpcp.Frame."
-      "Format\"\032\n\006Format\022\007\n\003RAW\020\000\022\007\n\003PNG\020\001\"1\n\004Fa"
+      "Format\"\032\n\006Format\022\007\n\003RAW\020\000\022\007\n\003PNG\020\001\"A\n\004Fa"
       "ce\022\n\n\002id\030\001 \001(\t\022\035\n\004rect\030\002 \001(\0132\017.fpcp.Rect"
-      "angle2h\n\025SceneProcessorService\022+\n\014authen"
-      "ticate\022\017.fpcp.AuthToken\032\n.fpcp.Void\022\"\n\007o"
-      "nScene\022\013.fpcp.Scene\032\n.fpcp.Voidb\006proto3"
+      "angle\022\016\n\006vector\030\003 \003(\0022h\n\025SceneProcessorS"
+      "ervice\022+\n\014authenticate\022\017.fpcp.AuthToken\032"
+      "\n.fpcp.Void\022\"\n\007onScene\022\013.fpcp.Scene\032\n.fp"
+      "cp.Voidb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 599);
+      descriptor, 615);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "fpcp.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -2666,6 +2668,7 @@ void Frame::set_format(::fpcp::Frame_Format value) {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int Face::kIdFieldNumber;
 const int Face::kRectFieldNumber;
+const int Face::kVectorFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Face::Face()
@@ -2679,6 +2682,7 @@ Face::Face()
 Face::Face(const Face& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
+      vector_(from.vector_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
@@ -2736,6 +2740,7 @@ Face* Face::New(::google::protobuf::Arena* arena) const {
 
 void Face::Clear() {
 // @@protoc_insertion_point(message_clear_start:fpcp.Face)
+  vector_.Clear();
   id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && rect_ != NULL) {
     delete rect_;
@@ -2775,6 +2780,24 @@ bool Face::MergePartialFromCodedStream(
             static_cast< ::google::protobuf::uint8>(18u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_rect()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated float vector = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, this->mutable_vector())));
+        } else if (static_cast< ::google::protobuf::uint8>(tag) ==
+                   static_cast< ::google::protobuf::uint8>(29u)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 1, 26u, input, this->mutable_vector())));
         } else {
           goto handle_unusual;
         }
@@ -2824,6 +2847,14 @@ void Face::SerializeWithCachedSizes(
       2, *this->rect_, output);
   }
 
+  // repeated float vector = 3;
+  if (this->vector_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(3, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(_vector_cached_byte_size_);
+    ::google::protobuf::internal::WireFormatLite::WriteFloatArray(
+      this->vector().data(), this->vector_size(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:fpcp.Face)
 }
 
@@ -2851,6 +2882,18 @@ void Face::SerializeWithCachedSizes(
         2, *this->rect_, deterministic, target);
   }
 
+  // repeated float vector = 3;
+  if (this->vector_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      3,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+      _vector_cached_byte_size_, target);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteFloatNoTagToArray(this->vector_, target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:fpcp.Face)
   return target;
 }
@@ -2858,6 +2901,21 @@ void Face::SerializeWithCachedSizes(
 size_t Face::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:fpcp.Face)
   size_t total_size = 0;
+
+  // repeated float vector = 3;
+  {
+    unsigned int count = this->vector_size();
+    size_t data_size = 4UL * count;
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
+    }
+    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
+    GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+    _vector_cached_byte_size_ = cached_size;
+    GOOGLE_SAFE_CONCURRENT_WRITES_END();
+    total_size += data_size;
+  }
 
   // string id = 1;
   if (this->id().size() > 0) {
@@ -2902,6 +2960,7 @@ void Face::MergeFrom(const Face& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  vector_.MergeFrom(from.vector_);
   if (from.id().size() > 0) {
 
     id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.id_);
@@ -2934,6 +2993,7 @@ void Face::Swap(Face* other) {
   InternalSwap(other);
 }
 void Face::InternalSwap(Face* other) {
+  vector_.InternalSwap(&other->vector_);
   id_.Swap(&other->id_);
   std::swap(rect_, other->rect_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -3037,6 +3097,36 @@ void Face::set_allocated_rect(::fpcp::Rectangle* rect) {
     
   }
   // @@protoc_insertion_point(field_set_allocated:fpcp.Face.rect)
+}
+
+// repeated float vector = 3;
+int Face::vector_size() const {
+  return vector_.size();
+}
+void Face::clear_vector() {
+  vector_.Clear();
+}
+float Face::vector(int index) const {
+  // @@protoc_insertion_point(field_get:fpcp.Face.vector)
+  return vector_.Get(index);
+}
+void Face::set_vector(int index, float value) {
+  vector_.Set(index, value);
+  // @@protoc_insertion_point(field_set:fpcp.Face.vector)
+}
+void Face::add_vector(float value) {
+  vector_.Add(value);
+  // @@protoc_insertion_point(field_add:fpcp.Face.vector)
+}
+const ::google::protobuf::RepeatedField< float >&
+Face::vector() const {
+  // @@protoc_insertion_point(field_list:fpcp.Face.vector)
+  return vector_;
+}
+::google::protobuf::RepeatedField< float >*
+Face::mutable_vector() {
+  // @@protoc_insertion_point(field_mutable_list:fpcp.Face.vector)
+  return &vector_;
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

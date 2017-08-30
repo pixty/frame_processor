@@ -800,6 +800,18 @@ class Face : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
 
   // accessors -------------------------------------------------------
 
+  // repeated float vector = 3;
+  int vector_size() const;
+  void clear_vector();
+  static const int kVectorFieldNumber = 3;
+  float vector(int index) const;
+  void set_vector(int index, float value);
+  void add_vector(float value);
+  const ::google::protobuf::RepeatedField< float >&
+      vector() const;
+  ::google::protobuf::RepeatedField< float >*
+      mutable_vector();
+
   // string id = 1;
   void clear_id();
   static const int kIdFieldNumber = 1;
@@ -827,6 +839,8 @@ class Face : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedField< float > vector_;
+  mutable int _vector_cached_byte_size_;
   ::google::protobuf::internal::ArenaStringPtr id_;
   ::fpcp::Rectangle* rect_;
   mutable int _cached_size_;
@@ -1467,6 +1481,36 @@ inline void Face::set_allocated_rect(::fpcp::Rectangle* rect) {
     
   }
   // @@protoc_insertion_point(field_set_allocated:fpcp.Face.rect)
+}
+
+// repeated float vector = 3;
+inline int Face::vector_size() const {
+  return vector_.size();
+}
+inline void Face::clear_vector() {
+  vector_.Clear();
+}
+inline float Face::vector(int index) const {
+  // @@protoc_insertion_point(field_get:fpcp.Face.vector)
+  return vector_.Get(index);
+}
+inline void Face::set_vector(int index, float value) {
+  vector_.Set(index, value);
+  // @@protoc_insertion_point(field_set:fpcp.Face.vector)
+}
+inline void Face::add_vector(float value) {
+  vector_.Add(value);
+  // @@protoc_insertion_point(field_add:fpcp.Face.vector)
+}
+inline const ::google::protobuf::RepeatedField< float >&
+Face::vector() const {
+  // @@protoc_insertion_point(field_list:fpcp.Face.vector)
+  return vector_;
+}
+inline ::google::protobuf::RepeatedField< float >*
+Face::mutable_vector() {
+  // @@protoc_insertion_point(field_mutable_list:fpcp.Face.vector)
+  return &vector_;
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS

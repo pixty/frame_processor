@@ -35,6 +35,7 @@ namespace fpcp {
 // "1" - means "Unknown session id. Authentication requred". Session is not known, or not obtained. Please 
 // see authenticate() method call.
 // "2" - means "Authentication failed". Invalid credentials provided.
+// "3" - server reports "Unable to run. Try again later". Means that server cannor perform the operation for a reason
 class SceneProcessorService final {
  public:
   static constexpr char const* service_full_name() {

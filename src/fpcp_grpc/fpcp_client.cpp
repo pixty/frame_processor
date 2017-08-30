@@ -112,6 +112,11 @@ void to_fpcpFrame(fproc::PFrame pframe, fpcp::Frame& frame) {
 void to_fpcpFace(const fproc::FrameFace ff, fpcp::Face& face) {
 	face.set_id(ff.faceId());
 	to_fpcpRect(ff.frameReg()->getRectangle(), *face.mutable_rect());
+	// copy vector
+	for(long i = 0; i < 128; i++) {
+		float f = (*ff.frameReg()->v128d())(i);
+		face.add_vector(f);
+	}
 }
 
 void to_fpcpScene(fproc::PScene pscene, fpcp::Scene& scene) {
@@ -163,6 +168,7 @@ void FpcpClient::check_session() {
 }
 
 PSceneProcessor connectGRPC(std::string address, std::string access_key, std::string secret_key) {
+	LOG_INFO("connectGRPC: address=" << address << ", access_key=" << access_key);
 	std::shared_ptr<grpc::Channel> channel = grpc::CreateChannel(address,
 			grpc::InsecureChannelCredentials());
 	return PSceneProcessor(new FpcpClient(channel, access_key, secret_key));
