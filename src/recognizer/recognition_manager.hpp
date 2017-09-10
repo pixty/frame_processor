@@ -18,7 +18,7 @@ struct RecognitionManager {
 	RecognitionManager(std::shared_ptr<DnnFaceRecognitionNet> rn): _rn(rn) {}
 
 	// Returns list of faces found between provided frames
-	PFrameFaceList recognize(PFrame& frame, PFrameRegList& frameRegs);
+	PFrameFaceList recognize(const PFrame& frame, const PFrameRegList& frameRegs);
 
 	// every face has no more than maxVectorsPerFace vectors. All faces should not exceed maxVectors
 	void setLimits(int maxVectors, int maxVectorsPerFace) {
@@ -27,7 +27,7 @@ struct RecognitionManager {
 	}
 private:
 	typedef std::list<Face*> face_ptrs;
-	bool isTheFace(Face& face, PFrameRegion& reg, bool log = false);
+	bool isTheFace(const Face& face, const PFrameRegion& reg, const bool log = false) const;
 	void sweep();
 
 	// constrains
