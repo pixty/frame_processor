@@ -190,7 +190,6 @@ namespace fproc {
 	struct ObjectDetector {
 		virtual ~ObjectDetector() {}
 		virtual const PFrameRegList& detectRegions(PFrame pFrame) = 0;
-		virtual const PFrameRegList& detectRegions(PFrame pFrame, const std::vector<Rectangle>& suggested_rects) { return _objects; }
 	protected:
 		// helper to return detected objects
 		PFrameRegList _objects;

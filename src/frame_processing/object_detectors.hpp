@@ -12,40 +12,16 @@
 #include <dlib/image_processing/frontal_face_detector.h>
 #include <dlib/image_processing/render_face_detections.h>
 #include <dlib/image_processing.h>
-#include <opencv2/tracking.hpp>
 #include "../recognizer/recognition_manager.hpp"
 
 namespace fproc {
 
-struct HaarFaceDetector: public ObjectDetector {
-	HaarFaceDetector(const int minFaceSize, const int maxFaceSize);
-	virtual const PFrameRegList& detectRegions(PFrame pFrame);
-
-private:
-	cv::CascadeClassifier _cvFaceDetector;
-	cv::Size _minFaceSize;
-	cv::Size _maxFaceSize;
-};
-
 struct HogFaceDetector: public ObjectDetector {
 	HogFaceDetector();
-	PFrameRegList& detectRegions(PFrame pFrame);
-	PFrameRegList& detectRegions(PFrame pFrame, const std::vector<Rectangle>& suggested_rects);
+	const PFrameRegList & detectRegions(PFrame pFrame);
 private:
 	dlib::frontal_face_detector _detector;
 };
-
-struct ObjectTracker {
-	ObjectTracker();
-	void setRegion(PFrame frame, PFrameRegion region);
-	bool startTracking();
-	PFrameRegion track(PFrame pFrame);
-private:
-	PFrame frame_;
-	PFrameRegion _region;
-	cv::Ptr<cv::Tracker> _cvTracker;
-};
-
 
 }
 

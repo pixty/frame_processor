@@ -31,7 +31,7 @@ bool SceneDetector::consumeFrame(PFrame frame) {
 	}
 
 	LOG_DEBUG("SceneDetector: *** before detecting faces ***");
-	PFrameRegList& hog_result = _hog_detector.detectRegions(frame);
+	const PFrameRegList& hog_result = _hog_detector.detectRegions(frame);
 	LOG_DEBUG("SceneDetector:	" << hog_result.size() << " regions found, recognizing...");
 	PFrameFaceList fflist(_rec_manager->recognize(frame, hog_result));
 	LOG_DEBUG("SceneDetector:	" << fflist->size() << " faces recognized, forming scene...");
@@ -208,7 +208,7 @@ bool SceneState::shouldReport(Timestamp at, PScene ps) {
 
 	ps->setId(std::to_string(_scene_since));
 	ps->setSince(_scene_since);
-	ps->setPersons(_facesOnScene.size());
+	ps->setPersons((int)_facesOnScene.size());
 
 	if (_facesOnScene.size() == 0) {
 		next_report_at_ = at + 5000;

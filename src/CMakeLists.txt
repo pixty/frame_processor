@@ -53,23 +53,16 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 find_package(Protobuf REQUIRED)
 find_package(GRPC REQUIRED)
 
-#include_directories(${CPR_INCLUDE_DIRS})
-
-# add all files
-# aux_source_directory(. SRC_LIST)
+# add all src files
 set(SRC_LIST
-	frame_processing/helpers.hpp
-	frame_processing/helpers.cpp
-	frame_processing/haar_face_detector.cpp
-	frame_processing/hog_face_detector.cpp
-	frame_processing/haarcascade_frontalface_default_xml.cpp
-	frame_processing/haarcascade_frontalface_default_xml.hpp
-	frame_processing/object_detectors.hpp
-#	frame_processing/object_tracker.cpp
-	frame_processing/scene_detector.hpp
-	frame_processing/scene_detector.cpp
-	frame_processing/fpcp_connector.hpp
-	frame_processing/fpcp_connector.cpp
+    frame_processing/helpers.hpp
+    frame_processing/helpers.cpp
+    frame_processing/hog_face_detector.cpp
+    frame_processing/object_detectors.hpp
+    frame_processing/scene_detector.hpp
+    frame_processing/scene_detector.cpp
+    frame_processing/fpcp_connector.hpp
+    frame_processing/fpcp_connector.cpp
     video_streaming/file_video_stream.cpp
     video_streaming/file_video_stream.hpp
     video_streaming/image_window.hpp
@@ -97,7 +90,6 @@ add_executable(frame_processor ${SRC_LIST})
 target_link_libraries(frame_processor dlib::dlib ${OpenCV_LIBS} ${Boost_LIBRARIES} protobuf::libprotobuf gRPC::grpc++_reflection)
 
 # copy resources function
-
 function(copy_resource)
   cmake_parse_arguments(MY_ARGS "" "SRC;DST" "" ${ARGN})
   add_custom_command(

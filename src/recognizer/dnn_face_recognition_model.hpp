@@ -10,18 +10,12 @@ namespace fproc {
 using namespace dlib;
 using namespace std;
 
-typedef std::vector<V128D> V128Ds;
-typedef rectangle BBox;
-typedef std::vector<BBox> BBoxes;
-
-
 class DnnFaceRecognitionNet {
 
     public:
         DnnFaceRecognitionNet(const string &dnn_net_model_fn=string("dlib_face_recognition_resnet_model_v1.dat"),
                               const string &face_landmarks_model_fn=string("shape_predictor_68_face_landmarks.dat"));
 
-        const V128Ds face_descriptors(const matrix<rgb_pixel> img, const BBoxes bounding_boxes);
         void set_vector(PFrame f, PFrameRegion fr);
 
     private:

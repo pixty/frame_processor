@@ -6,7 +6,6 @@
  */
 
 #include "webcam_video_stream.hpp"
-#include "../logger.hpp"
 
 namespace fproc {
 

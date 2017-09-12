@@ -15,7 +15,7 @@ struct Face {
 	list<PFrameRegion> regions;
 };
 
-PFrameFaceList RecognitionManager::recognize(PFrame& frame, PFrameRegList& frameRegs) {
+PFrameFaceList RecognitionManager::recognize(const PFrame& frame, const PFrameRegList& frameRegs) {
 	PFrameFaceList result(new FrameFaceList());
 	for (auto &pfr: frameRegs) {
 		_rn->set_vector(frame, pfr);
@@ -49,7 +49,7 @@ PFrameFaceList RecognitionManager::recognize(PFrame& frame, PFrameRegList& frame
 	return result;
 }
 
-bool RecognitionManager::isTheFace(Face& face, PFrameRegion& pfr, bool log) {
+bool RecognitionManager::isTheFace(const Face& face, const PFrameRegion& pfr, const bool log) const {
 	if (log) {
 		LOG_INFO("Looking for region=" << pfr->getRectangle());
 	}
@@ -88,4 +88,3 @@ void RecognitionManager::sweep() {
 }
 
 }
-
