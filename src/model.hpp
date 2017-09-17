@@ -132,8 +132,8 @@ namespace fproc {
 		}
 		const FrameId& getFrameId() const { return frame_id_; }
 		const Rectangle& getRectangle() const { return _rec; }
-		const V128D* v128d() const { return v128d_; };
-		void set_vector(const V128D& v) { v128d_ = new V128D(v);};
+        const V128D* v128d() const { return v128d_; }
+        void set_vector(const V128D& v) { v128d_ = new V128D(v);}
 
 	private:
 		const FrameId frame_id_;
@@ -145,7 +145,7 @@ namespace fproc {
 
 	// A Face associated with a single frame only
 	struct FrameFace {
-		FrameFace(FaceId fid, const PFrameRegion fr): face_id_(fid), frame_reg_(fr) { };
+        FrameFace(FaceId fid, const PFrameRegion fr): face_id_(fid), frame_reg_(fr) { }
 		FrameFace& operator=(const FrameFace& othr) {
 			face_id_ = othr.face_id_;
 			frame_reg_ = othr.frame_reg_;
@@ -163,7 +163,7 @@ namespace fproc {
 
 	struct Scene {
 		Scene(PFrame frame, PFrameFaceList flist): frame_(frame), flist_(flist) {}
-		inline PFrame getFrame() { return frame_; };
+        inline PFrame getFrame() { return frame_; }
 		inline PFrameFaceList getFrameFaceList() const { return flist_; }
 
 		inline std::string getId() const { return id_; }
@@ -205,12 +205,12 @@ namespace fproc {
 		 * over (depends on source and implementation)
 		 */
 		virtual PFrame captureFrame() = 0;
-		virtual ~VideoStream() {};
+        virtual ~VideoStream() {}
 
 		void setResolution(int width, int height);
 		Size getSize();
-		double getFps() { return _cap->get(CV_CAP_PROP_FPS); };
-		int getFourcc() { return static_cast<int>(_cap->get(CV_CAP_PROP_FOURCC)); };
+        double getFps() { return _cap->get(CV_CAP_PROP_FPS); }
+        int getFourcc() { return static_cast<int>(_cap->get(CV_CAP_PROP_FOURCC)); }
 	protected:
 		VideoStream(std::unique_ptr<cv::VideoCapture> cap): _cap(std::move(cap)) { }
 		std::unique_ptr<cv::VideoCapture> _cap;
@@ -224,8 +224,8 @@ namespace fproc {
 		VideoStreamConsumer() {}
 		virtual ~VideoStreamConsumer() {}
 
-		virtual bool consumeFrame(PFrame frame) { return true; };
-		virtual void close() {};
+        virtual bool consumeFrame(PFrame frame) { return true; }
+        virtual void close() {}
 	};
 	typedef std::unique_ptr<VideoStreamConsumer> PVideoStreamConsumer;
 
@@ -247,7 +247,53 @@ namespace fproc {
 	};
 
 	std::string uuid();
-};
+
+    struct CameraParameters{
+        int     width;
+        int     height;
+        int     fps;
+        double  brightness; // 0 - 1
+        double  contrast;
+        double  saturation;
+        double  gain;
+        double  sharpness;
+        double  temperature;
+        double  backlight;
+        double  exposure;
+        double auto_exposure;
+        bool autofocus;
+        double  gamma;
+        double  hue;
+        int  fourcc;
+        CameraParameters(): width(-1),
+                            height(-1),
+                            fps(-1),
+                            contrast(-1),
+                            brightness(-1),
+                            saturation(-1),
+                            gain(-1),
+                            sharpness(-1),
+                            temperature(-1),
+                            backlight(-1),
+                            exposure(-1),
+                            auto_exposure(-1),
+                            autofocus(true),
+                            gamma(-1),
+                            hue(-1),
+                            fourcc(-1)
+        {}
+    };
+
+    struct HogParameters{
+        int  width;
+        int  height;
+        bool grayscale;
+        HogParameters():width(-1),
+                        height(-1),
+                        grayscale(true)
+        {}
+    };
+}
 // namespace
 
 #endif /* SRC_MODEL_HPP_ */

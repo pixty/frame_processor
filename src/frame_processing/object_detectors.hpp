@@ -19,8 +19,10 @@ namespace fproc {
 struct HogFaceDetector: public ObjectDetector {
 	HogFaceDetector();
 	const PFrameRegList & detectRegions(PFrame pFrame);
+    void setParameters(const HogParameters &params){_params = params;}
 private:
 	dlib::frontal_face_detector _detector;
+    HogParameters _params;
 };
 
 }

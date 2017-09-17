@@ -14,7 +14,11 @@ namespace fproc {
 SceneDetector::SceneDetector(PSceneDetectorListener listener, PRecognitionManager recManager):
 		_listener(std::move(listener)), _rec_manager(recManager), _state(ST_INIT) {
 
-};
+}
+
+void SceneDetector::setHogParameters(const HogParameters &params){
+    _hog_detector.setParameters(params);
+}
 
 bool SceneDetector::consumeFrame(PFrame frame) {
 	if (_state == ST_INIT) {
