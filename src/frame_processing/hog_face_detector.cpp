@@ -1,24 +1,60 @@
 #include "../frame_processing/object_detectors.hpp"
 #include <dlib/image_transforms.h>
+#include <math.h>
 
 namespace fproc {
 
 HogFaceDetector::HogFaceDetector() :
-        _detector(dlib::get_frontal_face_detector()) {
+		_detector(dlib::get_frontal_face_detector()) {
 }
 
 const PFrameRegList & HogFaceDetector::detectRegions(PFrame pFrame) {
-    dlib::array2d<unsigned char> img_gray;
-    dlib::assign_image(img_gray, pFrame->get_bgr_image());
-    std::vector<Rectangle> objs = _detector(img_gray);
+	std::vector<Rectangle> objs;
+	const Frame::DlibBgrImg& original = pFrame->get_bgr_image();
+	const double x_ratio =
+			_params.width > 0 ?
+					((double) original.nc()) / ((double) _params.width) : 1.0;
+	const double y_ratio =
+			_params.height > 0 ?
+					((double) original.nr()) / ((double) _params.height) : 1.0;
+	if (_params.grayscale) {
+		dlib::array2d<unsigned char> img_gray_src;
+		pFrame->get_bgr_image();
+		dlib::assign_image(img_gray_src, original);
+		if (_params.height > 0) {
+			dlib::array2d<unsigned char> img_gray_dst(_params.height,
+					_params.width);
+			dlib::resize_image(img_gray_src, img_gray_dst);
+			objs = _detector(img_gray_dst);
+		} else {
+			objs = _detector(img_gray_src);
+		}
+	} else {
+		if (_params.height > 0) {
+			dlib::array2d<dlib::bgr_pixel> img_bgr_dst(_params.height,
+					_params.width);
+			dlib::resize_image(original, img_bgr_dst);
+			objs = _detector(img_bgr_dst);
+		} else {
+			objs = _detector(original);
+		}
+	}
 
-    _objects.clear();
-    for (Rectangle& r : objs) {
-        PFrameRegion pfr(new FrameRegion(pFrame, r));
-        _objects.push_back(pfr);
-    }
+	_objects.clear();
+	for (Rectangle& r : objs) {
 
-    return _objects;
+		if (_params.height > 0) {
+			r.set_left(floor(r.left() * x_ratio));
+			r.set_top(floor(r.top() * y_ratio));
+			r.set_right(ceil(r.right() * x_ratio));
+			r.set_bottom(ceil(r.bottom() * y_ratio));
+		}
+
+		PFrameRegion pfr(new FrameRegion(pFrame, r));
+		_objects.push_back(pfr);
+	}
+
+	return _objects;
 }
 
 }

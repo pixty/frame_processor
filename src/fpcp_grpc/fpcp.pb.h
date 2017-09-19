@@ -41,6 +41,9 @@ extern FaceDefaultTypeInternal _Face_default_instance_;
 class Frame;
 class FrameDefaultTypeInternal;
 extern FrameDefaultTypeInternal _Frame_default_instance_;
+class Picture;
+class PictureDefaultTypeInternal;
+extern PictureDefaultTypeInternal _Picture_default_instance_;
 class Rectangle;
 class RectangleDefaultTypeInternal;
 extern RectangleDefaultTypeInternal _Rectangle_default_instance_;
@@ -72,26 +75,27 @@ void AddDescriptors();
 void InitDefaults();
 }  // namespace protobuf_fpcp_2eproto
 
-enum Frame_Format {
-  Frame_Format_RAW = 0,
-  Frame_Format_PNG = 1,
-  Frame_Format_Frame_Format_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
-  Frame_Format_Frame_Format_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+enum Picture_Format {
+  Picture_Format_RAW = 0,
+  Picture_Format_PNG = 1,
+  Picture_Format_JPG = 2,
+  Picture_Format_Picture_Format_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  Picture_Format_Picture_Format_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
-bool Frame_Format_IsValid(int value);
-const Frame_Format Frame_Format_Format_MIN = Frame_Format_RAW;
-const Frame_Format Frame_Format_Format_MAX = Frame_Format_PNG;
-const int Frame_Format_Format_ARRAYSIZE = Frame_Format_Format_MAX + 1;
+bool Picture_Format_IsValid(int value);
+const Picture_Format Picture_Format_Format_MIN = Picture_Format_RAW;
+const Picture_Format Picture_Format_Format_MAX = Picture_Format_JPG;
+const int Picture_Format_Format_ARRAYSIZE = Picture_Format_Format_MAX + 1;
 
-const ::google::protobuf::EnumDescriptor* Frame_Format_descriptor();
-inline const ::std::string& Frame_Format_Name(Frame_Format value) {
+const ::google::protobuf::EnumDescriptor* Picture_Format_descriptor();
+inline const ::std::string& Picture_Format_Name(Picture_Format value) {
   return ::google::protobuf::internal::NameOfEnum(
-    Frame_Format_descriptor(), value);
+    Picture_Format_descriptor(), value);
 }
-inline bool Frame_Format_Parse(
-    const ::std::string& name, Frame_Format* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<Frame_Format>(
-    Frame_Format_descriptor(), name, value);
+inline bool Picture_Format_Parse(
+    const ::std::string& name, Picture_Format* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<Picture_Format>(
+    Picture_Format_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -748,33 +752,19 @@ class Frame : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
 
   // nested types ----------------------------------------------------
 
-  typedef Frame_Format Format;
-  static const Format RAW =
-    Frame_Format_RAW;
-  static const Format PNG =
-    Frame_Format_PNG;
-  static inline bool Format_IsValid(int value) {
-    return Frame_Format_IsValid(value);
-  }
-  static const Format Format_MIN =
-    Frame_Format_Format_MIN;
-  static const Format Format_MAX =
-    Frame_Format_Format_MAX;
-  static const int Format_ARRAYSIZE =
-    Frame_Format_Format_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor*
-  Format_descriptor() {
-    return Frame_Format_descriptor();
-  }
-  static inline const ::std::string& Format_Name(Format value) {
-    return Frame_Format_Name(value);
-  }
-  static inline bool Format_Parse(const ::std::string& name,
-      Format* value) {
-    return Frame_Format_Parse(name, value);
-  }
-
   // accessors -------------------------------------------------------
+
+  // repeated .fpcp.Picture pictures = 4;
+  int pictures_size() const;
+  void clear_pictures();
+  static const int kPicturesFieldNumber = 4;
+  const ::fpcp::Picture& pictures(int index) const;
+  ::fpcp::Picture* mutable_pictures(int index);
+  ::fpcp::Picture* add_pictures();
+  ::google::protobuf::RepeatedPtrField< ::fpcp::Picture >*
+      mutable_pictures();
+  const ::google::protobuf::RepeatedPtrField< ::fpcp::Picture >&
+      pictures() const;
 
   // string id = 1;
   void clear_id();
@@ -789,20 +779,6 @@ class Frame : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::std::string* mutable_id();
   ::std::string* release_id();
   void set_allocated_id(::std::string* id);
-
-  // bytes data = 4;
-  void clear_data();
-  static const int kDataFieldNumber = 4;
-  const ::std::string& data() const;
-  void set_data(const ::std::string& value);
-  #if LANG_CXX11
-  void set_data(::std::string&& value);
-  #endif
-  void set_data(const char* value);
-  void set_data(const void* value, size_t size);
-  ::std::string* mutable_data();
-  ::std::string* release_data();
-  void set_allocated_data(::std::string* data);
 
   // .fpcp.Size size = 3;
   bool has_size() const;
@@ -819,21 +795,14 @@ class Frame : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::google::protobuf::uint64 timestamp() const;
   void set_timestamp(::google::protobuf::uint64 value);
 
-  // .fpcp.Frame.Format format = 5;
-  void clear_format();
-  static const int kFormatFieldNumber = 5;
-  ::fpcp::Frame_Format format() const;
-  void set_format(::fpcp::Frame_Format value);
-
   // @@protoc_insertion_point(class_scope:fpcp.Frame)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::fpcp::Picture > pictures_;
   ::google::protobuf::internal::ArenaStringPtr id_;
-  ::google::protobuf::internal::ArenaStringPtr data_;
   ::fpcp::Size* size_;
   ::google::protobuf::uint64 timestamp_;
-  int format_;
   mutable int _cached_size_;
   friend struct protobuf_fpcp_2eproto::TableStruct;
 };
@@ -932,6 +901,18 @@ class Face : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::RepeatedField< float >*
       mutable_vector();
 
+  // repeated .fpcp.Picture pictures = 4;
+  int pictures_size() const;
+  void clear_pictures();
+  static const int kPicturesFieldNumber = 4;
+  const ::fpcp::Picture& pictures(int index) const;
+  ::fpcp::Picture* mutable_pictures(int index);
+  ::fpcp::Picture* add_pictures();
+  ::google::protobuf::RepeatedPtrField< ::fpcp::Picture >*
+      mutable_pictures();
+  const ::google::protobuf::RepeatedPtrField< ::fpcp::Picture >&
+      pictures() const;
+
   // string id = 1;
   void clear_id();
   static const int kIdFieldNumber = 1;
@@ -961,8 +942,166 @@ class Face : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedField< float > vector_;
   mutable int _vector_cached_byte_size_;
+  ::google::protobuf::RepeatedPtrField< ::fpcp::Picture > pictures_;
   ::google::protobuf::internal::ArenaStringPtr id_;
   ::fpcp::Rectangle* rect_;
+  mutable int _cached_size_;
+  friend struct protobuf_fpcp_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class Picture : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:fpcp.Picture) */ {
+ public:
+  Picture();
+  virtual ~Picture();
+
+  Picture(const Picture& from);
+
+  inline Picture& operator=(const Picture& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  Picture(Picture&& from) noexcept
+    : Picture() {
+    *this = ::std::move(from);
+  }
+
+  inline Picture& operator=(Picture&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Picture& default_instance();
+
+  static inline const Picture* internal_default_instance() {
+    return reinterpret_cast<const Picture*>(
+               &_Picture_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    7;
+
+  void Swap(Picture* other);
+  friend void swap(Picture& a, Picture& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline Picture* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  Picture* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const Picture& from);
+  void MergeFrom(const Picture& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(Picture* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  typedef Picture_Format Format;
+  static const Format RAW =
+    Picture_Format_RAW;
+  static const Format PNG =
+    Picture_Format_PNG;
+  static const Format JPG =
+    Picture_Format_JPG;
+  static inline bool Format_IsValid(int value) {
+    return Picture_Format_IsValid(value);
+  }
+  static const Format Format_MIN =
+    Picture_Format_Format_MIN;
+  static const Format Format_MAX =
+    Picture_Format_Format_MAX;
+  static const int Format_ARRAYSIZE =
+    Picture_Format_Format_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  Format_descriptor() {
+    return Picture_Format_descriptor();
+  }
+  static inline const ::std::string& Format_Name(Format value) {
+    return Picture_Format_Name(value);
+  }
+  static inline bool Format_Parse(const ::std::string& name,
+      Format* value) {
+    return Picture_Format_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  // bytes data = 4;
+  void clear_data();
+  static const int kDataFieldNumber = 4;
+  const ::std::string& data() const;
+  void set_data(const ::std::string& value);
+  #if LANG_CXX11
+  void set_data(::std::string&& value);
+  #endif
+  void set_data(const char* value);
+  void set_data(const void* value, size_t size);
+  ::std::string* mutable_data();
+  ::std::string* release_data();
+  void set_allocated_data(::std::string* data);
+
+  // .fpcp.Size size = 1;
+  bool has_size() const;
+  void clear_size();
+  static const int kSizeFieldNumber = 1;
+  const ::fpcp::Size& size() const;
+  ::fpcp::Size* mutable_size();
+  ::fpcp::Size* release_size();
+  void set_allocated_size(::fpcp::Size* size);
+
+  // int32 sizeCode = 2;
+  void clear_sizecode();
+  static const int kSizeCodeFieldNumber = 2;
+  ::google::protobuf::int32 sizecode() const;
+  void set_sizecode(::google::protobuf::int32 value);
+
+  // .fpcp.Picture.Format format = 3;
+  void clear_format();
+  static const int kFormatFieldNumber = 3;
+  ::fpcp::Picture_Format format() const;
+  void set_format(::fpcp::Picture_Format value);
+
+  // @@protoc_insertion_point(class_scope:fpcp.Picture)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr data_;
+  ::fpcp::Size* size_;
+  ::google::protobuf::int32 sizecode_;
+  int format_;
   mutable int _cached_size_;
   friend struct protobuf_fpcp_2eproto::TableStruct;
 };
@@ -1446,71 +1585,34 @@ inline void Frame::set_allocated_size(::fpcp::Size* size) {
   // @@protoc_insertion_point(field_set_allocated:fpcp.Frame.size)
 }
 
-// bytes data = 4;
-inline void Frame::clear_data() {
-  data_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// repeated .fpcp.Picture pictures = 4;
+inline int Frame::pictures_size() const {
+  return pictures_.size();
 }
-inline const ::std::string& Frame::data() const {
-  // @@protoc_insertion_point(field_get:fpcp.Frame.data)
-  return data_.GetNoArena();
+inline void Frame::clear_pictures() {
+  pictures_.Clear();
 }
-inline void Frame::set_data(const ::std::string& value) {
-  
-  data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:fpcp.Frame.data)
+inline const ::fpcp::Picture& Frame::pictures(int index) const {
+  // @@protoc_insertion_point(field_get:fpcp.Frame.pictures)
+  return pictures_.Get(index);
 }
-#if LANG_CXX11
-inline void Frame::set_data(::std::string&& value) {
-  
-  data_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:fpcp.Frame.data)
+inline ::fpcp::Picture* Frame::mutable_pictures(int index) {
+  // @@protoc_insertion_point(field_mutable:fpcp.Frame.pictures)
+  return pictures_.Mutable(index);
 }
-#endif
-inline void Frame::set_data(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:fpcp.Frame.data)
+inline ::fpcp::Picture* Frame::add_pictures() {
+  // @@protoc_insertion_point(field_add:fpcp.Frame.pictures)
+  return pictures_.Add();
 }
-inline void Frame::set_data(const void* value, size_t size) {
-  
-  data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:fpcp.Frame.data)
+inline ::google::protobuf::RepeatedPtrField< ::fpcp::Picture >*
+Frame::mutable_pictures() {
+  // @@protoc_insertion_point(field_mutable_list:fpcp.Frame.pictures)
+  return &pictures_;
 }
-inline ::std::string* Frame::mutable_data() {
-  
-  // @@protoc_insertion_point(field_mutable:fpcp.Frame.data)
-  return data_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* Frame::release_data() {
-  // @@protoc_insertion_point(field_release:fpcp.Frame.data)
-  
-  return data_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void Frame::set_allocated_data(::std::string* data) {
-  if (data != NULL) {
-    
-  } else {
-    
-  }
-  data_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), data);
-  // @@protoc_insertion_point(field_set_allocated:fpcp.Frame.data)
-}
-
-// .fpcp.Frame.Format format = 5;
-inline void Frame::clear_format() {
-  format_ = 0;
-}
-inline ::fpcp::Frame_Format Frame::format() const {
-  // @@protoc_insertion_point(field_get:fpcp.Frame.format)
-  return static_cast< ::fpcp::Frame_Format >(format_);
-}
-inline void Frame::set_format(::fpcp::Frame_Format value) {
-  
-  format_ = value;
-  // @@protoc_insertion_point(field_set:fpcp.Frame.format)
+inline const ::google::protobuf::RepeatedPtrField< ::fpcp::Picture >&
+Frame::pictures() const {
+  // @@protoc_insertion_point(field_list:fpcp.Frame.pictures)
+  return pictures_;
 }
 
 // -------------------------------------------------------------------
@@ -1640,10 +1742,167 @@ Face::mutable_vector() {
   return &vector_;
 }
 
+// repeated .fpcp.Picture pictures = 4;
+inline int Face::pictures_size() const {
+  return pictures_.size();
+}
+inline void Face::clear_pictures() {
+  pictures_.Clear();
+}
+inline const ::fpcp::Picture& Face::pictures(int index) const {
+  // @@protoc_insertion_point(field_get:fpcp.Face.pictures)
+  return pictures_.Get(index);
+}
+inline ::fpcp::Picture* Face::mutable_pictures(int index) {
+  // @@protoc_insertion_point(field_mutable:fpcp.Face.pictures)
+  return pictures_.Mutable(index);
+}
+inline ::fpcp::Picture* Face::add_pictures() {
+  // @@protoc_insertion_point(field_add:fpcp.Face.pictures)
+  return pictures_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::fpcp::Picture >*
+Face::mutable_pictures() {
+  // @@protoc_insertion_point(field_mutable_list:fpcp.Face.pictures)
+  return &pictures_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::fpcp::Picture >&
+Face::pictures() const {
+  // @@protoc_insertion_point(field_list:fpcp.Face.pictures)
+  return pictures_;
+}
+
+// -------------------------------------------------------------------
+
+// Picture
+
+// .fpcp.Size size = 1;
+inline bool Picture::has_size() const {
+  return this != internal_default_instance() && size_ != NULL;
+}
+inline void Picture::clear_size() {
+  if (GetArenaNoVirtual() == NULL && size_ != NULL) delete size_;
+  size_ = NULL;
+}
+inline const ::fpcp::Size& Picture::size() const {
+  const ::fpcp::Size* p = size_;
+  // @@protoc_insertion_point(field_get:fpcp.Picture.size)
+  return p != NULL ? *p : *reinterpret_cast<const ::fpcp::Size*>(
+      &::fpcp::_Size_default_instance_);
+}
+inline ::fpcp::Size* Picture::mutable_size() {
+  
+  if (size_ == NULL) {
+    size_ = new ::fpcp::Size;
+  }
+  // @@protoc_insertion_point(field_mutable:fpcp.Picture.size)
+  return size_;
+}
+inline ::fpcp::Size* Picture::release_size() {
+  // @@protoc_insertion_point(field_release:fpcp.Picture.size)
+  
+  ::fpcp::Size* temp = size_;
+  size_ = NULL;
+  return temp;
+}
+inline void Picture::set_allocated_size(::fpcp::Size* size) {
+  delete size_;
+  size_ = size;
+  if (size) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:fpcp.Picture.size)
+}
+
+// int32 sizeCode = 2;
+inline void Picture::clear_sizecode() {
+  sizecode_ = 0;
+}
+inline ::google::protobuf::int32 Picture::sizecode() const {
+  // @@protoc_insertion_point(field_get:fpcp.Picture.sizeCode)
+  return sizecode_;
+}
+inline void Picture::set_sizecode(::google::protobuf::int32 value) {
+  
+  sizecode_ = value;
+  // @@protoc_insertion_point(field_set:fpcp.Picture.sizeCode)
+}
+
+// .fpcp.Picture.Format format = 3;
+inline void Picture::clear_format() {
+  format_ = 0;
+}
+inline ::fpcp::Picture_Format Picture::format() const {
+  // @@protoc_insertion_point(field_get:fpcp.Picture.format)
+  return static_cast< ::fpcp::Picture_Format >(format_);
+}
+inline void Picture::set_format(::fpcp::Picture_Format value) {
+  
+  format_ = value;
+  // @@protoc_insertion_point(field_set:fpcp.Picture.format)
+}
+
+// bytes data = 4;
+inline void Picture::clear_data() {
+  data_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Picture::data() const {
+  // @@protoc_insertion_point(field_get:fpcp.Picture.data)
+  return data_.GetNoArena();
+}
+inline void Picture::set_data(const ::std::string& value) {
+  
+  data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:fpcp.Picture.data)
+}
+#if LANG_CXX11
+inline void Picture::set_data(::std::string&& value) {
+  
+  data_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:fpcp.Picture.data)
+}
+#endif
+inline void Picture::set_data(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:fpcp.Picture.data)
+}
+inline void Picture::set_data(const void* value, size_t size) {
+  
+  data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:fpcp.Picture.data)
+}
+inline ::std::string* Picture::mutable_data() {
+  
+  // @@protoc_insertion_point(field_mutable:fpcp.Picture.data)
+  return data_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Picture::release_data() {
+  // @@protoc_insertion_point(field_release:fpcp.Picture.data)
+  
+  return data_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Picture::set_allocated_data(::std::string* data) {
+  if (data != NULL) {
+    
+  } else {
+    
+  }
+  data_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), data);
+  // @@protoc_insertion_point(field_set_allocated:fpcp.Picture.data)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -1665,10 +1924,10 @@ Face::mutable_vector() {
 namespace google {
 namespace protobuf {
 
-template <> struct is_proto_enum< ::fpcp::Frame_Format> : ::google::protobuf::internal::true_type {};
+template <> struct is_proto_enum< ::fpcp::Picture_Format> : ::google::protobuf::internal::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::fpcp::Frame_Format>() {
-  return ::fpcp::Frame_Format_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::fpcp::Picture_Format>() {
+  return ::fpcp::Picture_Format_descriptor();
 }
 
 }  // namespace protobuf

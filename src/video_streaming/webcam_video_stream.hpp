@@ -10,6 +10,7 @@
 
 #include "../model.hpp"
 #include "../logger.hpp"
+#include "../config_params.hpp"
 
 namespace fproc {
 
@@ -18,17 +19,15 @@ namespace fproc {
  */
 class WebcamVideoStream: public VideoStream {
 public:
-	WebcamVideoStream():
-			VideoStream(
-					std::unique_ptr<cv::VideoCapture>(new cv::VideoCapture())), _fn(
-					ts_now()) {
-		_cap->open(0);
-		LOG_INFO("Creating WebcamVideoStream, first frame id=" << _fn);
-	}
+    WebcamVideoStream(const CameraParameters &cameraParameters);
 
 	virtual PFrame captureFrame();
 private:
-	long _fn;
+    long _fn;
+    const CameraParameters _cameraParameters;
+
+    void setCameraParameters();
+    void printActualCameraParameters();
 };
 }
 

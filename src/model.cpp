@@ -37,34 +37,6 @@ Frame::DlibRgbImg& Frame::get_rgb_image() {
 	return *_rgb_img;
 }
 
-// compressing frame
-bool compress_frame(PFrame pf, std::vector<uchar>& res_buf, CompType cmp_tp, int quality) {
-	std::vector<int> compression_params;
-	std::string ext;
-	if (cmp_tp == CompType::JPEG) {
-		compression_params.push_back(cv::IMWRITE_JPEG_QUALITY);
-		compression_params.push_back(quality);
-		res_buf.reserve(20000);
-		ext = ".jpg";
-	} else if (cmp_tp == CompType::PNG) {
-		compression_params.push_back(cv::IMWRITE_PNG_COMPRESSION);
-		compression_params.push_back(quality);
-		res_buf.reserve(1000000);
-		ext = ".png";
-	} else {
-		LOG_ERROR("Unexpected compression type " << cmp_tp << ", do nothing.");
-		return false;
-	}
-
-	try {
-		cv::imencode(ext, pf->get_mat(), res_buf, compression_params);
-	} catch (cv::Exception& ex) {
-		LOG_ERROR("Exception converting image to PNG format: %s\n" << ex.what());
-		return false;
-	}
-	return true;
-}
-
 //================================== VideoStream ===============================
 void VideoStream::setResolution(int width, int height) {
 	_cap->set(CV_CAP_PROP_FRAME_WIDTH, width);

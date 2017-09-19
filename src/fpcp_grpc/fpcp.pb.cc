@@ -53,13 +53,18 @@ public:
  ::google::protobuf::internal::ExplicitlyConstructed<Face>
      _instance;
 } _Face_default_instance_;
+class PictureDefaultTypeInternal {
+public:
+ ::google::protobuf::internal::ExplicitlyConstructed<Picture>
+     _instance;
+} _Picture_default_instance_;
 
 namespace protobuf_fpcp_2eproto {
 
 
 namespace {
 
-::google::protobuf::Metadata file_level_metadata[7];
+::google::protobuf::Metadata file_level_metadata[8];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 
 }  // namespace
@@ -75,6 +80,7 @@ PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::AuxillaryParseTableField
 };
 PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::ParseTable const
     TableStruct::schema[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+  { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
   { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
   { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
   { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
@@ -131,8 +137,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_ATTRIBUTE_SECTION
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, id_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, timestamp_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, size_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, data_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, format_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Frame, pictures_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Face, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -141,6 +146,16 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_ATTRIBUTE_SECTION
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Face, id_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Face, rect_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Face, vector_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Face, pictures_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Picture, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Picture, size_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Picture, sizecode_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Picture, format_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Picture, data_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(Void)},
@@ -149,7 +164,8 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_ATTR
   { 21, -1, sizeof(AuthToken)},
   { 28, -1, sizeof(Scene)},
   { 38, -1, sizeof(Frame)},
-  { 48, -1, sizeof(Face)},
+  { 47, -1, sizeof(Face)},
+  { 56, -1, sizeof(Picture)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -160,6 +176,7 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_Scene_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_Frame_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_Face_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_Picture_default_instance_),
 };
 
 namespace {
@@ -180,7 +197,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 7);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 8);
 }
 
 }  // namespace
@@ -202,12 +219,16 @@ void TableStruct::InitDefaultsImpl() {
   ::google::protobuf::internal::OnShutdownDestroyMessage(
       &_Frame_default_instance_);_Face_default_instance_._instance.DefaultConstruct();
   ::google::protobuf::internal::OnShutdownDestroyMessage(
-      &_Face_default_instance_);_Scene_default_instance_._instance.get_mutable()->frame_ = const_cast< ::fpcp::Frame*>(
+      &_Face_default_instance_);_Picture_default_instance_._instance.DefaultConstruct();
+  ::google::protobuf::internal::OnShutdownDestroyMessage(
+      &_Picture_default_instance_);_Scene_default_instance_._instance.get_mutable()->frame_ = const_cast< ::fpcp::Frame*>(
       ::fpcp::Frame::internal_default_instance());
   _Frame_default_instance_._instance.get_mutable()->size_ = const_cast< ::fpcp::Size*>(
       ::fpcp::Size::internal_default_instance());
   _Face_default_instance_._instance.get_mutable()->rect_ = const_cast< ::fpcp::Rectangle*>(
       ::fpcp::Rectangle::internal_default_instance());
+  _Picture_default_instance_._instance.get_mutable()->size_ = const_cast< ::fpcp::Size*>(
+      ::fpcp::Size::internal_default_instance());
 }
 
 void InitDefaults() {
@@ -225,18 +246,21 @@ void AddDescriptorsImpl() {
       "\001 \001(\t\022\016\n\006secret\030\002 \001(\t\"j\n\005Scene\022\n\n\002id\030\001 \001"
       "(\t\022\r\n\005since\030\002 \001(\004\022\017\n\007persons\030\003 \001(\005\022\032\n\005fr"
       "ame\030\004 \001(\0132\013.fpcp.Frame\022\031\n\005faces\030\005 \003(\0132\n."
-      "fpcp.Face\"\216\001\n\005Frame\022\n\n\002id\030\001 \001(\t\022\021\n\ttimes"
-      "tamp\030\002 \001(\004\022\030\n\004size\030\003 \001(\0132\n.fpcp.Size\022\014\n\004"
-      "data\030\004 \001(\014\022\"\n\006format\030\005 \001(\0162\022.fpcp.Frame."
-      "Format\"\032\n\006Format\022\007\n\003RAW\020\000\022\007\n\003PNG\020\001\"A\n\004Fa"
-      "ce\022\n\n\002id\030\001 \001(\t\022\035\n\004rect\030\002 \001(\0132\017.fpcp.Rect"
-      "angle\022\016\n\006vector\030\003 \003(\0022h\n\025SceneProcessorS"
-      "ervice\022+\n\014authenticate\022\017.fpcp.AuthToken\032"
-      "\n.fpcp.Void\022\"\n\007onScene\022\013.fpcp.Scene\032\n.fp"
-      "cp.Voidb\006proto3"
+      "fpcp.Face\"a\n\005Frame\022\n\n\002id\030\001 \001(\t\022\021\n\ttimest"
+      "amp\030\002 \001(\004\022\030\n\004size\030\003 \001(\0132\n.fpcp.Size\022\037\n\010p"
+      "ictures\030\004 \003(\0132\r.fpcp.Picture\"b\n\004Face\022\n\n\002"
+      "id\030\001 \001(\t\022\035\n\004rect\030\002 \001(\0132\017.fpcp.Rectangle\022"
+      "\016\n\006vector\030\003 \003(\002\022\037\n\010pictures\030\004 \003(\0132\r.fpcp"
+      ".Picture\"\216\001\n\007Picture\022\030\n\004size\030\001 \001(\0132\n.fpc"
+      "p.Size\022\020\n\010sizeCode\030\002 \001(\005\022$\n\006format\030\003 \001(\016"
+      "2\024.fpcp.Picture.Format\022\014\n\004data\030\004 \001(\014\"#\n\006"
+      "Format\022\007\n\003RAW\020\000\022\007\n\003PNG\020\001\022\007\n\003JPG\020\0022h\n\025Sce"
+      "neProcessorService\022+\n\014authenticate\022\017.fpc"
+      "p.AuthToken\032\n.fpcp.Void\022\"\n\007onScene\022\013.fpc"
+      "p.Scene\032\n.fpcp.Voidb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 615);
+      descriptor, 747);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "fpcp.proto", &protobuf_RegisterTypes);
 }
@@ -255,14 +279,15 @@ struct StaticDescriptorInitializer {
 
 }  // namespace protobuf_fpcp_2eproto
 
-const ::google::protobuf::EnumDescriptor* Frame_Format_descriptor() {
+const ::google::protobuf::EnumDescriptor* Picture_Format_descriptor() {
   protobuf_fpcp_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_fpcp_2eproto::file_level_enum_descriptors[0];
 }
-bool Frame_Format_IsValid(int value) {
+bool Picture_Format_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
+    case 2:
       return true;
     default:
       return false;
@@ -270,11 +295,12 @@ bool Frame_Format_IsValid(int value) {
 }
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const Frame_Format Frame::RAW;
-const Frame_Format Frame::PNG;
-const Frame_Format Frame::Format_MIN;
-const Frame_Format Frame::Format_MAX;
-const int Frame::Format_ARRAYSIZE;
+const Picture_Format Picture::RAW;
+const Picture_Format Picture::PNG;
+const Picture_Format Picture::JPG;
+const Picture_Format Picture::Format_MIN;
+const Picture_Format Picture::Format_MAX;
+const int Picture::Format_ARRAYSIZE;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 // ===================================================================
@@ -2200,8 +2226,7 @@ Scene::faces() const {
 const int Frame::kIdFieldNumber;
 const int Frame::kTimestampFieldNumber;
 const int Frame::kSizeFieldNumber;
-const int Frame::kDataFieldNumber;
-const int Frame::kFormatFieldNumber;
+const int Frame::kPicturesFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Frame::Frame()
@@ -2215,33 +2240,27 @@ Frame::Frame()
 Frame::Frame(const Frame& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
+      pictures_(from.pictures_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (from.id().size() > 0) {
     id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.id_);
   }
-  data_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.data().size() > 0) {
-    data_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.data_);
-  }
   if (from.has_size()) {
     size_ = new ::fpcp::Size(*from.size_);
   } else {
     size_ = NULL;
   }
-  ::memcpy(&timestamp_, &from.timestamp_,
-    static_cast<size_t>(reinterpret_cast<char*>(&format_) -
-    reinterpret_cast<char*>(&timestamp_)) + sizeof(format_));
+  timestamp_ = from.timestamp_;
   // @@protoc_insertion_point(copy_constructor:fpcp.Frame)
 }
 
 void Frame::SharedCtor() {
   id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  data_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&size_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&format_) -
-      reinterpret_cast<char*>(&size_)) + sizeof(format_));
+      reinterpret_cast<char*>(&timestamp_) -
+      reinterpret_cast<char*>(&size_)) + sizeof(timestamp_));
   _cached_size_ = 0;
 }
 
@@ -2252,7 +2271,6 @@ Frame::~Frame() {
 
 void Frame::SharedDtor() {
   id_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  data_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete size_;
 }
 
@@ -2285,15 +2303,13 @@ void Frame::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  pictures_.Clear();
   id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  data_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && size_ != NULL) {
     delete size_;
   }
   size_ = NULL;
-  ::memset(&timestamp_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&format_) -
-      reinterpret_cast<char*>(&timestamp_)) + sizeof(format_));
+  timestamp_ = GOOGLE_ULONGLONG(0);
   _internal_metadata_.Clear();
 }
 
@@ -2349,27 +2365,12 @@ bool Frame::MergePartialFromCodedStream(
         break;
       }
 
-      // bytes data = 4;
+      // repeated .fpcp.Picture pictures = 4;
       case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_data()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // .fpcp.Frame.Format format = 5;
-      case 5: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
-          int value;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          set_format(static_cast< ::fpcp::Frame_Format >(value));
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+                input, add_pictures()));
         } else {
           goto handle_unusual;
         }
@@ -2423,16 +2424,11 @@ void Frame::SerializeWithCachedSizes(
       3, *this->size_, output);
   }
 
-  // bytes data = 4;
-  if (this->data().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
-      4, this->data(), output);
-  }
-
-  // .fpcp.Frame.Format format = 5;
-  if (this->format() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      5, this->format(), output);
+  // repeated .fpcp.Picture pictures = 4;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->pictures_size()); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      4, this->pictures(static_cast<int>(i)), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -2472,17 +2468,12 @@ void Frame::SerializeWithCachedSizes(
         3, *this->size_, deterministic, target);
   }
 
-  // bytes data = 4;
-  if (this->data().size() > 0) {
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        4, this->data(), target);
-  }
-
-  // .fpcp.Frame.Format format = 5;
-  if (this->format() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      5, this->format(), target);
+  // repeated .fpcp.Picture pictures = 4;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->pictures_size()); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        4, this->pictures(static_cast<int>(i)), deterministic, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -2502,18 +2493,22 @@ size_t Frame::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
+  // repeated .fpcp.Picture pictures = 4;
+  {
+    unsigned int count = static_cast<unsigned int>(this->pictures_size());
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->pictures(static_cast<int>(i)));
+    }
+  }
+
   // string id = 1;
   if (this->id().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->id());
-  }
-
-  // bytes data = 4;
-  if (this->data().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::BytesSize(
-        this->data());
   }
 
   // .fpcp.Size size = 3;
@@ -2528,12 +2523,6 @@ size_t Frame::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::UInt64Size(
         this->timestamp());
-  }
-
-  // .fpcp.Frame.Format format = 5;
-  if (this->format() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::EnumSize(this->format());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2565,22 +2554,16 @@ void Frame::MergeFrom(const Frame& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  pictures_.MergeFrom(from.pictures_);
   if (from.id().size() > 0) {
 
     id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.id_);
-  }
-  if (from.data().size() > 0) {
-
-    data_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.data_);
   }
   if (from.has_size()) {
     mutable_size()->::fpcp::Size::MergeFrom(from.size());
   }
   if (from.timestamp() != 0) {
     set_timestamp(from.timestamp());
-  }
-  if (from.format() != 0) {
-    set_format(from.format());
   }
 }
 
@@ -2608,11 +2591,10 @@ void Frame::Swap(Frame* other) {
 }
 void Frame::InternalSwap(Frame* other) {
   using std::swap;
+  pictures_.InternalSwap(&other->pictures_);
   id_.Swap(&other->id_);
-  data_.Swap(&other->data_);
   swap(size_, other->size_);
   swap(timestamp_, other->timestamp_);
-  swap(format_, other->format_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -2732,71 +2714,34 @@ void Frame::set_allocated_size(::fpcp::Size* size) {
   // @@protoc_insertion_point(field_set_allocated:fpcp.Frame.size)
 }
 
-// bytes data = 4;
-void Frame::clear_data() {
-  data_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// repeated .fpcp.Picture pictures = 4;
+int Frame::pictures_size() const {
+  return pictures_.size();
 }
-const ::std::string& Frame::data() const {
-  // @@protoc_insertion_point(field_get:fpcp.Frame.data)
-  return data_.GetNoArena();
+void Frame::clear_pictures() {
+  pictures_.Clear();
 }
-void Frame::set_data(const ::std::string& value) {
-  
-  data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:fpcp.Frame.data)
+const ::fpcp::Picture& Frame::pictures(int index) const {
+  // @@protoc_insertion_point(field_get:fpcp.Frame.pictures)
+  return pictures_.Get(index);
 }
-#if LANG_CXX11
-void Frame::set_data(::std::string&& value) {
-  
-  data_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:fpcp.Frame.data)
+::fpcp::Picture* Frame::mutable_pictures(int index) {
+  // @@protoc_insertion_point(field_mutable:fpcp.Frame.pictures)
+  return pictures_.Mutable(index);
 }
-#endif
-void Frame::set_data(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:fpcp.Frame.data)
+::fpcp::Picture* Frame::add_pictures() {
+  // @@protoc_insertion_point(field_add:fpcp.Frame.pictures)
+  return pictures_.Add();
 }
-void Frame::set_data(const void* value, size_t size) {
-  
-  data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:fpcp.Frame.data)
+::google::protobuf::RepeatedPtrField< ::fpcp::Picture >*
+Frame::mutable_pictures() {
+  // @@protoc_insertion_point(field_mutable_list:fpcp.Frame.pictures)
+  return &pictures_;
 }
-::std::string* Frame::mutable_data() {
-  
-  // @@protoc_insertion_point(field_mutable:fpcp.Frame.data)
-  return data_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-::std::string* Frame::release_data() {
-  // @@protoc_insertion_point(field_release:fpcp.Frame.data)
-  
-  return data_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-void Frame::set_allocated_data(::std::string* data) {
-  if (data != NULL) {
-    
-  } else {
-    
-  }
-  data_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), data);
-  // @@protoc_insertion_point(field_set_allocated:fpcp.Frame.data)
-}
-
-// .fpcp.Frame.Format format = 5;
-void Frame::clear_format() {
-  format_ = 0;
-}
-::fpcp::Frame_Format Frame::format() const {
-  // @@protoc_insertion_point(field_get:fpcp.Frame.format)
-  return static_cast< ::fpcp::Frame_Format >(format_);
-}
-void Frame::set_format(::fpcp::Frame_Format value) {
-  
-  format_ = value;
-  // @@protoc_insertion_point(field_set:fpcp.Frame.format)
+const ::google::protobuf::RepeatedPtrField< ::fpcp::Picture >&
+Frame::pictures() const {
+  // @@protoc_insertion_point(field_list:fpcp.Frame.pictures)
+  return pictures_;
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -2807,6 +2752,7 @@ void Frame::set_format(::fpcp::Frame_Format value) {
 const int Face::kIdFieldNumber;
 const int Face::kRectFieldNumber;
 const int Face::kVectorFieldNumber;
+const int Face::kPicturesFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Face::Face()
@@ -2821,6 +2767,7 @@ Face::Face(const Face& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       vector_(from.vector_),
+      pictures_(from.pictures_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
@@ -2881,6 +2828,7 @@ void Face::Clear() {
   (void) cached_has_bits;
 
   vector_.Clear();
+  pictures_.Clear();
   id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && rect_ != NULL) {
     delete rect_;
@@ -2946,6 +2894,18 @@ bool Face::MergePartialFromCodedStream(
         break;
       }
 
+      // repeated .fpcp.Picture pictures = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+                input, add_pictures()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -2997,6 +2957,13 @@ void Face::SerializeWithCachedSizes(
       this->vector().data(), this->vector_size(), output);
   }
 
+  // repeated .fpcp.Picture pictures = 4;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->pictures_size()); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      4, this->pictures(static_cast<int>(i)), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -3042,6 +3009,14 @@ void Face::SerializeWithCachedSizes(
       WriteFloatNoTagToArray(this->vector_, target);
   }
 
+  // repeated .fpcp.Picture pictures = 4;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->pictures_size()); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        4, this->pictures(static_cast<int>(i)), deterministic, target);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
@@ -3073,6 +3048,17 @@ size_t Face::ByteSizeLong() const {
     _vector_cached_byte_size_ = cached_size;
     GOOGLE_SAFE_CONCURRENT_WRITES_END();
     total_size += data_size;
+  }
+
+  // repeated .fpcp.Picture pictures = 4;
+  {
+    unsigned int count = static_cast<unsigned int>(this->pictures_size());
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->pictures(static_cast<int>(i)));
+    }
   }
 
   // string id = 1;
@@ -3119,6 +3105,7 @@ void Face::MergeFrom(const Face& from) {
   (void) cached_has_bits;
 
   vector_.MergeFrom(from.vector_);
+  pictures_.MergeFrom(from.pictures_);
   if (from.id().size() > 0) {
 
     id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.id_);
@@ -3153,6 +3140,7 @@ void Face::Swap(Face* other) {
 void Face::InternalSwap(Face* other) {
   using std::swap;
   vector_.InternalSwap(&other->vector_);
+  pictures_.InternalSwap(&other->pictures_);
   id_.Swap(&other->id_);
   swap(rect_, other->rect_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -3288,6 +3276,533 @@ Face::vector() const {
 Face::mutable_vector() {
   // @@protoc_insertion_point(field_mutable_list:fpcp.Face.vector)
   return &vector_;
+}
+
+// repeated .fpcp.Picture pictures = 4;
+int Face::pictures_size() const {
+  return pictures_.size();
+}
+void Face::clear_pictures() {
+  pictures_.Clear();
+}
+const ::fpcp::Picture& Face::pictures(int index) const {
+  // @@protoc_insertion_point(field_get:fpcp.Face.pictures)
+  return pictures_.Get(index);
+}
+::fpcp::Picture* Face::mutable_pictures(int index) {
+  // @@protoc_insertion_point(field_mutable:fpcp.Face.pictures)
+  return pictures_.Mutable(index);
+}
+::fpcp::Picture* Face::add_pictures() {
+  // @@protoc_insertion_point(field_add:fpcp.Face.pictures)
+  return pictures_.Add();
+}
+::google::protobuf::RepeatedPtrField< ::fpcp::Picture >*
+Face::mutable_pictures() {
+  // @@protoc_insertion_point(field_mutable_list:fpcp.Face.pictures)
+  return &pictures_;
+}
+const ::google::protobuf::RepeatedPtrField< ::fpcp::Picture >&
+Face::pictures() const {
+  // @@protoc_insertion_point(field_list:fpcp.Face.pictures)
+  return pictures_;
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int Picture::kSizeFieldNumber;
+const int Picture::kSizeCodeFieldNumber;
+const int Picture::kFormatFieldNumber;
+const int Picture::kDataFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+Picture::Picture()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_fpcp_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:fpcp.Picture)
+}
+Picture::Picture(const Picture& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  data_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.data().size() > 0) {
+    data_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.data_);
+  }
+  if (from.has_size()) {
+    size_ = new ::fpcp::Size(*from.size_);
+  } else {
+    size_ = NULL;
+  }
+  ::memcpy(&sizecode_, &from.sizecode_,
+    static_cast<size_t>(reinterpret_cast<char*>(&format_) -
+    reinterpret_cast<char*>(&sizecode_)) + sizeof(format_));
+  // @@protoc_insertion_point(copy_constructor:fpcp.Picture)
+}
+
+void Picture::SharedCtor() {
+  data_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&size_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&format_) -
+      reinterpret_cast<char*>(&size_)) + sizeof(format_));
+  _cached_size_ = 0;
+}
+
+Picture::~Picture() {
+  // @@protoc_insertion_point(destructor:fpcp.Picture)
+  SharedDtor();
+}
+
+void Picture::SharedDtor() {
+  data_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) delete size_;
+}
+
+void Picture::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* Picture::descriptor() {
+  protobuf_fpcp_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_fpcp_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const Picture& Picture::default_instance() {
+  protobuf_fpcp_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+Picture* Picture::New(::google::protobuf::Arena* arena) const {
+  Picture* n = new Picture;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void Picture::Clear() {
+// @@protoc_insertion_point(message_clear_start:fpcp.Picture)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  data_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (GetArenaNoVirtual() == NULL && size_ != NULL) {
+    delete size_;
+  }
+  size_ = NULL;
+  ::memset(&sizecode_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&format_) -
+      reinterpret_cast<char*>(&sizecode_)) + sizeof(format_));
+  _internal_metadata_.Clear();
+}
+
+bool Picture::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:fpcp.Picture)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // .fpcp.Size size = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_size()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int32 sizeCode = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &sizecode_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .fpcp.Picture.Format format = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          set_format(static_cast< ::fpcp::Picture_Format >(value));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bytes data = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_data()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:fpcp.Picture)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:fpcp.Picture)
+  return false;
+#undef DO_
+}
+
+void Picture::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:fpcp.Picture)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .fpcp.Size size = 1;
+  if (this->has_size()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->size_, output);
+  }
+
+  // int32 sizeCode = 2;
+  if (this->sizecode() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->sizecode(), output);
+  }
+
+  // .fpcp.Picture.Format format = 3;
+  if (this->format() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      3, this->format(), output);
+  }
+
+  // bytes data = 4;
+  if (this->data().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
+      4, this->data(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:fpcp.Picture)
+}
+
+::google::protobuf::uint8* Picture::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:fpcp.Picture)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .fpcp.Size size = 1;
+  if (this->has_size()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1, *this->size_, deterministic, target);
+  }
+
+  // int32 sizeCode = 2;
+  if (this->sizecode() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->sizecode(), target);
+  }
+
+  // .fpcp.Picture.Format format = 3;
+  if (this->format() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      3, this->format(), target);
+  }
+
+  // bytes data = 4;
+  if (this->data().size() > 0) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        4, this->data(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:fpcp.Picture)
+  return target;
+}
+
+size_t Picture::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:fpcp.Picture)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // bytes data = 4;
+  if (this->data().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::BytesSize(
+        this->data());
+  }
+
+  // .fpcp.Size size = 1;
+  if (this->has_size()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->size_);
+  }
+
+  // int32 sizeCode = 2;
+  if (this->sizecode() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->sizecode());
+  }
+
+  // .fpcp.Picture.Format format = 3;
+  if (this->format() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::EnumSize(this->format());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void Picture::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:fpcp.Picture)
+  GOOGLE_DCHECK_NE(&from, this);
+  const Picture* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const Picture>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:fpcp.Picture)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:fpcp.Picture)
+    MergeFrom(*source);
+  }
+}
+
+void Picture::MergeFrom(const Picture& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:fpcp.Picture)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.data().size() > 0) {
+
+    data_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.data_);
+  }
+  if (from.has_size()) {
+    mutable_size()->::fpcp::Size::MergeFrom(from.size());
+  }
+  if (from.sizecode() != 0) {
+    set_sizecode(from.sizecode());
+  }
+  if (from.format() != 0) {
+    set_format(from.format());
+  }
+}
+
+void Picture::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:fpcp.Picture)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void Picture::CopyFrom(const Picture& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:fpcp.Picture)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Picture::IsInitialized() const {
+  return true;
+}
+
+void Picture::Swap(Picture* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void Picture::InternalSwap(Picture* other) {
+  using std::swap;
+  data_.Swap(&other->data_);
+  swap(size_, other->size_);
+  swap(sizecode_, other->sizecode_);
+  swap(format_, other->format_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata Picture::GetMetadata() const {
+  protobuf_fpcp_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_fpcp_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// Picture
+
+// .fpcp.Size size = 1;
+bool Picture::has_size() const {
+  return this != internal_default_instance() && size_ != NULL;
+}
+void Picture::clear_size() {
+  if (GetArenaNoVirtual() == NULL && size_ != NULL) delete size_;
+  size_ = NULL;
+}
+const ::fpcp::Size& Picture::size() const {
+  const ::fpcp::Size* p = size_;
+  // @@protoc_insertion_point(field_get:fpcp.Picture.size)
+  return p != NULL ? *p : *reinterpret_cast<const ::fpcp::Size*>(
+      &::fpcp::_Size_default_instance_);
+}
+::fpcp::Size* Picture::mutable_size() {
+  
+  if (size_ == NULL) {
+    size_ = new ::fpcp::Size;
+  }
+  // @@protoc_insertion_point(field_mutable:fpcp.Picture.size)
+  return size_;
+}
+::fpcp::Size* Picture::release_size() {
+  // @@protoc_insertion_point(field_release:fpcp.Picture.size)
+  
+  ::fpcp::Size* temp = size_;
+  size_ = NULL;
+  return temp;
+}
+void Picture::set_allocated_size(::fpcp::Size* size) {
+  delete size_;
+  size_ = size;
+  if (size) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:fpcp.Picture.size)
+}
+
+// int32 sizeCode = 2;
+void Picture::clear_sizecode() {
+  sizecode_ = 0;
+}
+::google::protobuf::int32 Picture::sizecode() const {
+  // @@protoc_insertion_point(field_get:fpcp.Picture.sizeCode)
+  return sizecode_;
+}
+void Picture::set_sizecode(::google::protobuf::int32 value) {
+  
+  sizecode_ = value;
+  // @@protoc_insertion_point(field_set:fpcp.Picture.sizeCode)
+}
+
+// .fpcp.Picture.Format format = 3;
+void Picture::clear_format() {
+  format_ = 0;
+}
+::fpcp::Picture_Format Picture::format() const {
+  // @@protoc_insertion_point(field_get:fpcp.Picture.format)
+  return static_cast< ::fpcp::Picture_Format >(format_);
+}
+void Picture::set_format(::fpcp::Picture_Format value) {
+  
+  format_ = value;
+  // @@protoc_insertion_point(field_set:fpcp.Picture.format)
+}
+
+// bytes data = 4;
+void Picture::clear_data() {
+  data_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& Picture::data() const {
+  // @@protoc_insertion_point(field_get:fpcp.Picture.data)
+  return data_.GetNoArena();
+}
+void Picture::set_data(const ::std::string& value) {
+  
+  data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:fpcp.Picture.data)
+}
+#if LANG_CXX11
+void Picture::set_data(::std::string&& value) {
+  
+  data_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:fpcp.Picture.data)
+}
+#endif
+void Picture::set_data(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:fpcp.Picture.data)
+}
+void Picture::set_data(const void* value, size_t size) {
+  
+  data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:fpcp.Picture.data)
+}
+::std::string* Picture::mutable_data() {
+  
+  // @@protoc_insertion_point(field_mutable:fpcp.Picture.data)
+  return data_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* Picture::release_data() {
+  // @@protoc_insertion_point(field_release:fpcp.Picture.data)
+  
+  return data_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void Picture::set_allocated_data(::std::string* data) {
+  if (data != NULL) {
+    
+  } else {
+    
+  }
+  data_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), data);
+  // @@protoc_insertion_point(field_set_allocated:fpcp.Picture.data)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

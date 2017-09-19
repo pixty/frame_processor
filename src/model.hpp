@@ -40,6 +40,7 @@ namespace fproc {
 	CvRect toCvRect(const Rectangle& rect);
 	// Extends rectangle Size defines maximum width and height for the rectangle
 	Rectangle addBorder(const Rectangle& rect, const Size& size, int brdr);
+	inline Size rectSize(const Rectangle& rect) { return Size(rect.width(), rect.height()); }
 
 	typedef std::shared_ptr<boost::thread> PThread;
 	typedef boost::unique_lock<boost::mutex> MxGuard;
@@ -122,13 +123,6 @@ namespace fproc {
 	};
 	typedef std::shared_ptr<Frame> PFrame;
 
-	enum CompType {
-		JPEG,
-		PNG
-	};
-	// quality [1..100] for JPEG and [0..10] for PNG
-	bool compress_frame(PFrame pf, std::vector<uchar>& res_buf, CompType cmp_tp, int quality);
-
 	/*
 	 * FrameRegion - describes a region in a frame. Used for describing objects
 	 * in a frame. Always has a non-NULL frame id because it connects to it.
@@ -157,7 +151,7 @@ namespace fproc {
 
 	// A Face associated with a single frame only
 	struct FrameFace {
-		FrameFace(FaceId fid, const PFrameRegion fr): face_id_(fid), frame_reg_(fr) { };
+        FrameFace(FaceId fid, const PFrameRegion fr): face_id_(fid), frame_reg_(fr) { }
 		FrameFace& operator=(const FrameFace& othr) {
 			face_id_ = othr.face_id_;
 			frame_reg_ = othr.frame_reg_;
@@ -175,7 +169,7 @@ namespace fproc {
 
 	struct Scene {
 		Scene(PFrame frame, PFrameFaceList flist): frame_(frame), flist_(flist) {}
-		inline PFrame getFrame() { return frame_; };
+        inline PFrame getFrame() { return frame_; }
 		inline PFrameFaceList getFrameFaceList() const { return flist_; }
 
 		inline std::string getId() const { return id_; }
@@ -217,12 +211,12 @@ namespace fproc {
 		 * over (depends on source and implementation)
 		 */
 		virtual PFrame captureFrame() = 0;
-		virtual ~VideoStream() {};
+        virtual ~VideoStream() {}
 
 		void setResolution(int width, int height);
 		Size getSize();
-		double getFps() { return _cap->get(CV_CAP_PROP_FPS); };
-		int getFourcc() { return static_cast<int>(_cap->get(CV_CAP_PROP_FOURCC)); };
+        double getFps() { return _cap->get(CV_CAP_PROP_FPS); }
+        int getFourcc() { return static_cast<int>(_cap->get(CV_CAP_PROP_FOURCC)); }
 	protected:
 		VideoStream(std::unique_ptr<cv::VideoCapture> cap): _cap(std::move(cap)) { }
 		std::unique_ptr<cv::VideoCapture> _cap;
@@ -236,8 +230,8 @@ namespace fproc {
 		VideoStreamConsumer() {}
 		virtual ~VideoStreamConsumer() {}
 
-		virtual bool consumeFrame(PFrame frame) { return true; };
-		virtual void close() {};
+        virtual bool consumeFrame(PFrame frame) { return true; }
+        virtual void close() {}
 	};
 	typedef std::unique_ptr<VideoStreamConsumer> PVideoStreamConsumer;
 
@@ -259,7 +253,7 @@ namespace fproc {
 	};
 
 	std::string uuid();
-};
+}
 // namespace
 
 #endif /* SRC_MODEL_HPP_ */

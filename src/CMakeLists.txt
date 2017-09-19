@@ -63,6 +63,8 @@ set(SRC_LIST
     frame_processing/scene_detector.cpp
     frame_processing/fpcp_connector.hpp
     frame_processing/fpcp_connector.cpp
+    frame_processing/image_processing.cpp
+    frame_processing/image_processing.hpp
     video_streaming/file_video_stream.cpp
     video_streaming/file_video_stream.hpp
     video_streaming/image_window.hpp
