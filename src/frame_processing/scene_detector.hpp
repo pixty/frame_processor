@@ -52,9 +52,9 @@ private:
  * during video stream processing.
  */
 struct SceneDetectorListener {
-	virtual void onStarted(VideoStreamConsumer& sceneDetector) {};
-	virtual void onStopped() {};
-	virtual void onScene(PScene scene) {};
+    virtual void onStarted(VideoStreamConsumer& sceneDetector) {}
+    virtual void onStopped() {}
+    virtual void onScene(PScene scene) {}
 	virtual ~SceneDetectorListener() {}
 };
 typedef std::unique_ptr<SceneDetectorListener> PSceneDetectorListener;
@@ -62,7 +62,8 @@ typedef std::unique_ptr<SceneDetectorListener> PSceneDetectorListener;
 struct SceneDetector: public VideoStreamConsumer {
 	SceneDetector(PSceneDetectorListener listener, PRecognitionManager recManager);
 
-	void setVisualizer(SceneDetectorVisualizer* sdv) { _sc_visualizer = PSceneDetectorVisualizer(sdv); };
+    void setVisualizer(SceneDetectorVisualizer* sdv) { _sc_visualizer = PSceneDetectorVisualizer(sdv); }
+    void setHogParameters(const HogParameters &params);
 	bool consumeFrame(PFrame frame);
 	void close();
 private:
