@@ -18,19 +18,40 @@
 // @@protoc_insertion_point(includes)
 
 namespace fpcp {
-class VoidDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Void> {
+class VoidDefaultTypeInternal {
+public:
+ ::google::protobuf::internal::ExplicitlyConstructed<Void>
+     _instance;
 } _Void_default_instance_;
-class SizeDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Size> {
+class SizeDefaultTypeInternal {
+public:
+ ::google::protobuf::internal::ExplicitlyConstructed<Size>
+     _instance;
 } _Size_default_instance_;
-class RectangleDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Rectangle> {
+class RectangleDefaultTypeInternal {
+public:
+ ::google::protobuf::internal::ExplicitlyConstructed<Rectangle>
+     _instance;
 } _Rectangle_default_instance_;
-class AuthTokenDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<AuthToken> {
+class AuthTokenDefaultTypeInternal {
+public:
+ ::google::protobuf::internal::ExplicitlyConstructed<AuthToken>
+     _instance;
 } _AuthToken_default_instance_;
-class SceneDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Scene> {
+class SceneDefaultTypeInternal {
+public:
+ ::google::protobuf::internal::ExplicitlyConstructed<Scene>
+     _instance;
 } _Scene_default_instance_;
-class FrameDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Frame> {
+class FrameDefaultTypeInternal {
+public:
+ ::google::protobuf::internal::ExplicitlyConstructed<Frame>
+     _instance;
 } _Frame_default_instance_;
-class FaceDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Face> {
+class FaceDefaultTypeInternal {
+public:
+ ::google::protobuf::internal::ExplicitlyConstructed<Face>
+     _instance;
 } _Face_default_instance_;
 
 namespace protobuf_fpcp_2eproto {
@@ -44,26 +65,26 @@ const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 }  // namespace
 
 PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::ParseTableField
-    const TableStruct::entries[] = {
+    const TableStruct::entries[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   {0, 0, 0, ::google::protobuf::internal::kInvalidMask, 0, 0},
 };
 
 PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::AuxillaryParseTableField
-    const TableStruct::aux[] = {
+    const TableStruct::aux[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ::google::protobuf::internal::AuxillaryParseTableField(),
 };
 PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::ParseTable const
-    TableStruct::schema[] = {
-  { NULL, NULL, 0, -1, -1, false },
-  { NULL, NULL, 0, -1, -1, false },
-  { NULL, NULL, 0, -1, -1, false },
-  { NULL, NULL, 0, -1, -1, false },
-  { NULL, NULL, 0, -1, -1, false },
-  { NULL, NULL, 0, -1, -1, false },
-  { NULL, NULL, 0, -1, -1, false },
+    TableStruct::schema[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+  { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
+  { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
+  { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
+  { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
+  { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
+  { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
+  { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
 };
 
-const ::google::protobuf::uint32 TableStruct::offsets[] = {
+const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Void, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -120,9 +141,9 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Face, id_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Face, rect_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Face, vector_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Face, picture_),
 };
-
-static const ::google::protobuf::internal::MigrationSchema schemas[] = {
+static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(Void)},
   { 5, -1, sizeof(Size)},
   { 12, -1, sizeof(Rectangle)},
@@ -164,50 +185,42 @@ void protobuf_RegisterTypes(const ::std::string&) {
 }
 
 }  // namespace
-
-void TableStruct::Shutdown() {
-  _Void_default_instance_.Shutdown();
-  delete file_level_metadata[0].reflection;
-  _Size_default_instance_.Shutdown();
-  delete file_level_metadata[1].reflection;
-  _Rectangle_default_instance_.Shutdown();
-  delete file_level_metadata[2].reflection;
-  _AuthToken_default_instance_.Shutdown();
-  delete file_level_metadata[3].reflection;
-  _Scene_default_instance_.Shutdown();
-  delete file_level_metadata[4].reflection;
-  _Frame_default_instance_.Shutdown();
-  delete file_level_metadata[5].reflection;
-  _Face_default_instance_.Shutdown();
-  delete file_level_metadata[6].reflection;
-}
-
 void TableStruct::InitDefaultsImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::internal::InitProtobufDefaults();
-  _Void_default_instance_.DefaultConstruct();
-  _Size_default_instance_.DefaultConstruct();
-  _Rectangle_default_instance_.DefaultConstruct();
-  _AuthToken_default_instance_.DefaultConstruct();
-  _Scene_default_instance_.DefaultConstruct();
-  _Frame_default_instance_.DefaultConstruct();
-  _Face_default_instance_.DefaultConstruct();
-  _Scene_default_instance_.get_mutable()->frame_ = const_cast< ::fpcp::Frame*>(
+  _Void_default_instance_._instance.DefaultConstruct();
+  ::google::protobuf::internal::OnShutdownDestroyMessage(
+      &_Void_default_instance_);_Size_default_instance_._instance.DefaultConstruct();
+  ::google::protobuf::internal::OnShutdownDestroyMessage(
+      &_Size_default_instance_);_Rectangle_default_instance_._instance.DefaultConstruct();
+  ::google::protobuf::internal::OnShutdownDestroyMessage(
+      &_Rectangle_default_instance_);_AuthToken_default_instance_._instance.DefaultConstruct();
+  ::google::protobuf::internal::OnShutdownDestroyMessage(
+      &_AuthToken_default_instance_);_Scene_default_instance_._instance.DefaultConstruct();
+  ::google::protobuf::internal::OnShutdownDestroyMessage(
+      &_Scene_default_instance_);_Frame_default_instance_._instance.DefaultConstruct();
+  ::google::protobuf::internal::OnShutdownDestroyMessage(
+      &_Frame_default_instance_);_Face_default_instance_._instance.DefaultConstruct();
+  ::google::protobuf::internal::OnShutdownDestroyMessage(
+      &_Face_default_instance_);_Scene_default_instance_._instance.get_mutable()->frame_ = const_cast< ::fpcp::Frame*>(
       ::fpcp::Frame::internal_default_instance());
-  _Frame_default_instance_.get_mutable()->size_ = const_cast< ::fpcp::Size*>(
+  _Frame_default_instance_._instance.get_mutable()->size_ = const_cast< ::fpcp::Size*>(
       ::fpcp::Size::internal_default_instance());
-  _Face_default_instance_.get_mutable()->rect_ = const_cast< ::fpcp::Rectangle*>(
+  _Face_default_instance_._instance.get_mutable()->rect_ = const_cast< ::fpcp::Rectangle*>(
       ::fpcp::Rectangle::internal_default_instance());
+  _Face_default_instance_._instance.get_mutable()->picture_ = const_cast< ::fpcp::Frame*>(
+      ::fpcp::Frame::internal_default_instance());
 }
 
 void InitDefaults() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
   ::google::protobuf::GoogleOnceInit(&once, &TableStruct::InitDefaultsImpl);
 }
+namespace {
 void AddDescriptorsImpl() {
   InitDefaults();
-  static const char descriptor[] = {
+  static const char descriptor[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\nfpcp.proto\022\004fpcp\"\006\n\004Void\"%\n\004Size\022\r\n\005wi"
       "dth\030\001 \001(\r\022\016\n\006height\030\002 \001(\r\"E\n\tRectangle\022\014"
       "\n\004left\030\001 \001(\005\022\013\n\003top\030\002 \001(\005\022\r\n\005right\030\003 \001(\005"
@@ -215,28 +228,29 @@ void AddDescriptorsImpl() {
       "\001 \001(\t\022\016\n\006secret\030\002 \001(\t\"j\n\005Scene\022\n\n\002id\030\001 \001"
       "(\t\022\r\n\005since\030\002 \001(\004\022\017\n\007persons\030\003 \001(\005\022\032\n\005fr"
       "ame\030\004 \001(\0132\013.fpcp.Frame\022\031\n\005faces\030\005 \003(\0132\n."
-      "fpcp.Face\"\216\001\n\005Frame\022\n\n\002id\030\001 \001(\t\022\021\n\ttimes"
+      "fpcp.Face\"\227\001\n\005Frame\022\n\n\002id\030\001 \001(\t\022\021\n\ttimes"
       "tamp\030\002 \001(\004\022\030\n\004size\030\003 \001(\0132\n.fpcp.Size\022\014\n\004"
       "data\030\004 \001(\014\022\"\n\006format\030\005 \001(\0162\022.fpcp.Frame."
-      "Format\"\032\n\006Format\022\007\n\003RAW\020\000\022\007\n\003PNG\020\001\"A\n\004Fa"
-      "ce\022\n\n\002id\030\001 \001(\t\022\035\n\004rect\030\002 \001(\0132\017.fpcp.Rect"
-      "angle\022\016\n\006vector\030\003 \003(\0022h\n\025SceneProcessorS"
-      "ervice\022+\n\014authenticate\022\017.fpcp.AuthToken\032"
-      "\n.fpcp.Void\022\"\n\007onScene\022\013.fpcp.Scene\032\n.fp"
-      "cp.Voidb\006proto3"
+      "Format\"#\n\006Format\022\007\n\003RAW\020\000\022\007\n\003PNG\020\001\022\007\n\003JP"
+      "G\020\002\"_\n\004Face\022\n\n\002id\030\001 \001(\t\022\035\n\004rect\030\002 \001(\0132\017."
+      "fpcp.Rectangle\022\016\n\006vector\030\003 \003(\002\022\034\n\007pictur"
+      "e\030\004 \001(\0132\013.fpcp.Frame2h\n\025SceneProcessorSe"
+      "rvice\022+\n\014authenticate\022\017.fpcp.AuthToken\032\n"
+      ".fpcp.Void\022\"\n\007onScene\022\013.fpcp.Scene\032\n.fpc"
+      "p.Voidb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 615);
+      descriptor, 654);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "fpcp.proto", &protobuf_RegisterTypes);
-  ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
 }
+} // anonymous namespace
 
 void AddDescriptors() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
   ::google::protobuf::GoogleOnceInit(&once, &AddDescriptorsImpl);
 }
-// Force AddDescriptors() to be called at static initialization time.
+// Force AddDescriptors() to be called at dynamic initialization time.
 struct StaticDescriptorInitializer {
   StaticDescriptorInitializer() {
     AddDescriptors();
@@ -253,6 +267,7 @@ bool Frame_Format_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
+    case 2:
       return true;
     default:
       return false;
@@ -262,6 +277,7 @@ bool Frame_Format_IsValid(int value) {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const Frame_Format Frame::RAW;
 const Frame_Format Frame::PNG;
+const Frame_Format Frame::JPG;
 const Frame_Format Frame::Format_MIN;
 const Frame_Format Frame::Format_MAX;
 const int Frame::Format_ARRAYSIZE;
@@ -325,6 +341,11 @@ Void* Void::New(::google::protobuf::Arena* arena) const {
 
 void Void::Clear() {
 // @@protoc_insertion_point(message_clear_start:fpcp.Void)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _internal_metadata_.Clear();
 }
 
 bool Void::MergePartialFromCodedStream(
@@ -337,12 +358,11 @@ bool Void::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
-    if (tag == 0 ||
-        ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+    if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
   // @@protoc_insertion_point(parse_success:fpcp.Void)
@@ -359,15 +379,24 @@ void Void::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
   // @@protoc_insertion_point(serialize_end:fpcp.Void)
 }
 
 ::google::protobuf::uint8* Void::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
   // @@protoc_insertion_point(serialize_to_array_start:fpcp.Void)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
   // @@protoc_insertion_point(serialize_to_array_end:fpcp.Void)
   return target;
 }
@@ -376,6 +405,11 @@ size_t Void::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:fpcp.Void)
   size_t total_size = 0;
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -430,7 +464,9 @@ void Void::Swap(Void* other) {
   InternalSwap(other);
 }
 void Void::InternalSwap(Void* other) {
-  std::swap(_cached_size_, other->_cached_size_);
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata Void::GetMetadata() const {
@@ -464,14 +500,15 @@ Size::Size(const Size& from)
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&width_, &from.width_,
-    reinterpret_cast<char*>(&height_) -
-    reinterpret_cast<char*>(&width_) + sizeof(height_));
+    static_cast<size_t>(reinterpret_cast<char*>(&height_) -
+    reinterpret_cast<char*>(&width_)) + sizeof(height_));
   // @@protoc_insertion_point(copy_constructor:fpcp.Size)
 }
 
 void Size::SharedCtor() {
-  ::memset(&width_, 0, reinterpret_cast<char*>(&height_) -
-    reinterpret_cast<char*>(&width_) + sizeof(height_));
+  ::memset(&width_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&height_) -
+      reinterpret_cast<char*>(&width_)) + sizeof(height_));
   _cached_size_ = 0;
 }
 
@@ -508,8 +545,14 @@ Size* Size::New(::google::protobuf::Arena* arena) const {
 
 void Size::Clear() {
 // @@protoc_insertion_point(message_clear_start:fpcp.Size)
-  ::memset(&width_, 0, reinterpret_cast<char*>(&height_) -
-    reinterpret_cast<char*>(&width_) + sizeof(height_));
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&width_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&height_) -
+      reinterpret_cast<char*>(&width_)) + sizeof(height_));
+  _internal_metadata_.Clear();
 }
 
 bool Size::MergePartialFromCodedStream(
@@ -525,7 +568,7 @@ bool Size::MergePartialFromCodedStream(
       // uint32 width = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(8u)) {
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
@@ -539,7 +582,7 @@ bool Size::MergePartialFromCodedStream(
       // uint32 height = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(16u)) {
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
@@ -552,12 +595,11 @@ bool Size::MergePartialFromCodedStream(
 
       default: {
       handle_unusual:
-        if (tag == 0 ||
-            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+        if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
     }
@@ -587,11 +629,16 @@ void Size::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->height(), output);
   }
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
   // @@protoc_insertion_point(serialize_end:fpcp.Size)
 }
 
 ::google::protobuf::uint8* Size::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
   // @@protoc_insertion_point(serialize_to_array_start:fpcp.Size)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -606,6 +653,10 @@ void Size::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->height(), target);
   }
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
   // @@protoc_insertion_point(serialize_to_array_end:fpcp.Size)
   return target;
 }
@@ -614,6 +665,11 @@ size_t Size::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:fpcp.Size)
   size_t total_size = 0;
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
   // uint32 width = 1;
   if (this->width() != 0) {
     total_size += 1 +
@@ -688,9 +744,11 @@ void Size::Swap(Size* other) {
   InternalSwap(other);
 }
 void Size::InternalSwap(Size* other) {
-  std::swap(width_, other->width_);
-  std::swap(height_, other->height_);
-  std::swap(_cached_size_, other->_cached_size_);
+  using std::swap;
+  swap(width_, other->width_);
+  swap(height_, other->height_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata Size::GetMetadata() const {
@@ -754,14 +812,15 @@ Rectangle::Rectangle(const Rectangle& from)
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&left_, &from.left_,
-    reinterpret_cast<char*>(&bottom_) -
-    reinterpret_cast<char*>(&left_) + sizeof(bottom_));
+    static_cast<size_t>(reinterpret_cast<char*>(&bottom_) -
+    reinterpret_cast<char*>(&left_)) + sizeof(bottom_));
   // @@protoc_insertion_point(copy_constructor:fpcp.Rectangle)
 }
 
 void Rectangle::SharedCtor() {
-  ::memset(&left_, 0, reinterpret_cast<char*>(&bottom_) -
-    reinterpret_cast<char*>(&left_) + sizeof(bottom_));
+  ::memset(&left_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&bottom_) -
+      reinterpret_cast<char*>(&left_)) + sizeof(bottom_));
   _cached_size_ = 0;
 }
 
@@ -798,8 +857,14 @@ Rectangle* Rectangle::New(::google::protobuf::Arena* arena) const {
 
 void Rectangle::Clear() {
 // @@protoc_insertion_point(message_clear_start:fpcp.Rectangle)
-  ::memset(&left_, 0, reinterpret_cast<char*>(&bottom_) -
-    reinterpret_cast<char*>(&left_) + sizeof(bottom_));
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&left_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&bottom_) -
+      reinterpret_cast<char*>(&left_)) + sizeof(bottom_));
+  _internal_metadata_.Clear();
 }
 
 bool Rectangle::MergePartialFromCodedStream(
@@ -815,7 +880,7 @@ bool Rectangle::MergePartialFromCodedStream(
       // int32 left = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(8u)) {
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -829,7 +894,7 @@ bool Rectangle::MergePartialFromCodedStream(
       // int32 top = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(16u)) {
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -843,7 +908,7 @@ bool Rectangle::MergePartialFromCodedStream(
       // int32 right = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(24u)) {
+            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -857,7 +922,7 @@ bool Rectangle::MergePartialFromCodedStream(
       // int32 bottom = 4;
       case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(32u)) {
+            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -870,12 +935,11 @@ bool Rectangle::MergePartialFromCodedStream(
 
       default: {
       handle_unusual:
-        if (tag == 0 ||
-            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+        if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
     }
@@ -915,11 +979,16 @@ void Rectangle::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->bottom(), output);
   }
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
   // @@protoc_insertion_point(serialize_end:fpcp.Rectangle)
 }
 
 ::google::protobuf::uint8* Rectangle::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
   // @@protoc_insertion_point(serialize_to_array_start:fpcp.Rectangle)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -944,6 +1013,10 @@ void Rectangle::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->bottom(), target);
   }
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
   // @@protoc_insertion_point(serialize_to_array_end:fpcp.Rectangle)
   return target;
 }
@@ -952,6 +1025,11 @@ size_t Rectangle::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:fpcp.Rectangle)
   size_t total_size = 0;
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
   // int32 left = 1;
   if (this->left() != 0) {
     total_size += 1 +
@@ -1046,11 +1124,13 @@ void Rectangle::Swap(Rectangle* other) {
   InternalSwap(other);
 }
 void Rectangle::InternalSwap(Rectangle* other) {
-  std::swap(left_, other->left_);
-  std::swap(top_, other->top_);
-  std::swap(right_, other->right_);
-  std::swap(bottom_, other->bottom_);
-  std::swap(_cached_size_, other->_cached_size_);
+  using std::swap;
+  swap(left_, other->left_);
+  swap(top_, other->top_);
+  swap(right_, other->right_);
+  swap(bottom_, other->bottom_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata Rectangle::GetMetadata() const {
@@ -1191,8 +1271,13 @@ AuthToken* AuthToken::New(::google::protobuf::Arena* arena) const {
 
 void AuthToken::Clear() {
 // @@protoc_insertion_point(message_clear_start:fpcp.AuthToken)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
   access_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   secret_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _internal_metadata_.Clear();
 }
 
 bool AuthToken::MergePartialFromCodedStream(
@@ -1208,11 +1293,11 @@ bool AuthToken::MergePartialFromCodedStream(
       // string access = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u)) {
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_access()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->access().data(), this->access().length(),
+            this->access().data(), static_cast<int>(this->access().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "fpcp.AuthToken.access"));
         } else {
@@ -1224,11 +1309,11 @@ bool AuthToken::MergePartialFromCodedStream(
       // string secret = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u)) {
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_secret()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->secret().data(), this->secret().length(),
+            this->secret().data(), static_cast<int>(this->secret().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "fpcp.AuthToken.secret"));
         } else {
@@ -1239,12 +1324,11 @@ bool AuthToken::MergePartialFromCodedStream(
 
       default: {
       handle_unusual:
-        if (tag == 0 ||
-            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+        if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
     }
@@ -1267,7 +1351,7 @@ void AuthToken::SerializeWithCachedSizes(
   // string access = 1;
   if (this->access().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->access().data(), this->access().length(),
+      this->access().data(), static_cast<int>(this->access().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "fpcp.AuthToken.access");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
@@ -1277,18 +1361,23 @@ void AuthToken::SerializeWithCachedSizes(
   // string secret = 2;
   if (this->secret().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->secret().data(), this->secret().length(),
+      this->secret().data(), static_cast<int>(this->secret().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "fpcp.AuthToken.secret");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       2, this->secret(), output);
   }
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
   // @@protoc_insertion_point(serialize_end:fpcp.AuthToken)
 }
 
 ::google::protobuf::uint8* AuthToken::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
   // @@protoc_insertion_point(serialize_to_array_start:fpcp.AuthToken)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -1296,7 +1385,7 @@ void AuthToken::SerializeWithCachedSizes(
   // string access = 1;
   if (this->access().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->access().data(), this->access().length(),
+      this->access().data(), static_cast<int>(this->access().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "fpcp.AuthToken.access");
     target =
@@ -1307,7 +1396,7 @@ void AuthToken::SerializeWithCachedSizes(
   // string secret = 2;
   if (this->secret().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->secret().data(), this->secret().length(),
+      this->secret().data(), static_cast<int>(this->secret().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "fpcp.AuthToken.secret");
     target =
@@ -1315,6 +1404,10 @@ void AuthToken::SerializeWithCachedSizes(
         2, this->secret(), target);
   }
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
   // @@protoc_insertion_point(serialize_to_array_end:fpcp.AuthToken)
   return target;
 }
@@ -1323,6 +1416,11 @@ size_t AuthToken::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:fpcp.AuthToken)
   size_t total_size = 0;
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
   // string access = 1;
   if (this->access().size() > 0) {
     total_size += 1 +
@@ -1399,9 +1497,11 @@ void AuthToken::Swap(AuthToken* other) {
   InternalSwap(other);
 }
 void AuthToken::InternalSwap(AuthToken* other) {
+  using std::swap;
   access_.Swap(&other->access_);
   secret_.Swap(&other->secret_);
-  std::swap(_cached_size_, other->_cached_size_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata AuthToken::GetMetadata() const {
@@ -1554,15 +1654,16 @@ Scene::Scene(const Scene& from)
     frame_ = NULL;
   }
   ::memcpy(&since_, &from.since_,
-    reinterpret_cast<char*>(&persons_) -
-    reinterpret_cast<char*>(&since_) + sizeof(persons_));
+    static_cast<size_t>(reinterpret_cast<char*>(&persons_) -
+    reinterpret_cast<char*>(&since_)) + sizeof(persons_));
   // @@protoc_insertion_point(copy_constructor:fpcp.Scene)
 }
 
 void Scene::SharedCtor() {
   id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&frame_, 0, reinterpret_cast<char*>(&persons_) -
-    reinterpret_cast<char*>(&frame_) + sizeof(persons_));
+  ::memset(&frame_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&persons_) -
+      reinterpret_cast<char*>(&frame_)) + sizeof(persons_));
   _cached_size_ = 0;
 }
 
@@ -1573,9 +1674,7 @@ Scene::~Scene() {
 
 void Scene::SharedDtor() {
   id_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (this != internal_default_instance()) {
-    delete frame_;
-  }
+  if (this != internal_default_instance()) delete frame_;
 }
 
 void Scene::SetCachedSize(int size) const {
@@ -1603,14 +1702,20 @@ Scene* Scene::New(::google::protobuf::Arena* arena) const {
 
 void Scene::Clear() {
 // @@protoc_insertion_point(message_clear_start:fpcp.Scene)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
   faces_.Clear();
   id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && frame_ != NULL) {
     delete frame_;
   }
   frame_ = NULL;
-  ::memset(&since_, 0, reinterpret_cast<char*>(&persons_) -
-    reinterpret_cast<char*>(&since_) + sizeof(persons_));
+  ::memset(&since_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&persons_) -
+      reinterpret_cast<char*>(&since_)) + sizeof(persons_));
+  _internal_metadata_.Clear();
 }
 
 bool Scene::MergePartialFromCodedStream(
@@ -1626,11 +1731,11 @@ bool Scene::MergePartialFromCodedStream(
       // string id = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u)) {
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_id()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->id().data(), this->id().length(),
+            this->id().data(), static_cast<int>(this->id().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "fpcp.Scene.id"));
         } else {
@@ -1642,7 +1747,7 @@ bool Scene::MergePartialFromCodedStream(
       // uint64 since = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(16u)) {
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
@@ -1656,7 +1761,7 @@ bool Scene::MergePartialFromCodedStream(
       // int32 persons = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(24u)) {
+            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -1670,7 +1775,7 @@ bool Scene::MergePartialFromCodedStream(
       // .fpcp.Frame frame = 4;
       case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u)) {
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_frame()));
         } else {
@@ -1682,7 +1787,7 @@ bool Scene::MergePartialFromCodedStream(
       // repeated .fpcp.Face faces = 5;
       case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(42u)) {
+            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                 input, add_faces()));
         } else {
@@ -1693,12 +1798,11 @@ bool Scene::MergePartialFromCodedStream(
 
       default: {
       handle_unusual:
-        if (tag == 0 ||
-            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+        if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
     }
@@ -1721,7 +1825,7 @@ void Scene::SerializeWithCachedSizes(
   // string id = 1;
   if (this->id().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->id().data(), this->id().length(),
+      this->id().data(), static_cast<int>(this->id().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "fpcp.Scene.id");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
@@ -1745,16 +1849,22 @@ void Scene::SerializeWithCachedSizes(
   }
 
   // repeated .fpcp.Face faces = 5;
-  for (unsigned int i = 0, n = this->faces_size(); i < n; i++) {
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->faces_size()); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      5, this->faces(i), output);
+      5, this->faces(static_cast<int>(i)), output);
   }
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
   // @@protoc_insertion_point(serialize_end:fpcp.Scene)
 }
 
 ::google::protobuf::uint8* Scene::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
   // @@protoc_insertion_point(serialize_to_array_start:fpcp.Scene)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -1762,7 +1872,7 @@ void Scene::SerializeWithCachedSizes(
   // string id = 1;
   if (this->id().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->id().data(), this->id().length(),
+      this->id().data(), static_cast<int>(this->id().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "fpcp.Scene.id");
     target =
@@ -1788,12 +1898,17 @@ void Scene::SerializeWithCachedSizes(
   }
 
   // repeated .fpcp.Face faces = 5;
-  for (unsigned int i = 0, n = this->faces_size(); i < n; i++) {
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->faces_size()); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        5, this->faces(i), deterministic, target);
+        5, this->faces(static_cast<int>(i)), deterministic, target);
   }
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
   // @@protoc_insertion_point(serialize_to_array_end:fpcp.Scene)
   return target;
 }
@@ -1802,14 +1917,19 @@ size_t Scene::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:fpcp.Scene)
   size_t total_size = 0;
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
   // repeated .fpcp.Face faces = 5;
   {
-    unsigned int count = this->faces_size();
+    unsigned int count = static_cast<unsigned int>(this->faces_size());
     total_size += 1UL * count;
     for (unsigned int i = 0; i < count; i++) {
       total_size +=
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->faces(i));
+          this->faces(static_cast<int>(i)));
     }
   }
 
@@ -1909,12 +2029,14 @@ void Scene::Swap(Scene* other) {
   InternalSwap(other);
 }
 void Scene::InternalSwap(Scene* other) {
+  using std::swap;
   faces_.InternalSwap(&other->faces_);
   id_.Swap(&other->id_);
-  std::swap(frame_, other->frame_);
-  std::swap(since_, other->since_);
-  std::swap(persons_, other->persons_);
-  std::swap(_cached_size_, other->_cached_size_);
+  swap(frame_, other->frame_);
+  swap(since_, other->since_);
+  swap(persons_, other->persons_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata Scene::GetMetadata() const {
@@ -2015,9 +2137,10 @@ void Scene::clear_frame() {
   frame_ = NULL;
 }
 const ::fpcp::Frame& Scene::frame() const {
+  const ::fpcp::Frame* p = frame_;
   // @@protoc_insertion_point(field_get:fpcp.Scene.frame)
-  return frame_ != NULL ? *frame_
-                         : *::fpcp::Frame::internal_default_instance();
+  return p != NULL ? *p : *reinterpret_cast<const ::fpcp::Frame*>(
+      &::fpcp::_Frame_default_instance_);
 }
 ::fpcp::Frame* Scene::mutable_frame() {
   
@@ -2114,16 +2237,17 @@ Frame::Frame(const Frame& from)
     size_ = NULL;
   }
   ::memcpy(&timestamp_, &from.timestamp_,
-    reinterpret_cast<char*>(&format_) -
-    reinterpret_cast<char*>(&timestamp_) + sizeof(format_));
+    static_cast<size_t>(reinterpret_cast<char*>(&format_) -
+    reinterpret_cast<char*>(&timestamp_)) + sizeof(format_));
   // @@protoc_insertion_point(copy_constructor:fpcp.Frame)
 }
 
 void Frame::SharedCtor() {
   id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   data_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&size_, 0, reinterpret_cast<char*>(&format_) -
-    reinterpret_cast<char*>(&size_) + sizeof(format_));
+  ::memset(&size_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&format_) -
+      reinterpret_cast<char*>(&size_)) + sizeof(format_));
   _cached_size_ = 0;
 }
 
@@ -2135,9 +2259,7 @@ Frame::~Frame() {
 void Frame::SharedDtor() {
   id_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   data_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (this != internal_default_instance()) {
-    delete size_;
-  }
+  if (this != internal_default_instance()) delete size_;
 }
 
 void Frame::SetCachedSize(int size) const {
@@ -2165,14 +2287,20 @@ Frame* Frame::New(::google::protobuf::Arena* arena) const {
 
 void Frame::Clear() {
 // @@protoc_insertion_point(message_clear_start:fpcp.Frame)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
   id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   data_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && size_ != NULL) {
     delete size_;
   }
   size_ = NULL;
-  ::memset(&timestamp_, 0, reinterpret_cast<char*>(&format_) -
-    reinterpret_cast<char*>(&timestamp_) + sizeof(format_));
+  ::memset(&timestamp_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&format_) -
+      reinterpret_cast<char*>(&timestamp_)) + sizeof(format_));
+  _internal_metadata_.Clear();
 }
 
 bool Frame::MergePartialFromCodedStream(
@@ -2188,11 +2316,11 @@ bool Frame::MergePartialFromCodedStream(
       // string id = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u)) {
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_id()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->id().data(), this->id().length(),
+            this->id().data(), static_cast<int>(this->id().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "fpcp.Frame.id"));
         } else {
@@ -2204,7 +2332,7 @@ bool Frame::MergePartialFromCodedStream(
       // uint64 timestamp = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(16u)) {
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
@@ -2218,7 +2346,7 @@ bool Frame::MergePartialFromCodedStream(
       // .fpcp.Size size = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u)) {
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_size()));
         } else {
@@ -2230,7 +2358,7 @@ bool Frame::MergePartialFromCodedStream(
       // bytes data = 4;
       case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u)) {
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_data()));
         } else {
@@ -2242,7 +2370,7 @@ bool Frame::MergePartialFromCodedStream(
       // .fpcp.Frame.Format format = 5;
       case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(40u)) {
+            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
           int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
@@ -2256,12 +2384,11 @@ bool Frame::MergePartialFromCodedStream(
 
       default: {
       handle_unusual:
-        if (tag == 0 ||
-            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+        if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
     }
@@ -2284,7 +2411,7 @@ void Frame::SerializeWithCachedSizes(
   // string id = 1;
   if (this->id().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->id().data(), this->id().length(),
+      this->id().data(), static_cast<int>(this->id().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "fpcp.Frame.id");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
@@ -2314,11 +2441,16 @@ void Frame::SerializeWithCachedSizes(
       5, this->format(), output);
   }
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
   // @@protoc_insertion_point(serialize_end:fpcp.Frame)
 }
 
 ::google::protobuf::uint8* Frame::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
   // @@protoc_insertion_point(serialize_to_array_start:fpcp.Frame)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -2326,7 +2458,7 @@ void Frame::SerializeWithCachedSizes(
   // string id = 1;
   if (this->id().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->id().data(), this->id().length(),
+      this->id().data(), static_cast<int>(this->id().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "fpcp.Frame.id");
     target =
@@ -2359,6 +2491,10 @@ void Frame::SerializeWithCachedSizes(
       5, this->format(), target);
   }
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
   // @@protoc_insertion_point(serialize_to_array_end:fpcp.Frame)
   return target;
 }
@@ -2367,6 +2503,11 @@ size_t Frame::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:fpcp.Frame)
   size_t total_size = 0;
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
   // string id = 1;
   if (this->id().size() > 0) {
     total_size += 1 +
@@ -2472,12 +2613,14 @@ void Frame::Swap(Frame* other) {
   InternalSwap(other);
 }
 void Frame::InternalSwap(Frame* other) {
+  using std::swap;
   id_.Swap(&other->id_);
   data_.Swap(&other->data_);
-  std::swap(size_, other->size_);
-  std::swap(timestamp_, other->timestamp_);
-  std::swap(format_, other->format_);
-  std::swap(_cached_size_, other->_cached_size_);
+  swap(size_, other->size_);
+  swap(timestamp_, other->timestamp_);
+  swap(format_, other->format_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata Frame::GetMetadata() const {
@@ -2564,9 +2707,10 @@ void Frame::clear_size() {
   size_ = NULL;
 }
 const ::fpcp::Size& Frame::size() const {
+  const ::fpcp::Size* p = size_;
   // @@protoc_insertion_point(field_get:fpcp.Frame.size)
-  return size_ != NULL ? *size_
-                         : *::fpcp::Size::internal_default_instance();
+  return p != NULL ? *p : *reinterpret_cast<const ::fpcp::Size*>(
+      &::fpcp::_Size_default_instance_);
 }
 ::fpcp::Size* Frame::mutable_size() {
   
@@ -2669,6 +2813,7 @@ void Frame::set_format(::fpcp::Frame_Format value) {
 const int Face::kIdFieldNumber;
 const int Face::kRectFieldNumber;
 const int Face::kVectorFieldNumber;
+const int Face::kPictureFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Face::Face()
@@ -2694,12 +2839,19 @@ Face::Face(const Face& from)
   } else {
     rect_ = NULL;
   }
+  if (from.has_picture()) {
+    picture_ = new ::fpcp::Frame(*from.picture_);
+  } else {
+    picture_ = NULL;
+  }
   // @@protoc_insertion_point(copy_constructor:fpcp.Face)
 }
 
 void Face::SharedCtor() {
   id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  rect_ = NULL;
+  ::memset(&rect_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&picture_) -
+      reinterpret_cast<char*>(&rect_)) + sizeof(picture_));
   _cached_size_ = 0;
 }
 
@@ -2710,9 +2862,8 @@ Face::~Face() {
 
 void Face::SharedDtor() {
   id_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (this != internal_default_instance()) {
-    delete rect_;
-  }
+  if (this != internal_default_instance()) delete rect_;
+  if (this != internal_default_instance()) delete picture_;
 }
 
 void Face::SetCachedSize(int size) const {
@@ -2740,12 +2891,21 @@ Face* Face::New(::google::protobuf::Arena* arena) const {
 
 void Face::Clear() {
 // @@protoc_insertion_point(message_clear_start:fpcp.Face)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
   vector_.Clear();
   id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && rect_ != NULL) {
     delete rect_;
   }
   rect_ = NULL;
+  if (GetArenaNoVirtual() == NULL && picture_ != NULL) {
+    delete picture_;
+  }
+  picture_ = NULL;
+  _internal_metadata_.Clear();
 }
 
 bool Face::MergePartialFromCodedStream(
@@ -2761,11 +2921,11 @@ bool Face::MergePartialFromCodedStream(
       // string id = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u)) {
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_id()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->id().data(), this->id().length(),
+            this->id().data(), static_cast<int>(this->id().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "fpcp.Face.id"));
         } else {
@@ -2777,7 +2937,7 @@ bool Face::MergePartialFromCodedStream(
       // .fpcp.Rectangle rect = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u)) {
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_rect()));
         } else {
@@ -2789,12 +2949,13 @@ bool Face::MergePartialFromCodedStream(
       // repeated float vector = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u)) {
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
                  input, this->mutable_vector())));
-        } else if (static_cast< ::google::protobuf::uint8>(tag) ==
-                   static_cast< ::google::protobuf::uint8>(29u)) {
+        } else if (
+            static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(29u /* 29 & 0xFF */)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
                  1, 26u, input, this->mutable_vector())));
@@ -2804,14 +2965,25 @@ bool Face::MergePartialFromCodedStream(
         break;
       }
 
+      // .fpcp.Frame picture = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_picture()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
-        if (tag == 0 ||
-            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+        if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
     }
@@ -2834,7 +3006,7 @@ void Face::SerializeWithCachedSizes(
   // string id = 1;
   if (this->id().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->id().data(), this->id().length(),
+      this->id().data(), static_cast<int>(this->id().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "fpcp.Face.id");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
@@ -2850,16 +3022,28 @@ void Face::SerializeWithCachedSizes(
   // repeated float vector = 3;
   if (this->vector_size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteTag(3, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
-    output->WriteVarint32(_vector_cached_byte_size_);
+    output->WriteVarint32(static_cast< ::google::protobuf::uint32>(
+        _vector_cached_byte_size_));
     ::google::protobuf::internal::WireFormatLite::WriteFloatArray(
       this->vector().data(), this->vector_size(), output);
   }
 
+  // .fpcp.Frame picture = 4;
+  if (this->has_picture()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      4, *this->picture_, output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
   // @@protoc_insertion_point(serialize_end:fpcp.Face)
 }
 
 ::google::protobuf::uint8* Face::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
   // @@protoc_insertion_point(serialize_to_array_start:fpcp.Face)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -2867,7 +3051,7 @@ void Face::SerializeWithCachedSizes(
   // string id = 1;
   if (this->id().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->id().data(), this->id().length(),
+      this->id().data(), static_cast<int>(this->id().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "fpcp.Face.id");
     target =
@@ -2889,11 +3073,23 @@ void Face::SerializeWithCachedSizes(
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       target);
     target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
-      _vector_cached_byte_size_, target);
+        static_cast< ::google::protobuf::uint32>(
+            _vector_cached_byte_size_), target);
     target = ::google::protobuf::internal::WireFormatLite::
       WriteFloatNoTagToArray(this->vector_, target);
   }
 
+  // .fpcp.Frame picture = 4;
+  if (this->has_picture()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        4, *this->picture_, deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
   // @@protoc_insertion_point(serialize_to_array_end:fpcp.Face)
   return target;
 }
@@ -2902,13 +3098,19 @@ size_t Face::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:fpcp.Face)
   size_t total_size = 0;
 
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
   // repeated float vector = 3;
   {
-    unsigned int count = this->vector_size();
+    unsigned int count = static_cast<unsigned int>(this->vector_size());
     size_t data_size = 4UL * count;
     if (data_size > 0) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+            static_cast< ::google::protobuf::int32>(data_size));
     }
     int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
     GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -2929,6 +3131,13 @@ size_t Face::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->rect_);
+  }
+
+  // .fpcp.Frame picture = 4;
+  if (this->has_picture()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->picture_);
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2968,6 +3177,9 @@ void Face::MergeFrom(const Face& from) {
   if (from.has_rect()) {
     mutable_rect()->::fpcp::Rectangle::MergeFrom(from.rect());
   }
+  if (from.has_picture()) {
+    mutable_picture()->::fpcp::Frame::MergeFrom(from.picture());
+  }
 }
 
 void Face::CopyFrom(const ::google::protobuf::Message& from) {
@@ -2993,10 +3205,13 @@ void Face::Swap(Face* other) {
   InternalSwap(other);
 }
 void Face::InternalSwap(Face* other) {
+  using std::swap;
   vector_.InternalSwap(&other->vector_);
   id_.Swap(&other->id_);
-  std::swap(rect_, other->rect_);
-  std::swap(_cached_size_, other->_cached_size_);
+  swap(rect_, other->rect_);
+  swap(picture_, other->picture_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata Face::GetMetadata() const {
@@ -3069,9 +3284,10 @@ void Face::clear_rect() {
   rect_ = NULL;
 }
 const ::fpcp::Rectangle& Face::rect() const {
+  const ::fpcp::Rectangle* p = rect_;
   // @@protoc_insertion_point(field_get:fpcp.Face.rect)
-  return rect_ != NULL ? *rect_
-                         : *::fpcp::Rectangle::internal_default_instance();
+  return p != NULL ? *p : *reinterpret_cast<const ::fpcp::Rectangle*>(
+      &::fpcp::_Rectangle_default_instance_);
 }
 ::fpcp::Rectangle* Face::mutable_rect() {
   
@@ -3127,6 +3343,46 @@ Face::vector() const {
 Face::mutable_vector() {
   // @@protoc_insertion_point(field_mutable_list:fpcp.Face.vector)
   return &vector_;
+}
+
+// .fpcp.Frame picture = 4;
+bool Face::has_picture() const {
+  return this != internal_default_instance() && picture_ != NULL;
+}
+void Face::clear_picture() {
+  if (GetArenaNoVirtual() == NULL && picture_ != NULL) delete picture_;
+  picture_ = NULL;
+}
+const ::fpcp::Frame& Face::picture() const {
+  const ::fpcp::Frame* p = picture_;
+  // @@protoc_insertion_point(field_get:fpcp.Face.picture)
+  return p != NULL ? *p : *reinterpret_cast<const ::fpcp::Frame*>(
+      &::fpcp::_Frame_default_instance_);
+}
+::fpcp::Frame* Face::mutable_picture() {
+  
+  if (picture_ == NULL) {
+    picture_ = new ::fpcp::Frame;
+  }
+  // @@protoc_insertion_point(field_mutable:fpcp.Face.picture)
+  return picture_;
+}
+::fpcp::Frame* Face::release_picture() {
+  // @@protoc_insertion_point(field_release:fpcp.Face.picture)
+  
+  ::fpcp::Frame* temp = picture_;
+  picture_ = NULL;
+  return temp;
+}
+void Face::set_allocated_picture(::fpcp::Frame* picture) {
+  delete picture_;
+  picture_ = picture;
+  if (picture) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:fpcp.Face.picture)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
