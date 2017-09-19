@@ -38,6 +38,8 @@ namespace fproc {
 	Rectangle toRectangle(const cv::Rect2d& cv_rect);
 	Rectangle toRectangle(const CvRect& cv_rect);
 	CvRect toCvRect(const Rectangle& rect);
+	// Extends rectangle Size defines maximum width and height for the rectangle
+	Rectangle addBorder(const Rectangle& rect, const Size& size, int brdr);
 
 	typedef std::shared_ptr<boost::thread> PThread;
 	typedef boost::unique_lock<boost::mutex> MxGuard;
@@ -107,7 +109,8 @@ namespace fproc {
 		DlibBgrImg& get_bgr_image();
 		DlibRgbImg& get_rgb_image();
 		CvBgrMat& get_mat() { return _mat; }
-		std::vector<uchar>& png_buf();
+		Size size() { return Size(_mat.cols, _mat.rows); }
+		std::vector<uchar>& comp_buf() { return comp_buf_; }
 
 	private:
 		FrameId _id;
@@ -115,9 +118,16 @@ namespace fproc {
 		CvBgrMat _mat;
 		bgr_image _bgr_img;
 		rgb_image _rgb_img;
-		std::vector<uchar> formatted_buf_;
+		std::vector<uchar> comp_buf_;
 	};
 	typedef std::shared_ptr<Frame> PFrame;
+
+	enum CompType {
+		JPEG,
+		PNG
+	};
+	// quality [1..100] for JPEG and [0..10] for PNG
+	bool compress_frame(PFrame pf, std::vector<uchar>& res_buf, CompType cmp_tp, int quality);
 
 	/*
 	 * FrameRegion - describes a region in a frame. Used for describing objects
@@ -134,11 +144,13 @@ namespace fproc {
 		const Rectangle& getRectangle() const { return _rec; }
 		const V128D* v128d() const { return v128d_; };
 		void set_vector(const V128D& v) { v128d_ = new V128D(v);};
+		std::vector<uchar>& comp_buf() { return comp_buf_; }
 
 	private:
 		const FrameId frame_id_;
 		const Rectangle _rec;
 		V128D* v128d_;
+		std::vector<uchar> comp_buf_;
 	};
 	typedef std::shared_ptr<FrameRegion> PFrameRegion;
 	typedef std::list<PFrameRegion> PFrameRegList;

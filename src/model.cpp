@@ -14,6 +14,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <dlib/matrix/matrix_utilities.h>
+#include <algorithm>
 
 using namespace dlib;
 
@@ -36,22 +37,32 @@ Frame::DlibRgbImg& Frame::get_rgb_image() {
 	return *_rgb_img;
 }
 
-std::vector<uchar>& Frame::png_buf() {
-	if (formatted_buf_.size() > 0) {
-		return formatted_buf_;
-	}
-	formatted_buf_.reserve(2000000);
+// compressing frame
+bool compress_frame(PFrame pf, std::vector<uchar>& res_buf, CompType cmp_tp, int quality) {
 	std::vector<int> compression_params;
-	compression_params.push_back(cv::IMWRITE_PNG_COMPRESSION);
-	compression_params.push_back(9);
+	std::string ext;
+	if (cmp_tp == CompType::JPEG) {
+		compression_params.push_back(cv::IMWRITE_JPEG_QUALITY);
+		compression_params.push_back(quality);
+		res_buf.reserve(20000);
+		ext = ".jpg";
+	} else if (cmp_tp == CompType::PNG) {
+		compression_params.push_back(cv::IMWRITE_PNG_COMPRESSION);
+		compression_params.push_back(quality);
+		res_buf.reserve(1000000);
+		ext = ".png";
+	} else {
+		LOG_ERROR("Unexpected compression type " << cmp_tp << ", do nothing.");
+		return false;
+	}
 
 	try {
-		cv::imencode(".png", _mat, formatted_buf_, compression_params);
+		cv::imencode(ext, pf->get_mat(), res_buf, compression_params);
 	} catch (cv::Exception& ex) {
 		LOG_ERROR("Exception converting image to PNG format: %s\n" << ex.what());
-		formatted_buf_.clear();
+		return false;
 	}
-	return formatted_buf_;
+	return true;
 }
 
 //================================== VideoStream ===============================
@@ -115,6 +126,10 @@ Rectangle toRectangle(const CvRect& cvr) {
 
 Rectangle toRectangle(const cv::Rect2d& cvr) {
 	return Rectangle((int)cvr.x, (int)cvr.y, (int)(cvr.x + cvr.width), (int)(cvr.y + cvr.height));
+}
+
+Rectangle addBorder(const Rectangle& rect, const Size& size, int brdr) {
+	return Rectangle(std::max(0l, rect.left() - brdr), std::max(1l, rect.top() - brdr), std::min(long(size.width-1), rect.right() + brdr), std::min(long(size.height-1), rect.bottom() + brdr));
 }
 
 CvRect toCvRect(const Rectangle& rect) {

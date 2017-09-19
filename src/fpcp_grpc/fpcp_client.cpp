@@ -103,10 +103,13 @@ void to_fpcpFrame(fproc::PFrame pframe, fpcp::Frame& frame) {
 	size->set_width(pframe->get_mat().cols);
 	size->set_height(pframe->get_mat().rows);
 
-	std::vector<uchar>& ubuf = pframe->png_buf();
+	std::vector<uchar>& ubuf = pframe->comp_buf();
+	if (ubuf.size() == 0) {
+		fproc::compress_frame(pframe, ubuf, fproc::CompType::JPEG, 95);
+	}
 	frame.set_data(&ubuf[0], ubuf.size());
 
-	frame.set_format(Frame_Format::Frame_Format_PNG);
+	frame.set_format(Frame_Format::Frame_Format_RAW);
 }
 
 void to_fpcpFace(const fproc::FrameFace ff, fpcp::Face& face) {
