@@ -38,6 +38,9 @@ namespace fproc {
 	Rectangle toRectangle(const cv::Rect2d& cv_rect);
 	Rectangle toRectangle(const CvRect& cv_rect);
 	CvRect toCvRect(const Rectangle& rect);
+	// Extends rectangle Size defines maximum width and height for the rectangle
+	Rectangle addBorder(const Rectangle& rect, const Size& size, int brdr);
+	inline Size rectSize(const Rectangle& rect) { return Size(rect.width(), rect.height()); }
 
 	typedef std::shared_ptr<boost::thread> PThread;
 	typedef boost::unique_lock<boost::mutex> MxGuard;
@@ -107,7 +110,8 @@ namespace fproc {
 		DlibBgrImg& get_bgr_image();
 		DlibRgbImg& get_rgb_image();
 		CvBgrMat& get_mat() { return _mat; }
-		std::vector<uchar>& png_buf();
+		Size size() { return Size(_mat.cols, _mat.rows); }
+		std::vector<uchar>& comp_buf() { return comp_buf_; }
 
 	private:
 		FrameId _id;
@@ -115,7 +119,7 @@ namespace fproc {
 		CvBgrMat _mat;
 		bgr_image _bgr_img;
 		rgb_image _rgb_img;
-		std::vector<uchar> formatted_buf_;
+		std::vector<uchar> comp_buf_;
 	};
 	typedef std::shared_ptr<Frame> PFrame;
 
@@ -132,13 +136,15 @@ namespace fproc {
 		}
 		const FrameId& getFrameId() const { return frame_id_; }
 		const Rectangle& getRectangle() const { return _rec; }
-        const V128D* v128d() const { return v128d_; }
-        void set_vector(const V128D& v) { v128d_ = new V128D(v);}
+		const V128D* v128d() const { return v128d_; };
+		void set_vector(const V128D& v) { v128d_ = new V128D(v);};
+		std::vector<uchar>& comp_buf() { return comp_buf_; }
 
 	private:
 		const FrameId frame_id_;
 		const Rectangle _rec;
 		V128D* v128d_;
+		std::vector<uchar> comp_buf_;
 	};
 	typedef std::shared_ptr<FrameRegion> PFrameRegion;
 	typedef std::list<PFrameRegion> PFrameRegList;
@@ -247,52 +253,6 @@ namespace fproc {
 	};
 
 	std::string uuid();
-
-    struct CameraParameters{
-        int     width;
-        int     height;
-        int     fps;
-        double  brightness; // 0 - 1
-        double  contrast;
-        double  saturation;
-        double  gain;
-        double  sharpness;
-        double  temperature;
-        double  backlight;
-        double  exposure;
-        double auto_exposure;
-        bool autofocus;
-        double  gamma;
-        double  hue;
-        int  fourcc;
-        CameraParameters(): width(-1),
-                            height(-1),
-                            fps(-1),
-                            contrast(-1),
-                            brightness(-1),
-                            saturation(-1),
-                            gain(-1),
-                            sharpness(-1),
-                            temperature(-1),
-                            backlight(-1),
-                            exposure(-1),
-                            auto_exposure(-1),
-                            autofocus(true),
-                            gamma(-1),
-                            hue(-1),
-                            fourcc(-1)
-        {}
-    };
-
-    struct HogParameters{
-        int  width;
-        int  height;
-        bool grayscale;
-        HogParameters():width(-1),
-                        height(-1),
-                        grayscale(true)
-        {}
-    };
 }
 // namespace
 

@@ -10,13 +10,14 @@
 
 #include "scene_detector.hpp"
 #include "../fpcp_grpc/fpcp_client.hpp"
+#include "../config_params.hpp"
 
 namespace fproc {
 
 class FpcpConnector: public SceneDetectorListener {
 
 public:
-	FpcpConnector(std::string sp_address, std::string akey, std::string skey): sp_address_(sp_address), access_key_(akey), secret_key_(skey) , scene_detector_(NULL) {
+	FpcpConnector(const FpcpClientParameters& params): params_(params) , scene_detector_(NULL) {
 		reconnect();
 	}
 
@@ -31,14 +32,12 @@ private:
 	void scene_updater();
 
 	void reconnect() {
-		scp_ = fpcp::rpc::connectGRPC(sp_address_, access_key_, secret_key_);
+		scp_ = fpcp::rpc::connectGRPC(params_);
 	}
 
 	int max_scenes_size_ = 50;
 
-	std::string sp_address_;
-	std::string access_key_;
-	std::string secret_key_;
+	FpcpClientParameters params_;
 	fpcp::rpc::PSceneProcessor scp_;
 	std::list<PScene> scenes_;
 

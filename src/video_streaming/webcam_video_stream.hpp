@@ -10,6 +10,7 @@
 
 #include "../model.hpp"
 #include "../logger.hpp"
+#include "../config_params.hpp"
 
 namespace fproc {
 

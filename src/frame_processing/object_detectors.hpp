@@ -13,6 +13,7 @@
 #include <dlib/image_processing/render_face_detections.h>
 #include <dlib/image_processing.h>
 #include "../recognizer/recognition_manager.hpp"
+#include "../config_params.hpp"
 
 namespace fproc {
 

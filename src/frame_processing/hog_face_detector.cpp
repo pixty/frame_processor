@@ -1,6 +1,6 @@
 #include "../frame_processing/object_detectors.hpp"
 #include <dlib/image_transforms.h>
-#include<math.h>
+#include <math.h>
 
 namespace fproc {
 

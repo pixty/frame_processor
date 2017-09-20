@@ -9,6 +9,7 @@
 #define SRC_FPCP_GRPC_FPCP_CLIENT_HPP_
 
 #include "../model.hpp"
+#include "../config_params.hpp"
 
 namespace fpcp {
 namespace rpc {
@@ -31,8 +32,7 @@ struct SceneProcessor {
 typedef std::shared_ptr<SceneProcessor> PSceneProcessor;
 
 // Connects to a scene processor via gRPC. Call it like connect("localhost:50051");
-// access and secret keys are for authentications
-PSceneProcessor connectGRPC(std::string address, std::string access_key, std::string secret_key);
+PSceneProcessor connectGRPC(const fproc::FpcpClientParameters& params);
 
 }
 };

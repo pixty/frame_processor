@@ -14,6 +14,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <dlib/matrix/matrix_utilities.h>
+#include <algorithm>
 
 using namespace dlib;
 
@@ -34,24 +35,6 @@ Frame::DlibRgbImg& Frame::get_rgb_image() {
 		_rgb_img = std::move(pcvi);
 	}
 	return *_rgb_img;
-}
-
-std::vector<uchar>& Frame::png_buf() {
-	if (formatted_buf_.size() > 0) {
-		return formatted_buf_;
-	}
-	formatted_buf_.reserve(2000000);
-	std::vector<int> compression_params;
-	compression_params.push_back(cv::IMWRITE_PNG_COMPRESSION);
-	compression_params.push_back(9);
-
-	try {
-		cv::imencode(".png", _mat, formatted_buf_, compression_params);
-	} catch (cv::Exception& ex) {
-		LOG_ERROR("Exception converting image to PNG format: %s\n" << ex.what());
-		formatted_buf_.clear();
-	}
-	return formatted_buf_;
 }
 
 //================================== VideoStream ===============================
@@ -115,6 +98,10 @@ Rectangle toRectangle(const CvRect& cvr) {
 
 Rectangle toRectangle(const cv::Rect2d& cvr) {
 	return Rectangle((int)cvr.x, (int)cvr.y, (int)(cvr.x + cvr.width), (int)(cvr.y + cvr.height));
+}
+
+Rectangle addBorder(const Rectangle& rect, const Size& size, int brdr) {
+	return Rectangle(std::max(0l, rect.left() - brdr), std::max(1l, rect.top() - brdr), std::min(long(size.width-1), rect.right() + brdr), std::min(long(size.height-1), rect.bottom() + brdr));
 }
 
 CvRect toCvRect(const Rectangle& rect) {
