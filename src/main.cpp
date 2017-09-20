@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
 	("res_path", po::value<std::string>(), "Path to the data files place.") //
 	("src_file", po::value<std::string>(), "Read frame stream from the file") //
 	("sp_address", po::value<std::string>()->default_value("localhost:50051"),
-			"Address for connecting to Service provider.") //
+			"Address for connecting to Scene Provider.") //
 	("access_key", po::value<std::string>(), "Authentication access key") //
 	("secret_key", po::value<std::string>(), "Authentication secret key") //
 	("dst_display", po::value<bool>()->default_value(false),
@@ -132,10 +132,10 @@ int main(int argc, char** argv) {
 					res_path + "shape_predictor_68_face_landmarks.dat"));
 	PRecognitionManager rm(new RecognitionManager(rn));
 
-	// Creating gRPC connection to Service Provider
+	// Creating gRPC connection to Scene Provider
 	FpcpClientParameters fpcpClntParams;
 	fpcpClntParams.address = vm["sp_address"].as<std::string>();
-	LOG_INFO("Service provider address is " << fpcpClntParams.address);
+	LOG_INFO("Scene Provider address is " << fpcpClntParams.address);
 
 	// Auth token
 	fpcpClntParams.access_key =
