@@ -15,8 +15,8 @@ WebcamVideoStream::WebcamVideoStream(const CameraParameters &cameraParameters):
                 ts_now()),
         _cameraParameters(cameraParameters)
 {
-    _cap->open(0);
-    LOG_INFO("Creating WebcamVideoStream, first frame id=" << _fn);
+    _cap->open(_cameraParameters.camId);
+    LOG_INFO("Creating WebcamVideoStream from cameraId=" << _cameraParameters.camId << ", first frame id=" << _fn);
     LOG_INFO("Initial camera parameters:");
     printActualCameraParameters();
     LOG_INFO("Setting camera parameters:");

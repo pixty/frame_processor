@@ -33,6 +33,9 @@ private:
 	// constrains
 	int max_vectors_ = 50000;
 	int max_vectors_per_face_ = 50;
+	// the minimum fraction of vectors (the fraction is in between [0..1]) that have to be positively
+	// compared to get he positive answer about the face smeness.
+	float sameness_ = 0.5;
 
 	std::shared_ptr<DnnFaceRecognitionNet> _rn;
 	face_ptrs faces_;
@@ -41,6 +44,5 @@ private:
 typedef std::shared_ptr<RecognitionManager> PRecognitionManager;
 
 }
-
 
 #endif /* SRC_RECOGNIZER_RECOGNITION_MANAGER_HPP_ */

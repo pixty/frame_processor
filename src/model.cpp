@@ -37,6 +37,13 @@ Frame::DlibRgbImg& Frame::get_rgb_image() {
 	return *_rgb_img;
 }
 
+Frame::CvBgrMat& Frame::get_gray_mat() {
+	if (grey_mat_.cols != _mat.cols || grey_mat_.rows != _mat.rows) {
+		cv::cvtColor(_mat, grey_mat_, CV_BGR2GRAY);
+	}
+	return grey_mat_;
+}
+
 //================================== VideoStream ===============================
 void VideoStream::setResolution(int width, int height) {
 	_cap->set(CV_CAP_PROP_FRAME_WIDTH, width);

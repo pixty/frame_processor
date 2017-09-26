@@ -38,6 +38,8 @@ int main(int argc, char** argv) {
 	("hog_height", po::value<int>()->default_value(-1), "Height of HOG's frame") //
 	("hog_grayscale", po::value<bool>()->default_value(false),
 			"HOG uses grayscaled frames") //
+	("cam_id", po::value<int>()->default_value(0),
+						"Defines which camera will be used for reading video stream from (0 is default)") //
 	("cam_width", po::value<int>()->default_value(-1),
 			"Width of camera's frame") //
 	("cam_height", po::value<int>()->default_value(-1),
@@ -100,8 +102,8 @@ int main(int argc, char** argv) {
 		LOG_INFO("Video stream from file=" << src_file);
 		src = PVideoStream(new FileVideoStream(src_file, 0, -1));
 	} else {
-		LOG_INFO("Video stream from camera 0");
 		CameraParameters cp;
+		cp.camId = vm["cam_id"].as<int>();
 		cp.width = vm["cam_width"].as<int>();
 		cp.height = vm["cam_height"].as<int>();
 		cp.fps = vm["cam_fps"].as<int>();
@@ -120,6 +122,7 @@ int main(int argc, char** argv) {
 			cp.fourcc = cv::VideoWriter::fourcc(fourcc[0], fourcc[1], fourcc[2],
 					fourcc[3]);
 		}
+		LOG_INFO("Video stream from camera " << cp.camId);
 		src = PVideoStream(new WebcamVideoStream(cp));
 	}
 

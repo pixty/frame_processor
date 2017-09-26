@@ -8,6 +8,9 @@
 #include "recognition_manager.hpp"
 #include "../logger.hpp"
 
+// the test purposes only
+#include "../frame_processing/image_processing.hpp"
+
 namespace fproc {
 
 struct Face {
@@ -17,12 +20,17 @@ struct Face {
 
 PFrameFaceList RecognitionManager::recognize(const PFrame& frame, const PFrameRegList& frameRegs) {
 	PFrameFaceList result(new FrameFaceList());
+	LOG_DEBUG("" << faces_.size() << " already known faces");
 	for (auto &pfr: frameRegs) {
+		std::string fn = "/Users/dmitry/tmp/test_pics/" + std::to_string(frame->getId()) + ".jpeg";
+		compress_frame_region_to_file(frame, pfr->getRectangle(), ImageSize::Code::ORIGINAL, 50, fn, CompType::JPEG, 95);
+		LOG_INFO("!!!!!!!!!!!!!   Sharpness " << sharpness(frame, pfr->getRectangle()));
+
 		_rn->set_vector(frame, pfr);
 		Face* pf = NULL;
 		for(face_ptrs::iterator knwn_face = faces_.begin(); knwn_face != faces_.end(); knwn_face++) {
 			Face& face = **knwn_face;
-			if (isTheFace(face, pfr)) {
+			if (isTheFace(face, pfr, true)) {
 				pf = &face;
 				if (knwn_face != faces_.begin()) {
 					faces_.erase(knwn_face);
@@ -49,21 +57,49 @@ PFrameFaceList RecognitionManager::recognize(const PFrame& frame, const PFrameRe
 	return result;
 }
 
+// The function returns the maximum distance threshold depending on the time difference the images were taken.
+static float getSamenessDistance(Timestamp diff) {
+	diff = std::abs(diff);
+	if (diff < 1000) {
+		return 0.49;
+	};
+	if (diff < 5000) {
+		return 0.5;
+	}
+	if (diff < 24*3600*1000) {
+		return 0.53;
+	}
+	if (diff < 7*24*3600*1000) {
+		return 0.55;
+	}
+	return 0.6;
+}
+
 bool RecognitionManager::isTheFace(const Face& face, const PFrameRegion& pfr, const bool log) const {
 	if (log) {
 		LOG_INFO("Looking for region=" << pfr->getRectangle());
 	}
 
+	int positive = 0;
+	float avgDist = 0.0;
 	for (auto &fr: face.regions) {
 		float d = distance(*fr->v128d(), *pfr->v128d());
+		float maxDistance = getSamenessDistance(pfr->getTimestamp() - fr->getTimestamp());
 		if (log) {
-			LOG_INFO("\twith region=" << fr->getRectangle() << ", distance d=" << d);
+			//LOG_INFO("\twith region=" << fr->getRectangle() << ", distance d=" << d << ", maxDist=" << maxDistance);
 		}
-		if (d < 0.59) {
-			return true;
+		if (d < maxDistance) {
+			positive++;
 		}
+		avgDist += d;
 	}
-	return false;
+
+	int total = face.regions.size();
+	avgDist /= total;
+	bool result = positive >= sameness_*total;
+	LOG_INFO("result=" << result << " threashold=" << sameness_*total);
+	LOG_INFO("Positives/total=" << positive << "/" << face.regions.size() << " avgDist=" << avgDist);
+	return result;
 }
 
 void RecognitionManager::sweep() {

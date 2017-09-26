@@ -60,6 +60,12 @@ enum CompType {
 Size compress_frame(PFrame pf, ImageSize::Code code, std::vector<uchar>& res_buf, CompType cmp_tp, int quality);
 Size compress_frame_region(PFrame pf, const Rectangle& rect, ImageSize::Code code, int border, std::vector<uchar>& res_buf, CompType cmp_tp, int quality);
 
+void compress_frame_to_file(PFrame pf, ImageSize::Code code, std::string& filename, CompType cmp_tp, int quality);
+void compress_frame_region_to_file(PFrame pf, const Rectangle& rect, ImageSize::Code code, int border, std::string& filename, CompType cmp_tp, int quality);
+
+// Bigger is better
+double sharpness(PFrame pf, const Rectangle& rect);
+
 }
 
 #endif /* SRC_FRAME_PROCESSING_IMAGE_PROCESSING_HPP_ */
