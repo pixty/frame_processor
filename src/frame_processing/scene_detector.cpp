@@ -143,7 +143,7 @@ void SceneDetectorVisualizer::run() {
 			continue;
 		}
 
-		cv::Mat im(_frame->get_mat());
+		cv::Mat im = _frame->get_mat().clone();
 		for (PFrameRegion pfr: _hog_result) {
 			CvRect cvr = toCvRect(pfr->getRectangle());
 			rounded_rectangle(im, cvr, cv::Scalar(58, 242, 252), 1, 16, 5);
