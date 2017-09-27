@@ -111,6 +111,14 @@ Rectangle addBorder(const Rectangle& rect, const Size& size, int brdr) {
 	return Rectangle(std::max(0l, rect.left() - brdr), std::max(1l, rect.top() - brdr), std::min(long(size.width-1), rect.right() + brdr), std::min(long(size.height-1), rect.bottom() + brdr));
 }
 
+bool RectangleInFrame(const Rectangle& rect, const Size& frameSize) {
+	return rect.left() >= 0 && rect.right() < frameSize.width && rect.bottom() < frameSize.height && rect.top() >= 0 && rect.left() <= rect.right() && rect.top() <= rect.bottom();
+}
+
+bool firstRectInsideSecond(const Rectangle& r1, const Rectangle& r2) {
+	return r1.left() >= r2.left() && r1.top() >= r2.top() && r1.bottom() <= r2.bottom() && r1.right() <= r2.right();
+}
+
 CvRect toCvRect(const Rectangle& rect) {
 	return cvRect(rect.left(), rect.top(), rect.width(), rect.height());
 }

@@ -41,6 +41,9 @@ namespace fproc {
 	// Extends rectangle Size defines maximum width and height for the rectangle
 	Rectangle addBorder(const Rectangle& rect, const Size& size, int brdr);
 	inline Size rectSize(const Rectangle& rect) { return Size(rect.width(), rect.height()); }
+	bool RectangleInFrame(const Rectangle& rect, const Size& frameSize);
+	// returns whether the first is inside the second one
+	bool firstRectInsideSecond(const Rectangle& r1, const Rectangle& r2);
 
 	typedef std::shared_ptr<boost::thread> PThread;
 	typedef boost::unique_lock<boost::mutex> MxGuard;
@@ -130,7 +133,7 @@ namespace fproc {
 	 * in a frame. Always has a non-NULL frame id because it connects to it.
 	 */
 	struct FrameRegion {
-		FrameRegion(PFrame pFrame, const Rectangle& rec) : frame_id_(pFrame->getId()), _rec(rec), ts_(pFrame->getTimestamp()), v128d_(NULL) {}
+		FrameRegion(PFrame pFrame, const Rectangle& rec) : frame_id_(pFrame->getId()), _rec(rec), ts_(pFrame->getTimestamp()), v128d_(NULL), sharpness_(0.0) {}
 		virtual ~FrameRegion() {
 			if (v128d_) {
 				delete v128d_;
@@ -141,6 +144,8 @@ namespace fproc {
 		const V128D* v128d() const { return v128d_; };
 		const Timestamp& getTimestamp() const { return ts_; };
 		void set_vector(const V128D& v) { v128d_ = new V128D(v);};
+		void set_sharpness(double shpns) { sharpness_ = shpns; }
+		double get_sharpness() const {return sharpness_;}
 		std::vector<uchar>& comp_buf() { return comp_buf_; }
 
 	private:
@@ -149,6 +154,7 @@ namespace fproc {
 		const Timestamp ts_;
 		V128D* v128d_;
 		std::vector<uchar> comp_buf_;
+		double sharpness_;
 	};
 	typedef std::shared_ptr<FrameRegion> PFrameRegion;
 	typedef std::list<PFrameRegion> PFrameRegList;

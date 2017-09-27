@@ -38,6 +38,7 @@ int main(int argc, char** argv) {
 	("hog_height", po::value<int>()->default_value(-1), "Height of HOG's frame") //
 	("hog_grayscale", po::value<bool>()->default_value(false),
 			"HOG uses grayscaled frames") //
+	("min_sharpness", po::value<int>()->default_value(80), "Minimal sharpness value (Number that makes sense 1-100+)") //
 	("cam_id", po::value<int>()->default_value(0),
 						"Defines which camera will be used for reading video stream from (0 is default)") //
 	("cam_width", po::value<int>()->default_value(-1),
@@ -170,6 +171,9 @@ int main(int argc, char** argv) {
 			LOG_INFO("Will visualize scene detection");
 			sd->setVisualizer(new SceneDetectorVisualizer(*sd));
 		}
+		double min_sharpness = vm["min_sharpness"].as<int>();
+		LOG_INFO("Will use sharpness=" << min_sharpness);
+		sd->setMinSharpness(min_sharpness);
 		HogParameters hp;
 		hp.grayscale = vm["hog_grayscale"].as<bool>();
 		hp.height = vm["hog_height"].as<int>();

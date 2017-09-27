@@ -267,7 +267,7 @@ static double normalizedGraylevelVariance(const cv::Mat& src) {
 double sharpness(PFrame pf, const Rectangle& rect) {
 	CvRect cvr = toCvRect(rect);
 	cv::Mat gray_img = pf->get_gray_mat()(cvr);
-    return varianceOfLaplacian(gray_img);
+	return varianceOfLaplacian(gray_img);
 }
 
 }
