@@ -37,6 +37,13 @@ Frame::DlibRgbImg& Frame::get_rgb_image() {
 	return *_rgb_img;
 }
 
+Frame::CvBgrMat& Frame::get_gray_mat() {
+	if (grey_mat_.cols != _mat.cols || grey_mat_.rows != _mat.rows) {
+		cv::cvtColor(_mat, grey_mat_, CV_BGR2GRAY);
+	}
+	return grey_mat_;
+}
+
 //================================== VideoStream ===============================
 void VideoStream::setResolution(int width, int height) {
 	_cap->set(CV_CAP_PROP_FRAME_WIDTH, width);
@@ -102,6 +109,14 @@ Rectangle toRectangle(const cv::Rect2d& cvr) {
 
 Rectangle addBorder(const Rectangle& rect, const Size& size, int brdr) {
 	return Rectangle(std::max(0l, rect.left() - brdr), std::max(1l, rect.top() - brdr), std::min(long(size.width-1), rect.right() + brdr), std::min(long(size.height-1), rect.bottom() + brdr));
+}
+
+bool RectangleInFrame(const Rectangle& rect, const Size& frameSize) {
+	return rect.left() >= 0 && rect.right() < frameSize.width && rect.bottom() < frameSize.height && rect.top() >= 0 && rect.left() <= rect.right() && rect.top() <= rect.bottom();
+}
+
+bool firstRectInsideSecond(const Rectangle& r1, const Rectangle& r2) {
+	return r1.left() >= r2.left() && r1.top() >= r2.top() && r1.bottom() <= r2.bottom() && r1.right() <= r2.right();
 }
 
 CvRect toCvRect(const Rectangle& rect) {

@@ -63,10 +63,13 @@ struct SceneDetector: public VideoStreamConsumer {
 	SceneDetector(PSceneDetectorListener listener, PRecognitionManager recManager);
 
     void setVisualizer(SceneDetectorVisualizer* sdv) { _sc_visualizer = PSceneDetectorVisualizer(sdv); }
+    void setMinSharpness(double sharpness);
     void setHogParameters(const HogParameters &params);
 	bool consumeFrame(PFrame frame);
 	void close();
 private:
+	int filterFrames(PFrame& frame, PFrameRegList& frames);
+
 	// Scene detector starting state
 	const static int ST_INIT = 0;
 	const static int ST_STARTED = 1;
@@ -78,6 +81,7 @@ private:
 	int _state;
 	SceneState _scene_state;
 	PSceneDetectorVisualizer _sc_visualizer;
+	double min_sharpness_;
 };
 
 struct SceneDetectorVisualizer {

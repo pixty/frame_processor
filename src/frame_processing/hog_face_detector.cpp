@@ -8,7 +8,7 @@ HogFaceDetector::HogFaceDetector() :
 		_detector(dlib::get_frontal_face_detector()) {
 }
 
-const PFrameRegList & HogFaceDetector::detectRegions(PFrame pFrame) {
+const PFrameRegList& HogFaceDetector::detectRegions(PFrame pFrame) {
 	std::vector<Rectangle> objs;
 	const Frame::DlibBgrImg& original = pFrame->get_bgr_image();
 	const double x_ratio =

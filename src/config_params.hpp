@@ -11,6 +11,7 @@
 namespace fproc {
 
 struct CameraParameters {
+	int camId;
 	int width;
 	int height;
 	int fps;
@@ -27,7 +28,7 @@ struct CameraParameters {
 	double gamma;
 	double hue;
 	int fourcc;
-	CameraParameters() :
+	CameraParameters() : camId(0),
 			width(-1), height(-1), fps(-1), contrast(-1), brightness(-1), saturation(
 					-1), gain(-1), sharpness(-1), temperature(-1), backlight(
 					-1), exposure(-1), auto_exposure(-1), autofocus(true), gamma(

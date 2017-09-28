@@ -8,12 +8,12 @@
 #include "scene_detector.hpp"
 #include "../logger.hpp"
 #include "helpers.hpp"
+#include "image_processing.hpp"
 
 namespace fproc {
 
 SceneDetector::SceneDetector(PSceneDetectorListener listener, PRecognitionManager recManager):
-		_listener(std::move(listener)), _rec_manager(recManager), _state(ST_INIT) {
-
+		_listener(std::move(listener)), _rec_manager(recManager), _state(ST_INIT), min_sharpness_(80.0) {
 }
 
 void SceneDetector::setHogParameters(const HogParameters &params){
@@ -35,7 +35,8 @@ bool SceneDetector::consumeFrame(PFrame frame) {
 	}
 
 	LOG_DEBUG("SceneDetector: *** before detecting faces ***");
-	const PFrameRegList& hog_result = _hog_detector.detectRegions(frame);
+	PFrameRegList hog_result = _hog_detector.detectRegions(frame);
+	LOG_DEBUG("SceneDetector(): filtering faces - " << filterFrames(frame, hog_result) << " rejected due to sharpness less than " << min_sharpness_);
 	LOG_DEBUG("SceneDetector:	" << hog_result.size() << " regions found, recognizing...");
 	PFrameFaceList fflist(_rec_manager->recognize(frame, hog_result));
 	LOG_DEBUG("SceneDetector:	" << fflist->size() << " faces recognized, forming scene...");
@@ -60,6 +61,40 @@ void SceneDetector::close() {
 	if (_sc_visualizer) _sc_visualizer->close();
 	LOG_INFO("SceneDetector: closing...");
 	_state = ST_STOPPED;
+}
+
+void SceneDetector::setMinSharpness(double sharpness) {
+	LOG_INFO("SceneDetector(): Setting minimum sharpness to " << sharpness);
+	min_sharpness_ = sharpness;
+}
+
+// The method filters the frames detected and every one which has sharpness less
+// than minimum allowed (min_sharpness_) is dropped.
+int SceneDetector::filterFrames(PFrame& frame, PFrameRegList& frames) {
+	int deleted = 0;
+	std::list<PFrameRegion>::iterator it = frames.begin();
+	Size frmSz = frame->size();
+	while (it != frames.end()) {
+		PFrameRegion pfr = *it;
+		const Rectangle& rect = pfr->getRectangle();
+		if (!RectangleInFrame(rect, frmSz)) {
+			it = frames.erase(it);
+			deleted++;
+			continue;
+		}
+
+		double shpns = sharpness(frame, pfr->getRectangle());
+		if (shpns < min_sharpness_) {
+			it = frames.erase(it);
+			deleted++;
+			LOG_INFO("SceneDetector(): Dropping frame due to its sharpness=" << shpns << " or wrong rectangle size.");
+			continue;
+		}
+
+		pfr->set_sharpness(shpns);
+		++it;
+	}
+	return deleted;
 }
 
 // ========================= SceneDetectorVisualizer =========================
@@ -108,7 +143,7 @@ void SceneDetectorVisualizer::run() {
 			continue;
 		}
 
-		cv::Mat im(_frame->get_mat());
+		cv::Mat im = _frame->get_mat().clone();
 		for (PFrameRegion pfr: _hog_result) {
 			CvRect cvr = toCvRect(pfr->getRectangle());
 			rounded_rectangle(im, cvr, cv::Scalar(58, 242, 252), 1, 16, 5);
