@@ -14,18 +14,15 @@ FileVideoStream::FileVideoStream(const std::string& fileName, int firstFrame,
 		VideoStream(
 				std::unique_ptr<cv::VideoCapture>(
 						new cv::VideoCapture(fileName))), _started_at(
-				0), _skipped(false) {
+				ts_now()), _skipped(false) {
 	_startFrom = firstFrame <= 0 ? 0 : firstFrame;
 	_stopAfter = frames > 0 ? _startFrom + frames : -1;
 }
 
 PFrame FileVideoStream::captureFrame() {
-	if (_started_at == 0) {
-		_started_at = ts_now();
-	}
 	skip();
 	int pos = (int) _cap->get(cv::CAP_PROP_POS_FRAMES);
-	Frame *frame = new Frame(pos, _started_at + (Timestamp) _cap->get(cv::CAP_PROP_POS_MSEC));
+	Frame *frame = new Frame(_started_at + pos, _started_at + (Timestamp) _cap->get(cv::CAP_PROP_POS_MSEC));
 	if (_stopAfter < 0 || pos < _stopAfter) {
 		*_cap >> frame->get_mat();
 	}

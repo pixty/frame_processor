@@ -19,7 +19,6 @@ const PFrameRegList& HogFaceDetector::detectRegions(PFrame pFrame) {
 					((double) original.nr()) / ((double) _params.height) : 1.0;
 	if (_params.grayscale) {
 		dlib::array2d<unsigned char> img_gray_src;
-		pFrame->get_bgr_image();
 		dlib::assign_image(img_gray_src, original);
 		if (_params.height > 0) {
 			dlib::array2d<unsigned char> img_gray_dst(_params.height,
